@@ -4,6 +4,10 @@ import java.sql.*;
 
 public class DBConnection {
 //djh
+	
+	
+//ignore karalama damma
+	
 	public static Connection connect() {
 		Connection connection = null;
 		try {
