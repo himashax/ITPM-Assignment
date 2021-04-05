@@ -7,42 +7,43 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.SystemColor;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
 
+import dao.LecturerDAOImpl;
 import models.Active_Days;
 import models.Lecturer;
 
 import javax.swing.border.LineBorder;
+import javax.swing.JSpinner;
+import javax.swing.UIManager;
 
 public class Add_Lecturer implements ActionListener {
 
 	private JFrame frmAddLecturer;
 	private JTextField textFieldName;
-	private JLabel lblFaculty,lblDept,lblCampuscentre;
-	private JComboBox comboBox_dept,comboBox_fac,comboBox_build;
-	private JComboBox comboBox_centre,comboBox_level;
-	private JComboBox comboBox_day;
-	private JComboBox comboBox_hour;
-	private JLabel lblBuilding,lblEmpId,lblLevel,lblRank;
+	private JLabel lblFaculty, lblDept, lblCampuscentre;
+	private JComboBox comboBox_dept, comboBox_fac, comboBox_build;
+	private JComboBox comboBox_centre, comboBox_level;
+	private JLabel lblBuilding, lblEmpId, lblLevel, lblRank;
 	private JLabel lblDay;
 	private JLabel lblName;
-	private JLabel lblHours;
-	private JLabel lblSelectedDays;
 	private JTextField textFieldEmpId;
-	private JTextField textField_selected;
 	private JTextField textField_Rank;
 	private JPanel panel;
-	private JButton btnAddDays;
-	private JButton btnClear,btnSave,btnRank;
-	
+	private JButton btnClear, btnSave, btnRank;
+	private JSpinner spinner_Mon, spinner_Tue, spinner_Wed, spinner_Thur, spinner_Fri, spinner_Sat, spinner_Sun;
+	private JLabel lbl_Weekend;
 
 	/**
 	 * Launch the application.
@@ -73,124 +74,217 @@ public class Add_Lecturer implements ActionListener {
 	private void initialize() {
 		frmAddLecturer = new JFrame();
 		frmAddLecturer.setTitle("ADD LECTURER");
-		frmAddLecturer.setBounds(100, 100, 790, 469);
+		frmAddLecturer.setBounds(100, 100, 756, 487);
 		frmAddLecturer.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmAddLecturer.getContentPane().setLayout(null);
-		
+
+		SpinnerModel monday = new SpinnerNumberModel(0, 0, 8, 1);
+		SpinnerModel tuesday = new SpinnerNumberModel(0, 0, 8, 1);
+		SpinnerModel wednesday = new SpinnerNumberModel(0, 0, 8, 1);
+		SpinnerModel thursday = new SpinnerNumberModel(0, 0, 8, 1);
+		SpinnerModel friday = new SpinnerNumberModel(0, 0, 8, 1);
+		SpinnerModel saturday = new SpinnerNumberModel(0, 0, 8, 1);
+		SpinnerModel sunday = new SpinnerNumberModel(0, 0, 8, 1);
+
 		textFieldName = new JTextField();
 		textFieldName.setBounds(148, 32, 192, 20);
 		frmAddLecturer.getContentPane().add(textFieldName);
 		textFieldName.setColumns(10);
-		
+
 		lblName = new JLabel("NAME");
 		lblName.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblName.setBounds(34,30,74,25);
+		lblName.setBounds(34, 30, 74, 25);
 		frmAddLecturer.getContentPane().add(lblName);
-		
+
 		lblFaculty = new JLabel("FACULTY");
 		lblFaculty.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblFaculty.setBounds(34, 84, 74, 25);
 		frmAddLecturer.getContentPane().add(lblFaculty);
-		
+
 		lblDept = new JLabel("DEPARTMENT");
 		lblDept.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblDept.setBounds(34, 132, 86, 25);
+		lblDept.setBounds(34, 147, 86, 25);
 		frmAddLecturer.getContentPane().add(lblDept);
-		
 
-		String[] fac = {"Computing" , "Engineering"};
+		String[] fac = { "Computing", "Engineering","Business" };
 		comboBox_fac = new JComboBox(fac);
 		comboBox_fac.setEditable(true);
-		comboBox_fac.setBounds(148,86,192,20);
+		comboBox_fac.setBounds(148, 86, 192, 20);
 		frmAddLecturer.getContentPane().add(comboBox_fac);
-		
 
-		String[] com_dep= {"Software Engineering","CSSE"};
-//		String[] eng_dep = {"Electrical","Mechanical"};
+		String[] com_dep = { "Software Engineering", "CSSE" };
+		String[] eng_dep = { "Electrical", "Mechanical" };
+		String[] business_dep = { "Accounting", "Logistics" };
+		// String[] eng_dep = {"Electrical","Mechanical"};
 
-		comboBox_dept = new JComboBox(com_dep);
+		comboBox_dept = new JComboBox();
 		comboBox_dept.setEditable(true);
-		comboBox_dept.setBounds(148,132,192,20);
+		comboBox_dept.setBounds(148, 149, 192, 20);
 		frmAddLecturer.getContentPane().add(comboBox_dept);
 		
 		
-		
+		comboBox_fac.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				comboBox_dept.removeAllItems();
+				if(comboBox_fac.getSelectedItem().toString().equals("Computing")) {
+					for (String string : com_dep) {
+						comboBox_dept.addItem(string);
+					}
+				}else if(comboBox_fac.getSelectedItem().toString().equals("Engineering")) {
+					for (String string : eng_dep) {
+						comboBox_dept.addItem(string);
+					}
+				}else if(comboBox_fac.getSelectedItem().toString().equals("Business")) {
+					for (String string : business_dep) {
+						comboBox_dept.addItem(string);
+					}
+				}
+				
+			}
+		});
+
 		lblCampuscentre = new JLabel("CAMPUS/CENTRE");
 		lblCampuscentre.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblCampuscentre.setBounds(391, 30, 113, 25);
 		frmAddLecturer.getContentPane().add(lblCampuscentre);
-		
-		String[] cen = {"Malabe","Metro Campus","Kandy","Matara","Jaffna"};
+
+		String[] cen = { "Malabe", "Metro Campus", "Kandy", "Matara", "Jaffna" };
 		comboBox_centre = new JComboBox(cen);
-		comboBox_centre.setEditable(true);
 		comboBox_centre.setBounds(519, 32, 205, 20);
 		frmAddLecturer.getContentPane().add(comboBox_centre);
+
+		String[] Malabe_build = { "Malabe New building", "Malabe Main building", "Malabe BM" };
+		String[] kandy_build = { "Kandy building 1", "Kandy Main building", "kandy MB" };
+		String[] matara_build = { "Matara building 1", "Matara Main building", "Matara BM" };
+		String[] jaffna_build = { "Jafna building 1", "Jafna Main building", "Jaffna BM" };
+		String[] metro_build = { "Metro building 1", "Metro Main building", "Metro BM" };
 		
-		String[] Malabe_build = {"New building","Main building"};
-		comboBox_build = new JComboBox(Malabe_build);
-		comboBox_build.setEditable(true);
-		comboBox_build.setBounds(519,86,205,20);
+		comboBox_build = new JComboBox();
+		comboBox_build.setBounds(519, 86, 205, 20);
 		frmAddLecturer.getContentPane().add(comboBox_build);
-		
-		
+
 		lblBuilding = new JLabel("BUILDING");
 		lblBuilding.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblBuilding.setBounds(391, 89, 113, 25);
 		frmAddLecturer.getContentPane().add(lblBuilding);
-		
-		String[] level = {"1","2","3","4","5","6"};
-		
-		panel = new JPanel();
-		panel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.GRAY));
-		panel.setBackground(Color.WHITE);
-		panel.setBounds(391, 132, 333, 220);
-		frmAddLecturer.getContentPane().add(panel);
-		panel.setLayout(null);
-		
-		lblDay = new JLabel("DAY");
-		lblDay.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblDay.setBounds(10, 28, 69, 25);
-		panel.add(lblDay);
-		
-		String day[] = {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
-		comboBox_day = new JComboBox(day);
-		comboBox_day.setEditable(true);
-		comboBox_day.setBounds(131, 29, 192, 22);
-		panel.add(comboBox_day);
-		
-		lblHours = new JLabel("HOURS");
-		lblHours.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblHours.setBounds(10, 75, 69, 25);
-		panel.add(lblHours);
-		
-		String[] hrs = {"08:00:00 - 17:00:00", "08:00:00 - 12:00:00" ,"12:00:00 - 17:00:00"};
-		comboBox_hour = new JComboBox(hrs);
-		comboBox_hour.setEditable(true);
-		comboBox_hour.setBounds(131, 76, 192, 22);
-		panel.add(comboBox_hour);
-		
-		textField_selected = new JTextField();
-		textField_selected.setEditable(false);
-		textField_selected.setBounds(152, 137, 171, 77);
-		panel.add(textField_selected);
-		textField_selected.setColumns(10);
-		
-		lblSelectedDays = new JLabel("SELECTED\r\n DAYS & HRS");
-		lblSelectedDays.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblSelectedDays.setBounds(10, 163, 132, 25);
-		panel.add(lblSelectedDays);
-		
-		btnAddDays = new JButton("+");
-		btnAddDays.addActionListener(new ActionListener() {
+
+		comboBox_centre.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				textField_selected.setText(comboBox_day.getSelectedItem() + ", "+ comboBox_hour.getSelectedItem() );
+				comboBox_build.removeAllItems();
+				if (comboBox_centre.getSelectedItem().toString().equals("Malabe")) {
+					for (String string : Malabe_build) {
+						comboBox_build.addItem(string);
+					}
+				} else if (comboBox_centre.getSelectedItem().toString().equals("Kandy")) {
+					for (String string : kandy_build) {
+						comboBox_build.addItem(string);
+					}
+				} else if (comboBox_centre.getSelectedItem().toString().equals("Matara")) {
+					for (String string : matara_build) {
+						comboBox_build.addItem(string);
+					}
+				} else if (comboBox_centre.getSelectedItem().toString().equals("Metro Campus")) {
+					for (String string : metro_build) {
+						comboBox_build.addItem(string);
+					}
+				} else if (comboBox_centre.getSelectedItem().toString().equals("Jaffna")) {
+					for (String string : jaffna_build) {
+						comboBox_build.addItem(string);
+					}
+				}
+
 			}
 		});
-		btnAddDays.setFont(new Font("Times New Roman", Font.BOLD, 8));
-		btnAddDays.setBackground(SystemColor.activeCaption);
-		btnAddDays.setBounds(278, 109, 45, 23);
-		panel.add(btnAddDays);
-		
+
+		String[] level = { "1", "2", "3", "4", "5", "6" };
+
+		panel = new JPanel();
+		panel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.LIGHT_GRAY));
+		panel.setBackground(SystemColor.inactiveCaption);
+		panel.setBounds(391, 183, 333, 206);
+		frmAddLecturer.getContentPane().add(panel);
+		panel.setLayout(null);
+
+		lblDay = new JLabel("Mon");
+		lblDay.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblDay.setBounds(10, 46, 39, 25);
+		panel.add(lblDay);
+
+		spinner_Mon = new JSpinner(monday);
+		spinner_Mon.setBounds(59, 48, 54, 20);
+		panel.add(spinner_Mon);
+
+		JLabel lblTue = new JLabel("Tue");
+		lblTue.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblTue.setBounds(10, 86, 39, 25);
+		panel.add(lblTue);
+
+		spinner_Tue = new JSpinner(tuesday);
+		spinner_Tue.setBounds(59, 88, 54, 20);
+		panel.add(spinner_Tue);
+
+		spinner_Wed = new JSpinner(wednesday);
+		spinner_Wed.setBounds(231, 8, 54, 20);
+		panel.add(spinner_Wed);
+
+		JLabel lblWed = new JLabel("Wed");
+		lblWed.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblWed.setBounds(171, 6, 39, 25);
+		panel.add(lblWed);
+
+		spinner_Thur = new JSpinner(thursday);
+		spinner_Thur.setBounds(231, 48, 54, 20);
+		panel.add(spinner_Thur);
+
+		JLabel lblThur = new JLabel("Thur");
+		lblThur.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblThur.setBounds(171, 46, 39, 25);
+		panel.add(lblThur);
+
+		JLabel lblFriday = new JLabel("Friday");
+		lblFriday.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblFriday.setBounds(171, 86, 39, 25);
+		panel.add(lblFriday);
+
+		spinner_Fri = new JSpinner(friday);
+		spinner_Fri.setBounds(231, 88, 54, 20);
+		panel.add(spinner_Fri);
+
+		JLabel lblSat = new JLabel("Sat");
+		lblSat.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblSat.setBounds(10, 173, 39, 25);
+		panel.add(lblSat);
+
+		spinner_Sat = new JSpinner(saturday);
+		spinner_Sat.setBounds(59, 175, 54, 20);
+		panel.add(spinner_Sat);
+
+		JLabel lblSun = new JLabel("Sun");
+		lblSun.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblSun.setBounds(171, 173, 39, 25);
+		panel.add(lblSun);
+
+		spinner_Sun = new JSpinner(sunday);
+		spinner_Sun.setBounds(231, 175, 54, 20);
+		panel.add(spinner_Sun);
+
+		JLabel lbl_Weekday = new JLabel("WEEKDAY");
+		lbl_Weekday.setForeground(SystemColor.activeCaptionText);
+		lbl_Weekday.setBackground(Color.WHITE);
+		lbl_Weekday.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lbl_Weekday.setBounds(10, 11, 71, 14);
+		panel.add(lbl_Weekday);
+
+		lbl_Weekend = new JLabel("WEEKEND");
+		lbl_Weekend.setForeground(Color.BLACK);
+		lbl_Weekend.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lbl_Weekend.setBackground(Color.WHITE);
+		lbl_Weekend.setBounds(10, 135, 71, 14);
+		panel.add(lbl_Weekend);
+
 		btnClear = new JButton("CLEAR");
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -199,39 +293,39 @@ public class Add_Lecturer implements ActionListener {
 		});
 		btnClear.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnClear.setBackground(SystemColor.activeCaption);
-		btnClear.setBounds(391, 382, 149, 23);
+		btnClear.setBounds(427, 412, 113, 25);
 		btnClear.addActionListener(this);
 		frmAddLecturer.getContentPane().add(btnClear);
-		
+
 		btnSave = new JButton("SAVE");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//JOptionPane.showMessageDialog(null, "Saved Successfully!");
+				// JOptionPane.showMessageDialog(null, "Saved Successfully!");
 			}
 		});
 		btnSave.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnSave.setBackground(SystemColor.activeCaption);
-		btnSave.setBounds(575, 382, 149, 23);
+		btnSave.setBounds(575, 412, 118, 25);
 		btnSave.addActionListener(this);
 		frmAddLecturer.getContentPane().add(btnSave);
-		
+
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new LineBorder(SystemColor.activeCaption));
-		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(25, 199, 330, 206);
+		panel_1.setBorder(new LineBorder(Color.LIGHT_GRAY));
+		panel_1.setBackground(Color.LIGHT_GRAY);
+		panel_1.setBounds(27, 203, 330, 206);
 		frmAddLecturer.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
-		
+
 		lblEmpId = new JLabel("EMPLOYEE ID");
 		lblEmpId.setBounds(10, 31, 80, 14);
 		panel_1.add(lblEmpId);
 		lblEmpId.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		
+
 		textFieldEmpId = new JTextField();
 		textFieldEmpId.setBounds(128, 28, 192, 20);
 		panel_1.add(textFieldEmpId);
 		textFieldEmpId.setColumns(10);
-		
+
 		lblLevel = new JLabel("LEVEL");
 		lblLevel.setBounds(10, 66, 55, 25);
 		panel_1.add(lblLevel);
@@ -240,148 +334,164 @@ public class Add_Lecturer implements ActionListener {
 		comboBox_level.setBounds(128, 68, 192, 20);
 		panel_1.add(comboBox_level);
 		comboBox_level.setEditable(true);
-		
+
 		textField_Rank = new JTextField();
 		textField_Rank.setEditable(false);
 		textField_Rank.setColumns(10);
 		textField_Rank.setBounds(128, 119, 192, 20);
 		panel_1.add(textField_Rank);
-		
+
 		lblRank = new JLabel("RANK");
 		lblRank.setBounds(10, 117, 55, 25);
 		panel_1.add(lblRank);
 		lblRank.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		
+
 		btnRank = new JButton("GENERATE RANK");
 		btnRank.setBounds(78, 172, 149, 23);
 		panel_1.add(btnRank);
 		btnRank.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnRank.setBackground(new Color(176, 224, 230));
+		btnRank.setBackground(SystemColor.activeCaption);
+
+		JLabel lblSelectDays = new JLabel("ACTIVE DAYS & HOURS");
+		lblSelectDays.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblSelectDays.setBounds(391, 147, 149, 25);
+		frmAddLecturer.getContentPane().add(lblSelectDays);
 		btnRank.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(textFieldEmpId.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null,"Please enter an Employee ID!","Alert",JOptionPane.WARNING_MESSAGE);
-				}else if(textFieldEmpId.getText().length() != 6) {
-					JOptionPane.showMessageDialog(null,"Check the Employee ID","Alert",JOptionPane.WARNING_MESSAGE);
-					
-				}else {
-					String level,empID,rank;
+				if (textFieldEmpId.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Please enter an Employee ID!", "Alert",
+							JOptionPane.WARNING_MESSAGE);
+				} else if (textFieldEmpId.getText().length() != 6) {
+					JOptionPane.showMessageDialog(null, "Check the Employee ID", "Alert", JOptionPane.WARNING_MESSAGE);
+
+				} else {
+					String level, empID, rank;
 					try {
 						level = (String) comboBox_level.getSelectedItem();
 						empID = textFieldEmpId.getText();
-						
-					    Integer.parseInt(empID);
-						
-					    if(comboBox_level.getSelectedItem()== null){
-							JOptionPane.showMessageDialog(null,"Select a level!","Alert",JOptionPane.WARNING_MESSAGE);
-						}else {
-							rank = level + "." +empID;
+
+						Integer.parseInt(empID);
+
+						if (comboBox_level.getSelectedItem() == null) {
+							JOptionPane.showMessageDialog(null, "Select a level!", "Alert",
+									JOptionPane.WARNING_MESSAGE);
+						} else {
+							rank = level + "." + empID;
 							System.out.println("Rank " + rank);
 							textField_Rank.setText(rank);
 							JOptionPane.showMessageDialog(null, "Generated Successfully!");
 						}
 
-					}
-					catch (NumberFormatException n) {
-					     //Not an integer
-						JOptionPane.showMessageDialog(null,"Invalid Characters in empID!","Alert",JOptionPane.WARNING_MESSAGE);
+					} catch (NumberFormatException n) {
+						// Not an integer
+						JOptionPane.showMessageDialog(null, "Invalid Characters in empID!", "Alert",
+								JOptionPane.WARNING_MESSAGE);
 					}
 				}
-				
+
 			}
 		});
-		
+
 	}
-	
+
 	public void resetField() {
 		comboBox_fac.setSelectedIndex(0);
 		comboBox_dept.setSelectedIndex(0);
 		comboBox_centre.setSelectedIndex(0);
 		comboBox_build.setSelectedIndex(0);
 		comboBox_level.setSelectedIndex(0);
-		comboBox_day.setSelectedIndex(0);
-		comboBox_hour.setSelectedIndex(0);
 		textFieldName.setText(null);
 		textFieldEmpId.setText(null);
 		textField_Rank.setText(null);
-	    textField_selected.setText(null);
-	    //rdbtn.setSelected(false);
+		spinner_Mon.setValue(0);
+		spinner_Tue.setValue(0);
+		spinner_Wed.setValue(0);
+		spinner_Thur.setValue(0);
+		spinner_Fri.setValue(0);
+		spinner_Sat.setValue(0);
+		spinner_Mon.setValue(0);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		Object obj = e.getSource();  //to see what is clicked
 		
-		if(obj == btnSave) {
-			
-			if(textFieldName.getText().isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Please fill the name field!","Alert",JOptionPane.WARNING_MESSAGE);
-			}else if(textFieldEmpId.getText().isEmpty()){
-				JOptionPane.showMessageDialog(null, "Please fill the employee id!","Alert",JOptionPane.WARNING_MESSAGE);
-			}else if(textField_Rank.getText().isEmpty()){
-				JOptionPane.showMessageDialog(null, "Please Generate the rank!","Alert",JOptionPane.WARNING_MESSAGE);
-			}else {
-//				String[] com_dep= {"Software Engineering","CSSE"};
-//				String[] eng_dep = {"Electrical","Mechanical"};
-				
-				String name = (String)textFieldName.getText();
-				String faculty = (String)comboBox_fac.getSelectedItem();
-				
-//				if(comboBox_fac.getSelectedItem().equals("Computing")) {
-//					comboBox_dept = new JComboBox(com_dep);
-//				}else if(comboBox_fac.getSelectedItem().equals("Engineering")){
-//					comboBox_dept = new JComboBox(com_dep);
-//				}
-				
-				String dept = (String)comboBox_dept.getSelectedItem();
-				int empid = Integer.parseInt(textFieldEmpId.getText().toString());
-				
-				if(comboBox_level.getSelectedItem()== null){
-					JOptionPane.showMessageDialog(null,"Select a level!","Alert",JOptionPane.WARNING_MESSAGE);
-				}
-				int level = Integer.parseInt((String) comboBox_level.getSelectedItem());
-				String rank = (String)textField_Rank.getText();
-				String campus = (String)comboBox_centre.getSelectedItem();
-				String build = (String)comboBox_build.getSelectedItem();
-				
-				String test = level + "." + empid;
-				System.out.println("New rank" + test);
-				
-				
-				//newly added
-				String day = (String)comboBox_day.getSelectedItem();
-				String hours = (String) comboBox_hour.getSelectedItem();
+		Object obj = e.getSource(); // to see what is clicked
 
+		if (obj == btnSave) {
+
+			if (textFieldName.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Please fill the name field!", "Alert",
+						JOptionPane.WARNING_MESSAGE);
+			} else if (comboBox_dept.getSelectedItem() == null) {
+				JOptionPane.showMessageDialog(null, "Please choose a department!", "Alert",
+						JOptionPane.WARNING_MESSAGE);
 				
-				if(rank.equals(test) == false){
-					JOptionPane.showMessageDialog(null, "Please click the 'Generate the rank!'","Alert",JOptionPane.WARNING_MESSAGE);
-				}else {
-					int confirm =JOptionPane.showConfirmDialog(null,"Are you sure?","An Inane Question",JOptionPane.YES_NO_OPTION);
-					
-					if(confirm == JOptionPane.YES_OPTION) {
-						Lecturer lec = new Lecturer();
-						
-						//newly added
-						Active_Days days = new Active_Days();
-						lec.insertLecturers(name, faculty, dept,empid, level, rank, campus, build);
-						
-						//newly added
-						days.insertActiveDays(empid, day, hours);
+			}else if (textFieldEmpId.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Please fill the employee id!", "Alert",
+						JOptionPane.WARNING_MESSAGE);
+			} else if (textField_Rank.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Please Generate the rank!", "Alert", JOptionPane.WARNING_MESSAGE);
+			} else if(comboBox_build.getSelectedItem() == null){
+				JOptionPane.showMessageDialog(null, "Please choose a building!", "Alert",
+						JOptionPane.WARNING_MESSAGE);
+			}else {
+				Lecturer lecturer = new Lecturer();
+				lecturer.setLecName((String) textFieldName.getText());
+				lecturer.setFaculty((String) comboBox_fac.getSelectedItem());
+				lecturer.setDepart((String) comboBox_dept.getSelectedItem());
+				lecturer.setEmployeeId(Integer.parseInt(textFieldEmpId.getText().toString()));
+
+				if (comboBox_level.getSelectedItem() == null) {
+					JOptionPane.showMessageDialog(null, "Select a level!", "Alert", JOptionPane.WARNING_MESSAGE);
+				}
+				lecturer.setLevel(Integer.parseInt((String) comboBox_level.getSelectedItem()));
+				lecturer.setRank((String) textField_Rank.getText());
+				lecturer.setCampus((String) comboBox_centre.getSelectedItem());
+				lecturer.setBuilding((String) comboBox_build.getSelectedItem());
+
+				String test = lecturer.getLevel() + "." + lecturer.getEmployeeId();
+				System.out.println("New rank" + test);
+
+
+				int mon = (int) spinner_Mon.getValue();
+				int tue = (int) spinner_Tue.getValue();
+				int wed = (int) spinner_Wed.getValue();
+				int thur = (int) spinner_Thur.getValue();
+				int fri = (int) spinner_Fri.getValue();
+				int sat = (int) spinner_Sat.getValue();
+				int sun = (int) spinner_Sun.getValue();
+
+				if (lecturer.getRank().equals(test) == false) {
+					JOptionPane.showMessageDialog(null, "Please click the 'Generate the rank!'", "Alert",
+							JOptionPane.WARNING_MESSAGE);
+				} else {
+					int confirm = JOptionPane.showConfirmDialog(null, "Save the record?", "Save the new Lecturer",
+							JOptionPane.YES_NO_OPTION);
+
+					if (confirm == JOptionPane.YES_OPTION) {
+						LecturerDAOImpl lecturerDAOImpl = new LecturerDAOImpl();
+
+						try {
+							lecturerDAOImpl.insertLecturers(lecturer);
+						} catch (Exception e1) {
+							JOptionPane.showMessageDialog(null, e1.getMessage());
+						}
+
+						// newly added
+						lecturerDAOImpl.insertActiveDays(lecturer.getEmployeeId(), mon, tue, wed, thur, fri, sat, sun);
 					}
-					
+
 					resetField();
 				}
-				
 
 			}
-			
+
 		}
-		
-		if(obj == btnClear) {
+
+		if (obj == btnClear) {
 			resetField();
 			JOptionPane.showMessageDialog(null, "Cleared!");
 		}
-		
+
 	}
 }
