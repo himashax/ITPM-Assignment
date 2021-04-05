@@ -150,7 +150,7 @@ public class Manage_Lecturer implements ActionListener {
 			}
 		});
 		
-		
+		/*heeee jksaknkdjskj*/
 		String[] Malabe_build = { "Malabe New building", "Malabe Main building", "Malabe BM" };
 		String[] kandy_build = { "Kandy building 1", "Kandy Main building", "kandy MB" };
 		String[] matara_build = { "Matara building 1", "Matara Main building", "Matara BM" };
