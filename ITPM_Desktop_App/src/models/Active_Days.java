@@ -15,8 +15,7 @@ public class Active_Days {
 	DBConnection db = new DBConnection();
 	
 	private int EmpID;
-	private String Days;
-	private String hours;
+	private int Mon,Tue,Wed,Thur,Fri,Sat,Sun;
 	private int id;
 	
 	
@@ -26,17 +25,48 @@ public class Active_Days {
 	public void setEmpID(int empID) {
 		EmpID = empID;
 	}
-	public String getDays() {
-		return Days;
+	
+	public int getMon() {
+		return Mon;
 	}
-	public void setDays(String days) {
-		Days = days;
+	public void setMon(int mon) {
+		Mon = mon;
 	}
-	public String getHours() {
-		return hours;
+	public int getTue() {
+		return Tue;
 	}
-	public void setHours(String hours) {
-		this.hours = hours;
+	public void setTue(int tue) {
+		Tue = tue;
+	}
+	public int getWed() {
+		return Wed;
+	}
+	public void setWed(int wed) {
+		Wed = wed;
+	}
+	public int getThur() {
+		return Thur;
+	}
+	public void setThur(int thur) {
+		Thur = thur;
+	}
+	public int getFri() {
+		return Fri;
+	}
+	public void setFri(int fri) {
+		Fri = fri;
+	}
+	public int getSat() {
+		return Sat;
+	}
+	public void setSat(int sat) {
+		Sat = sat;
+	}
+	public int getSun() {
+		return Sun;
+	}
+	public void setSun(int sun) {
+		Sun = sun;
 	}
 	public int getId() {
 		return id;
@@ -45,87 +75,4 @@ public class Active_Days {
 		this.id = id;
 	}
 	
-	
-	public String insertActiveDays(int empid, String day, String hours ) {
-		
-		String result = "";
-		
-		try {
-			
-			Connection connection = db.connect();
-			
-			String insertDays = "insert into lecturer_activedays values (?,?,?)";
-			PreparedStatement ps = connection.prepareStatement(insertDays);
-			
-			ps.setInt(1, empid);
-			ps.setString(2, day);
-			ps.setString(3, hours);
-
-			ps.execute();
-			connection.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return result;
-	}
-	
-	public ArrayList<Active_Days> listDays(){
-		ArrayList<Active_Days> activeDay_group = new ArrayList<>();
-		
-		try {
-			Connection connection = db.connect();
-			String listDayGroup = "select * from lecturer_activedays";
-			
-			Statement st = connection.createStatement();
-			ResultSet rs = st.executeQuery(listDayGroup);
-			
-			while(rs.next()) {
-				Active_Days ac_days = new Active_Days();
-				
-				ac_days.setEmpID(rs.getInt(1));
-				ac_days.setDays(rs.getString(2));
-				ac_days.setHours(rs.getString(3));
-
-				
-				activeDay_group.add(ac_days);
-			}
-		}catch(SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return activeDay_group;
-	} 
-	
-
-	public void updateActiveDays(int id,String day,String hours) {
-		
-		try {
-			Connection con = db.connect();
-			
-			String updateQuery = "Update lecturer_activedays set days = '"+day+"', hours='"+hours+"' where emp_id = '"+id+"' ";
-		
-			
-			PreparedStatement ps = con.prepareStatement(updateQuery);
-			ps.execute();
-			
-			con.close();
-		}catch(SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void deleteActiveDays(int id) {
-		try {
-			Connection connection = db.connect();
-			String delDayQuery = "delete from lecturer_activedays where emp_id = '"+id+"'";
-			PreparedStatement ps = connection.prepareStatement(delDayQuery);
-			ps.execute();
-			
-			connection.close();
-		}catch(SQLException e) {
-			e.printStackTrace();
-		}
-	}
 }
