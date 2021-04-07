@@ -126,7 +126,6 @@ public class Manage_Lecturer implements ActionListener {
 		comboBox_mDepartment.setBounds(557, 11, 235, 20);
 		panel_1.add(comboBox_mDepartment);
 		
-		
 		comboBox_mFaculty.addActionListener(new ActionListener() {
 			
 			@Override

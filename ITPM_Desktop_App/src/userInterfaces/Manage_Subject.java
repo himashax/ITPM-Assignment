@@ -15,9 +15,12 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import java.awt.Color;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import dao.SubjectDAOImpl;
 import models.Subject;
 
 import javax.swing.JRadioButton;
@@ -77,6 +80,12 @@ public class Manage_Subject implements ActionListener {
 		frmManageSubjects.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmManageSubjects.getContentPane().setLayout(null);
 		
+		SpinnerModel model_1 = new SpinnerNumberModel(0, 0, 12, 1);
+		SpinnerModel model_2 = new SpinnerNumberModel(0, 0, 12, 1);
+		SpinnerModel model_3 = new SpinnerNumberModel(0, 0, 12, 1);
+		SpinnerModel model_4 = new SpinnerNumberModel(0, 0, 12, 1);
+		
+		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
 		panel.setBounds(10, 11, 839, 156);
@@ -94,34 +103,7 @@ public class Manage_Subject implements ActionListener {
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(10, 11, 712, 134);
 		
-//		Subject subject = new Subject();
-//		Connection con = subject.connect();
-//		
-//		String retrieveQuery = "select * from subject";
-//		
-//		
-//		
-//		try {
-//			Statement st = con.createStatement();
-//			ResultSet res = st.executeQuery(retrieveQuery);
-//			
-//			while(res.next()) {
-//				int year = res.getInt("Year");
-//				String sem = res.getString("Semester");
-//				String code = res.getString("Subject_Code");
-//				String subName = res.getString("Subject_Name");
-//				int lec = res.getInt("Lecture_Hours");
-//				int tute = res.getInt("Tute_Hours");
-//				int lab = res.getInt("Lab_Hours");
-//				int eval = res.getInt("Evaluation_Hours");
-//				
-//				((DefaultTableModel)modal).addRow(new Object[] {year,sem,code,subName,lec,tute,lab,eval});
-//			}
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
+
 		subjectGroupTable();
 		panel.add(scrollPane);
 		
@@ -130,9 +112,15 @@ public class Manage_Subject implements ActionListener {
 	    	public void mouseClicked(MouseEvent e) {
 	    		int rowId = table.getSelectedRow();
 	   
+	    		SubjectDAOImpl subjectDAOImpl = new SubjectDAOImpl();
+	    		
 	    		id = Integer.parseInt(modal.getValueAt(rowId, 0).toString());
-	    		comboBox_mYear.setSelectedItem(modal.getValueAt(rowId, 1));
-	     		String value = modal.getValueAt(rowId, 2).toString();
+	    		System.out.println(id);
+	    		Subject subject = subjectDAOImpl.getSubjectById(id);
+	    		
+	    		comboBox_mYear.setSelectedItem(subject.getYear());
+	     		String value = subject.getSemester();
+	     		System.out.println(value);
 	    		if(value.equals("First Semester")) {
 	    			rdbtn_mFSem.setSelected(true);
 	    			rdbtnSecSem.setSelected(false);
@@ -140,12 +128,12 @@ public class Manage_Subject implements ActionListener {
 	    			rdbtnSecSem.setSelected(true);
 	    			rdbtn_mFSem.setSelected(false);
 	    		}
-	    		textField_mSubCode.setText(modal.getValueAt(rowId, 3).toString());
-	    		textField_mSubName.setText(modal.getValueAt(rowId, 4).toString());
-	    		spinner_mLecHrs.setValue(modal.getValueAt(rowId, 5));
-	    		spinner_mTuteHrs.setValue(modal.getValueAt(rowId, 6));
-	    		spinner_mLabHrs.setValue(modal.getValueAt(rowId, 7));
-	    		spinner_mEvlHrs.setValue(modal.getValueAt(rowId, 8));
+	    		textField_mSubCode.setText(subject.getSubjectCode());
+	    		textField_mSubName.setText(subject.getSubjectName());
+	    		spinner_mLecHrs.setValue(subject.getNoOfLecHrs());
+	    		spinner_mTuteHrs.setValue(subject.getNoOfTuteHrs());
+	    		spinner_mLabHrs.setValue(subject.getNoOfLabHrs());
+	    		spinner_mEvlHrs.setValue(subject.getNoOfEvalHRs());
 	    	}
 	    });
 		
@@ -198,19 +186,19 @@ public class Manage_Subject implements ActionListener {
 		bg.add(rdbtn_mFSem);
 		bg.add(rdbtnSecSem);
 		
-		spinner_mLecHrs = new JSpinner();
+		spinner_mLecHrs = new JSpinner(model_1);
 		spinner_mLecHrs.setBounds(603, 30, 186, 20);
 		panel_1.add(spinner_mLecHrs);
 		
-		spinner_mTuteHrs = new JSpinner();
+		spinner_mTuteHrs = new JSpinner(model_2);
 		spinner_mTuteHrs.setBounds(603, 90, 186, 20);
 		panel_1.add(spinner_mTuteHrs);
 		
-		spinner_mLabHrs = new JSpinner();
+		spinner_mLabHrs = new JSpinner(model_3);
 		spinner_mLabHrs.setBounds(603, 141, 186, 20);
 		panel_1.add(spinner_mLabHrs);
 		
-		spinner_mEvlHrs = new JSpinner();
+		spinner_mEvlHrs = new JSpinner(model_4);
 		spinner_mEvlHrs.setBounds(603, 192, 186, 20);
 		panel_1.add(spinner_mEvlHrs);
 		
@@ -255,8 +243,8 @@ public class Manage_Subject implements ActionListener {
 	
 	
 	public void subjectGroupTable(){
-		Subject subject_group = new Subject();
-		ArrayList<Subject> subject_list = subject_group.listSubjects();
+		SubjectDAOImpl subjectDAOImpl= new SubjectDAOImpl();
+		ArrayList<Subject> subject_list = subjectDAOImpl.listSubjects();
 		
 		DefaultTableModel modal = (DefaultTableModel) table.getModel();
 		
@@ -295,35 +283,47 @@ public class Manage_Subject implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		
 		Object ob = e.getSource();
 		
 		if(ob == btnSubUpdate) {
 			
 			if(id == 0) {
 				JOptionPane.showMessageDialog(null, "Select a row to Update!");
+			}else if(textField_mSubCode.getText().isEmpty()){
+				JOptionPane.showMessageDialog(null, "Please fill the subject code!", "Alert",
+						JOptionPane.WARNING_MESSAGE);
+			}else if(textField_mSubName.getText().isEmpty()){
+				JOptionPane.showMessageDialog(null, "Please fill the subject name!", "Alert",
+						JOptionPane.WARNING_MESSAGE);
 			}else {
-				int year = Integer.parseInt(comboBox_mYear.getSelectedItem().toString());
+				
+				Subject subject = new Subject();
+				
+				subject.setYear(Integer.parseInt(comboBox_mYear.getSelectedItem().toString()));
 				String sem ="";
 				if(rdbtn_mFSem.isSelected()) {
-					sem = "First Semester";
+					subject.setSemester("First Semester");
 				}else {
-					sem ="Second Semester";
+					subject.setSemester("Second Semester");
 				}
-				String subCode = textField_mSubCode.getText();
-				String subName = textField_mSubName.getText();
-				int lecHrs = (int) spinner_mLecHrs.getValue();
-				int tuteHrs = (int) spinner_mTuteHrs.getValue();
-				int labHrs =(int) spinner_mLabHrs.getValue();
-				int evlHrs = (int) spinner_mEvlHrs.getValue();
+				subject.setSubjectCode(textField_mSubCode.getText());
+				subject.setSubjectName(textField_mSubName.getText());
+				subject.setNoOfLecHrs((int) spinner_mLecHrs.getValue());
+				subject.setNoOfTuteHrs((int) spinner_mTuteHrs.getValue());
+				subject.setNoOfLabHrs((int) spinner_mLabHrs.getValue());
+				subject.setNoOfEvalHRs((int) spinner_mEvlHrs.getValue());
+				subject.setId(id);
 				
-				int confirm =JOptionPane.showConfirmDialog(null,"Are you sure?","An Inane Question",JOptionPane.YES_NO_OPTION);
+				int confirm =JOptionPane.showConfirmDialog(null,"Are you sure you want to update subject "+ subject.getSubjectName() +" ?","Update subject",JOptionPane.YES_NO_OPTION);
 				
 				if(confirm == JOptionPane.YES_OPTION) {
-					Subject sub= new Subject();
-					sub.updateSubjects(id,year, sem, subCode, subName, lecHrs, tuteHrs, labHrs, evlHrs);
+					SubjectDAOImpl subjectDAOImpl= new SubjectDAOImpl();
 					
+					subjectDAOImpl.updateSubjects(subject);
+					System.out.println("wenawadaa?");
 					DefaultTableModel model = (DefaultTableModel)table.getModel();
+					System.out.println("nadda");
 					model.setRowCount(0);
 					subjectGroupTable();
 				}
@@ -337,11 +337,12 @@ public class Manage_Subject implements ActionListener {
 			if(id == 0) {
 				JOptionPane.showMessageDialog(null, "Select a specific record to delete!");
 			}else {
-				int confirm =JOptionPane.showConfirmDialog(null,"Are you sure?","An Inane Question",JOptionPane.YES_NO_OPTION);
+				SubjectDAOImpl subjectDAOImpl= new SubjectDAOImpl();
+				int confirm =JOptionPane.showConfirmDialog(null,"Delete subject "+ subjectDAOImpl.getSubjectById(id).getSubjectName()  +" ?","Delete Subject",JOptionPane.YES_NO_OPTION);
 				
 				if(confirm == JOptionPane.YES_OPTION) {
-					Subject sub= new Subject();
-					sub.deleteSubject(id);
+					
+					subjectDAOImpl.deleteSubject(id);
 					
 					DefaultTableModel model = (DefaultTableModel)table.getModel();
 					model.setRowCount(0);
