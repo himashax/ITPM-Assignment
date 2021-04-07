@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import dao.SubjectDAOImpl;
 import models.Subject;
 
 import java.awt.SystemColor;
@@ -243,36 +244,47 @@ public class Add_Subject implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		Object obj =e.getSource();
 		
 		if(obj == btnSave) {
-			
-			int year = Integer.parseInt((String) comboBoxOffYear.getSelectedItem()); 
-			String sem = "";
-			
-			if(rdbtnFirstSem.isSelected()) {
-				sem = "First Semester";
+			if(rdbtnFirstSem.isSelected()==false && rdbtnSecSem.isSelected()==false) {
+				JOptionPane.showMessageDialog(null, "Please select a semester!", "Alert",
+						JOptionPane.WARNING_MESSAGE);
+			}else if(textFieldSubCode.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Please fill the subject code!", "Alert",
+						JOptionPane.WARNING_MESSAGE);
+			}else if(textFieldSubName.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Please fill the subject name!", "Alert",
+						JOptionPane.WARNING_MESSAGE);
 			}else {
-				sem = "Second Semester";
-			}
-			
-			String subCode = textFieldSubCode.getText();
-			String subName = textFieldSubName.getText();
-			
-			int lecHrs = (int) spinner_LecHrs.getValue();
-			int tuteHrs = (int) spinner_Tute.getValue();
-			int labHrs = (int) spinner_Lab.getValue();
-			int evHrs = (int) spinner_EvHrs.getValue();
-			
-			int confirm =JOptionPane.showConfirmDialog(null,"Are you sure?","An Inane Question",JOptionPane.YES_NO_OPTION);
-			
-			if(confirm == JOptionPane.YES_OPTION) {
-				Subject sub = new Subject();
-				sub.insertSubQuery(year, sem, subCode, subName, lecHrs, tuteHrs, labHrs, evHrs);
+				Subject subject = new Subject();
+				subject.setYear(Integer.parseInt((String) comboBoxOffYear.getSelectedItem())); 
+				String sem = "";
 				
+				if(rdbtnFirstSem.isSelected()) {
+					subject.setSemester("First Semester"); 
+				}else {
+					subject.setSemester("Second Semester"); 
+				}
+				
+				subject.setSubjectCode(textFieldSubCode.getText());
+				subject.setSubjectName(textFieldSubName.getText());
+				
+				subject.setNoOfLecHrs((int) spinner_LecHrs.getValue());
+				subject.setNoOfTuteHrs((int) spinner_Tute.getValue());
+				subject.setNoOfLabHrs((int) spinner_Lab.getValue());
+				subject.setNoOfEvalHRs((int) spinner_EvHrs.getValue());
+				
+				int confirm =JOptionPane.showConfirmDialog(null,"Are you sure you want to save "+ subject.getSubjectName() + " ?","Save Subject",JOptionPane.YES_NO_OPTION);
+				
+				if(confirm == JOptionPane.YES_OPTION) {
+					SubjectDAOImpl subjectDAOImpl = new SubjectDAOImpl();
+					subjectDAOImpl.insertSubQuery(subject);
+					
+				}
+				resetSubFields();
 			}
-			resetSubFields();
+			
  			
 		}
 		if(obj == btnClear) {
