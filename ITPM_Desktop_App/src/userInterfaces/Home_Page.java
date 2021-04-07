@@ -24,6 +24,7 @@ public class Home_Page {
 
 	private JFrame frame;
 	JPanel addStudentGroupsPanel, manageGroupsPanel, addTagsPanel, manageTagsPanel;
+	private JMenuItem mntmManageSubject;
 	/**
 	 * Launch the application.
 	 */
@@ -61,19 +62,21 @@ public class Home_Page {
 		menuBar.setBackground(SystemColor.activeCaption);
 		frame.setJMenuBar(menuBar);
 		
-		JMenu mnNewMenu = new JMenu("New menu");
+		JMenu mnNewMenu = new JMenu("Lecturer");
 		mnNewMenu.setBackground(SystemColor.activeCaption);
 		mnNewMenu.setForeground(Color.WHITE);
 		menuBar.add(mnNewMenu);
 		
 		JMenuItem addLecturer_menu = new JMenuItem("Add Lecturer");
+		addLecturer_menu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		mnNewMenu.add(addLecturer_menu);
 		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("New menu item");
-		mnNewMenu.add(mntmNewMenuItem_1);
-		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("New menu item");
-		mnNewMenu.add(mntmNewMenuItem_2);
+		JMenuItem mntmManageLec = new JMenuItem("Manage Lecturer");
+		mnNewMenu.add(mntmManageLec);
 		
 		JMenu mnNewMenu_1 = new JMenu("Student Groups");
 		mnNewMenu_1.setForeground(Color.WHITE);
@@ -156,11 +159,44 @@ public class Home_Page {
 		mnNewMenu_3.setForeground(Color.WHITE);
 		menuBar.add(mnNewMenu_3);
 		
-		JMenuItem mntmNewMenuItem_5 = new JMenuItem("New menu item");
-		mnNewMenu_3.add(mntmNewMenuItem_5);
+		JMenuItem mntmAddSubject = new JMenuItem("Add Subject");
+		mnNewMenu_3.add(mntmAddSubject);
 		
-		JMenuItem mntmNewMenuItem_6 = new JMenuItem("New menu item");
-		mnNewMenu_3.add(mntmNewMenuItem_6);
+		mntmManageSubject = new JMenuItem("Manage Subject");
+		mnNewMenu_3.add(mntmManageSubject);
+		
+		JMenu mnNewMenu_2 = new JMenu("Working Days & Hours");
+		mnNewMenu_2.setForeground(Color.WHITE);
+		menuBar.add(mnNewMenu_2);
+		
+		JMenuItem mntmAddDays = new JMenuItem("Add Days & Hours");
+		mnNewMenu_2.add(mntmAddDays);
+		
+		JMenuItem mntmManageDays = new JMenuItem("Manage Days & Hours");
+		mnNewMenu_2.add(mntmManageDays);
+		
+		JMenuItem mntmCreateTimeSlots = new JMenuItem("Create Time Slots");
+		mnNewMenu_2.add(mntmCreateTimeSlots);
+		
+		JMenuItem mntmAddTimeForSessions = new JMenuItem("Add Session Time Slots ");
+		mnNewMenu_2.add(mntmAddTimeForSessions);
+		
+		JMenu mnLocation = new JMenu("Location");
+		mnLocation.setForeground(Color.WHITE);
+		menuBar.add(mnLocation);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Add Location");
+		mnLocation.add(mntmNewMenuItem);
+		
+		JMenuItem mntmManageLocation = new JMenuItem("Manage Location");
+		mnLocation.add(mntmManageLocation);
+		
+		JMenu mnStatistics = new JMenu("Statistics");
+		mnStatistics.setForeground(Color.WHITE);
+		menuBar.add(mnStatistics);
+		
+		JMenuItem mntmShowStat = new JMenuItem("Show Statistics");
+		mnStatistics.add(mntmShowStat);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 		
 //		addStudentGroupsPanel = new Add_Student_Groups().panel_addStudentGroups;
