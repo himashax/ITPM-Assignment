@@ -231,7 +231,7 @@ public class Add_Student_Groups implements ActionListener{
 					}
 					
 				}else {
-					JOptionPane.showMessageDialog(panel_addStudentGroups,"Already exists.","Alert",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(panel_addStudentGroups,"This sub group already exists.","Alert",JOptionPane.WARNING_MESSAGE);
 				}
 			}
 						

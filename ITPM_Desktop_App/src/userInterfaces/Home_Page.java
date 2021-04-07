@@ -54,6 +54,7 @@ public class Home_Page {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 900, 520);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setTitle("dashboard");
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setForeground(Color.WHITE);
