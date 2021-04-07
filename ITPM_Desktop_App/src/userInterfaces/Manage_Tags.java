@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import dao.TagsDAOImpl;
 import models.Tags;
 
 import javax.swing.JComboBox;
@@ -30,6 +31,8 @@ import java.awt.SystemColor;
 
 public class Manage_Tags implements ActionListener{
 
+	public JPanel panel_manageTags;
+	
 	private JFrame frame;
 	private JTextField text_tagCode;
 	private JTable table;
@@ -74,8 +77,7 @@ public class Manage_Tags implements ActionListener{
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(22, 67, 822, 383);
-		frame.getContentPane().add(panel);
+		panel.setBounds(30, 30, 822, 383);
 		panel.setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
@@ -129,7 +131,7 @@ public class Manage_Tags implements ActionListener{
 		
 		tableModel = new DefaultTableModel(new String[]{"Tag ID", "Tag Name", "Tag Name"},0);
 		table = new JTable(tableModel);
-		table.setBackground(Color.LIGHT_GRAY);
+		table.setBackground(SystemColor.menu);
 		table.setBounds(545, 158, -518, -110);
 		
 		JTableHeader header = table.getTableHeader();
@@ -176,11 +178,17 @@ public class Manage_Tags implements ActionListener{
 		clearBtn.setBounds(669, 150, 125, 26);
 		clearBtn.addActionListener(this);
 		panel.add(clearBtn);
+		
+		panel_manageTags = new JPanel();
+		panel_manageTags.setBounds(0, 0, 854, 461);
+		panel_manageTags.setLayout(null);
+		panel_manageTags.add(panel);
+		frame.getContentPane().add(panel_manageTags);
 	}
 	
 	
 	public void tagsTable() {
-		Tags tag = new Tags();
+		TagsDAOImpl tag = new TagsDAOImpl();
 		ArrayList<Tags> tag_list = tag.listTags();
 		DefaultTableModel tableModel = (DefaultTableModel)table.getModel();
 		Object[] row = new Object[4];
@@ -223,15 +231,15 @@ public class Manage_Tags implements ActionListener{
 			
 			
 			if(selectedTagID == null) {
-				JOptionPane.showMessageDialog(frame,"Please select the tag you want to edit","Alert",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(panel_manageTags,"Please select the tag you want to edit","Alert",JOptionPane.WARNING_MESSAGE);
 				
 			}else if(tagName.getSelectedItem().toString().isEmpty()) {
-				JOptionPane.showMessageDialog(frame,"Tag Name cannot be empty","Alert",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(panel_manageTags,"Tag Name cannot be empty","Alert",JOptionPane.WARNING_MESSAGE);
 				
 			}else {
-				int confirm = JOptionPane.showConfirmDialog(frame,"Are you sure you want to edit your data?","Update Record",JOptionPane.YES_NO_OPTION);
+				int confirm = JOptionPane.showConfirmDialog(panel_manageTags,"Are you sure you want to edit your data?","Update Record",JOptionPane.YES_NO_OPTION);
 				if(confirm == JOptionPane.YES_OPTION) {
-					Tags tags = new Tags();
+					TagsDAOImpl tags = new TagsDAOImpl();
 					tags.updateTags(Integer.parseInt(selectedTagID), tagname, tagCode);
 					DefaultTableModel model = (DefaultTableModel)table.getModel();
 		            model.setRowCount(0);
@@ -244,11 +252,11 @@ public class Manage_Tags implements ActionListener{
 		}else if(obj == deleteBtn) {
 			
 			if(selectedTagID == null) {
-				JOptionPane.showMessageDialog(frame,"Please select the tag you want to delete","Alert",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(panel_manageTags,"Please select the tag you want to delete","Alert",JOptionPane.WARNING_MESSAGE);
 			}else {
-				int confirm = JOptionPane.showConfirmDialog(frame,"Are you sure you want to permenantly delete your record?","Delete Record",JOptionPane.YES_NO_OPTION);
+				int confirm = JOptionPane.showConfirmDialog(panel_manageTags,"Are you sure you want to permenantly delete your record?","Delete Record",JOptionPane.YES_NO_OPTION);
 				if(confirm == JOptionPane.YES_OPTION) {
-					Tags tags = new Tags();
+					TagsDAOImpl tags = new TagsDAOImpl();
 					tags.deleteTags(Integer.parseInt(selectedTagID));
 					DefaultTableModel model = (DefaultTableModel)table.getModel();
 		            model.setRowCount(0);
