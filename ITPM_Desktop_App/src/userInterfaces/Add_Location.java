@@ -17,6 +17,7 @@ import java.awt.GridLayout;
 import java.awt.CardLayout;
 import javax.swing.JTextField;
 
+import dao.LocationDAOImpl;
 import models.Location;
 
 import java.awt.BorderLayout;
@@ -195,7 +196,7 @@ public class Add_Location implements ActionListener {
 					value = "lab";
 				}
 				System.out.println(value);
-				Location loca = new Location();
+				LocationDAOImpl loca = new LocationDAOImpl();
 				loca.insertLocation(bname, roomname, value, capacity);
 				
 				reset();

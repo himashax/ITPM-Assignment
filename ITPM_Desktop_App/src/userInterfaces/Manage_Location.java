@@ -10,6 +10,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import dao.LocationDAOImpl;
 import models.Location;
 
 import javax.swing.JLabel;
@@ -198,7 +199,7 @@ public class Manage_Location implements ActionListener {
 	}
 	
 	public void locationtable () {
-		Location loc = new Location() ;
+		LocationDAOImpl loc = new LocationDAOImpl() ;
 		ArrayList <Location> list =  loc.locations();
 		
 		DefaultTableModel tModel = (DefaultTableModel)table.getModel();
@@ -259,7 +260,7 @@ public class Manage_Location implements ActionListener {
 						value = "lab";
 					}
 					
-					Location lo = new Location();
+					LocationDAOImpl lo = new LocationDAOImpl();
 					lo.updatelocation(locid, name, room, value, cap);
 					
 					DefaultTableModel model = (DefaultTableModel)table.getModel();
@@ -275,7 +276,7 @@ public class Manage_Location implements ActionListener {
 				int confirm =JOptionPane.showConfirmDialog(null,"Are you sure?","An Inane Question",JOptionPane.YES_NO_OPTION);
 
 				if(confirm == JOptionPane.YES_OPTION) {
-				Location loc = new Location();
+				LocationDAOImpl loc = new LocationDAOImpl();
 				loc.deleteLocation(locid);   
 
 				//to display remaining table with data
