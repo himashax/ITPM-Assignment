@@ -8,11 +8,6 @@ import java.awt.Color;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -22,14 +17,16 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
-import models.Student_Group;
+import dao.StudentGroupsDAOImpl;
 
 import javax.swing.JButton;
 import javax.swing.JSpinner;
 
 public class Add_Student_Groups implements ActionListener{
 
-	private JFrame frame;
+	public JFrame frame;
+	public JPanel panel_addStudentGroups, panel;
+	
 	private JLabel academicYearSem, programme, groupNo, subgroupNo, groupId, subgroupId;  
 	private JComboBox yearSem_list, programme_list;
 	private JSpinner groupNumber, subGroupNumer;
@@ -66,10 +63,12 @@ public class Add_Student_Groups implements ActionListener{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JPanel panel = new JPanel();
+		
+		
+		panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(67, 72, 727, 376);
-		frame.getContentPane().add(panel);
+		panel.setBounds(80, 35, 727, 376);
+		//frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		academicYearSem = new JLabel("Academic Year And Semester\r\n");
@@ -161,17 +160,11 @@ public class Add_Student_Groups implements ActionListener{
 		clear.addActionListener(this);
 		panel.add(clear);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(SystemColor.activeCaption);
-		panel_1.setBounds(0, 0, 869, 37);
-		frame.getContentPane().add(panel_1);
-		panel_1.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("Add Student Groups");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setBounds(25, 11, 154, 14);
-		panel_1.add(lblNewLabel);
+		panel_addStudentGroups = new JPanel();
+		panel_addStudentGroups.setBounds(0, 0, 869, 489);
+		panel_addStudentGroups.setLayout(null);
+		panel_addStudentGroups.add(panel);
+		frame.getContentPane().add(panel_addStudentGroups);
 		
 	}
 
@@ -191,7 +184,7 @@ public class Add_Student_Groups implements ActionListener{
 		if(obj == genIds) {
 			
 			if((Integer)groupNumber.getValue() == 0 || (Integer)subGroupNumer.getValue() == 0) {
-				JOptionPane.showMessageDialog(frame,"Group number and Sub Group number cannot be empty.","Alert",JOptionPane.WARNING_MESSAGE);  
+				JOptionPane.showMessageDialog(panel_addStudentGroups,"Group number and Sub Group number cannot be empty.","Alert",JOptionPane.WARNING_MESSAGE);  
 			}else {
 				String gid = groupNumber.getValue().toString();
 				String sid = subGroupNumer.getValue().toString();
@@ -217,33 +210,33 @@ public class Add_Student_Groups implements ActionListener{
 			String unsavedGroupID = yearAndSemester.substring(1, 6) + "." + programme +"."+ gno +"."+ sgno;
 			
 			if(gid.isEmpty() || sid.isEmpty()) {
-				JOptionPane.showMessageDialog(frame,"Please generate Group and Sub Group IDs","Alert",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(panel_addStudentGroups,"Please generate Group and Sub Group IDs","Alert",JOptionPane.WARNING_MESSAGE);
 				
 			}else if(sid.equals(unsavedGroupID) == false) {
-				JOptionPane.showMessageDialog(frame,"Please generate Group and Sub Group IDs","Alert",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(panel_addStudentGroups,"Please generate Group and Sub Group IDs","Alert",JOptionPane.WARNING_MESSAGE);
 			}
 			else {
-				Student_Group student_group = new Student_Group();
+				StudentGroupsDAOImpl student_group = new StudentGroupsDAOImpl();
 				
 				if(student_group.manageGroups(sid) == false) {
 					
-					int confirm = JOptionPane.showConfirmDialog(frame,"Are you sure you want to submit your data?","Submit Data",JOptionPane.YES_NO_OPTION);
+					int confirm = JOptionPane.showConfirmDialog(panel_addStudentGroups,"Are you sure you want to submit your data?","Submit Data",JOptionPane.YES_NO_OPTION);
 					
 					if(confirm == JOptionPane.YES_OPTION) {
 						student_group.insertStudentGroup(yearAndSemester, programme, gno, gno, gid, sid);
 						
-						JOptionPane.showMessageDialog(frame,"Data added successfully"); 
+						JOptionPane.showMessageDialog(panel_addStudentGroups,"Data added successfully"); 
 						
 						resetFields();
 					}
 					
 				}else {
-					JOptionPane.showMessageDialog(frame,"Already exists.","Alert",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(panel_addStudentGroups,"Already exists.","Alert",JOptionPane.WARNING_MESSAGE);
 				}
 			}
 						
 		}else if(obj == clear) {
-			int confirm = JOptionPane.showConfirmDialog(frame,"Are you sure you want to clear data?","Submit Data",JOptionPane.YES_NO_OPTION);
+			int confirm = JOptionPane.showConfirmDialog(panel_addStudentGroups,"Are you sure you want to clear data?","Submit Data",JOptionPane.YES_NO_OPTION);
 			
 			if(confirm == JOptionPane.YES_OPTION) {
 				resetFields();

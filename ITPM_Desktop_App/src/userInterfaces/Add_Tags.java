@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.JTextField;
 
-import models.Tags;
+import dao.TagsDAOImpl;
 
 import javax.swing.JComboBox;
 import javax.swing.JButton;
@@ -21,7 +21,10 @@ import java.awt.event.ActionListener;
 
 public class Add_Tags implements ActionListener {
 
-	private JFrame frame;
+	public JFrame frame;
+	public JPanel panel_addTags;
+	
+	private JPanel panel;
 	private JTextField tagCode;
 	private JComboBox relatedTag, tagName;
 	private JButton clearBtn, saveBtn;
@@ -58,10 +61,9 @@ public class Add_Tags implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(95, 77, 657, 343);
-		frame.getContentPane().add(panel);
+		panel.setBounds(110, 50, 657, 343);
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Tag Name");
@@ -115,10 +117,12 @@ public class Add_Tags implements ActionListener {
 		clearBtn.addActionListener(this);
 		panel.add(clearBtn);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(SystemColor.activeCaption);
-		panel_1.setBounds(0, 0, 854, 30);
-		frame.getContentPane().add(panel_1);
+		panel_addTags = new JPanel();
+		panel_addTags.setBounds(0, 0, 854, 461);
+		panel_addTags.setLayout(null);
+		panel_addTags.add(panel);
+		frame.getContentPane().add(panel_addTags);
+		
 	}
 
 	public void resetFields() {
@@ -134,7 +138,7 @@ public class Add_Tags implements ActionListener {
 		if(obj == saveBtn) {
 			if(tagName.getSelectedItem().toString().isEmpty()) {
 				
-				JOptionPane.showMessageDialog(frame,"Please enter Tag Name and Code","Alert",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(panel_addTags,"Please enter Tag Name and Code","Alert",JOptionPane.WARNING_MESSAGE);
 				
 			}else {
 
@@ -155,19 +159,18 @@ public class Add_Tags implements ActionListener {
 				
 				System.out.println(tag_code);
 				
-				int confirm = JOptionPane.showConfirmDialog(frame,"Are you sure you want to submit your data?","Submit Data",JOptionPane.YES_NO_OPTION);
+				int confirm = JOptionPane.showConfirmDialog(panel_addTags,"Are you sure you want to submit your data?","Submit Data",JOptionPane.YES_NO_OPTION);
 				
 				if(confirm == JOptionPane.YES_OPTION) {
 					tagCode.setText(tag_code);
 					
-					Tags tag = new Tags();
+					TagsDAOImpl tag = new TagsDAOImpl();
 					tag.insertTags(tag_name, tag_code);
 					resetFields();
 				}
-				
 			}
 		}else if(obj == clearBtn) {
-			int confirm = JOptionPane.showConfirmDialog(frame,"Are you sure you want to clear data?","Submit Data",JOptionPane.YES_NO_OPTION);
+			int confirm = JOptionPane.showConfirmDialog(panel_addTags,"Are you sure you want to clear data?","Submit Data",JOptionPane.YES_NO_OPTION);
 			
 			if(confirm == JOptionPane.YES_OPTION) {
 				resetFields();

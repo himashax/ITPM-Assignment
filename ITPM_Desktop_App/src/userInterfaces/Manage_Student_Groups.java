@@ -19,6 +19,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import dao.StudentGroupsDAOImpl;
 import models.Student_Group;
 
 import javax.swing.JComboBox;
@@ -38,18 +39,21 @@ import java.util.ArrayList;
 import javax.swing.JScrollBar;
 import javax.swing.JSpinner;
 
-public class Manage_Student_Groups implements ActionListener {
+public class Manage_Student_Groups extends JFrame implements ActionListener {
 	
-	private JFrame frame;
+	public JFrame frame;
+	public JPanel panel_manageStudentGroups;
+	
 	private JLabel yearAndSem, prog, gno, sub_gno, gid ,sub_gid;
 	private JTextField groupID, subGroupID;
 	private JSpinner groupNo , subGroupNo;
 	private JComboBox yearAndSemList, progList;
-	private JButton generateIDsBtn, updateBtn, deleteBtn, clearBtn, addMoreGroupsBtn;
-	private JTable table;
+	private JButton generateIDsBtn, updateBtn, deleteBtn, clearBtn;
+	public JTable table;
 	private DefaultTableModel tableModel;
 	private String selectedID;
 	private JScrollPane scrollpane;
+	private JPanel panel,panel_2;
 	/**
 	 * Launch the application.
 	 */
@@ -82,10 +86,10 @@ public class Manage_Student_Groups implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(10, 63, 820, 387);
-		frame.getContentPane().add(panel);
+		//panel.setBounds(10, 63, 820, 387);
+		panel.setBounds(30, 30, 820, 395);
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Student Group Details");
@@ -234,17 +238,17 @@ public class Manage_Student_Groups implements ActionListener {
 			}
 	    });
 		
-		addMoreGroupsBtn = new JButton("Add More Groups");
-		addMoreGroupsBtn.setBackground(new Color(102, 153, 255));
-		addMoreGroupsBtn.setFont(new Font("Tahoma", Font.BOLD, 11));
-		addMoreGroupsBtn.setForeground(Color.WHITE);
-		addMoreGroupsBtn.setBounds(690, 36, 140, 23);
-		addMoreGroupsBtn.addActionListener(this);
-		frame.getContentPane().add(addMoreGroupsBtn);
+		panel_manageStudentGroups = new JPanel();
+		panel_manageStudentGroups.setBackground(SystemColor.controlHighlight);
+		panel_manageStudentGroups.setBounds(0, 0, 854, 461);
+		panel_manageStudentGroups.add(panel);
+		frame.getContentPane().add(panel_manageStudentGroups);
+		panel_manageStudentGroups.setLayout(null);
+		
 	}
 	
 	public void studentGroupTable() {
-		Student_Group student_group = new Student_Group();
+		StudentGroupsDAOImpl student_group = new StudentGroupsDAOImpl();
 		ArrayList<Student_Group> group_list = student_group.listStudentGroups();
 		DefaultTableModel tableModel = (DefaultTableModel)table.getModel();
 		Object[] row = new Object[7];
@@ -295,7 +299,7 @@ public class Manage_Student_Groups implements ActionListener {
 		
 		if(obj == generateIDsBtn) {
 			if(selectedID == null) {
-				JOptionPane.showMessageDialog(frame,"Please select the record","Alert",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(panel_manageStudentGroups,"Please select the record","Alert",JOptionPane.WARNING_MESSAGE);
 				
 			}else {
 				String year_sem = (String)yearAndSemList.getSelectedItem();
@@ -305,7 +309,7 @@ public class Manage_Student_Groups implements ActionListener {
 				
 				if(year_sem.isEmpty() || programme.isEmpty() || group_no.isEmpty() || sub_group_no.isEmpty()) {
 					
-					JOptionPane.showMessageDialog(frame,"Please enter all the details","Alert",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(panel_manageStudentGroups,"Please enter all the details","Alert",JOptionPane.WARNING_MESSAGE);
 					
 				}else {
 					String gid = year_sem.substring(1,6) +"."+programme+"."+group_no;
@@ -317,7 +321,7 @@ public class Manage_Student_Groups implements ActionListener {
 		}
 		else if(obj == updateBtn) {
 			if(selectedID == null) {
-				JOptionPane.showMessageDialog(frame,"Please select the record you want to edit","Alert",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(panel_manageStudentGroups,"Please select the record you want to edit","Alert",JOptionPane.WARNING_MESSAGE);
 			}
 			else {
 				
@@ -332,14 +336,14 @@ public class Manage_Student_Groups implements ActionListener {
 				System.out.println(unsavedSubGroupID);
 				
 				if(gID.isEmpty() || subGID.isEmpty()) {
-					JOptionPane.showMessageDialog(frame,"Please generate Group and Sub Group IDs","Alert",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(panel_manageStudentGroups,"Please generate Group and Sub Group IDs","Alert",JOptionPane.WARNING_MESSAGE);
 					
 				}else if(subGID.equals(unsavedSubGroupID) == false) {
-					JOptionPane.showMessageDialog(frame,"Please generate Group and Sub Group IDs","Alert",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(panel_manageStudentGroups,"Please generate Group and Sub Group IDs","Alert",JOptionPane.WARNING_MESSAGE);
 					
 				}else {
-					Student_Group student_group = new Student_Group();
-					int confirm = JOptionPane.showConfirmDialog(frame,"Are you sure you want to edit your data?","Update Record",JOptionPane.YES_NO_OPTION);
+					StudentGroupsDAOImpl student_group = new StudentGroupsDAOImpl();
+					int confirm = JOptionPane.showConfirmDialog(panel_manageStudentGroups,"Are you sure you want to edit your data?","Update Record",JOptionPane.YES_NO_OPTION);
 					if(confirm == JOptionPane.YES_OPTION) { 
 						
 						student_group.updateStudentGroup(Integer.parseInt(selectedID), yearAndSem, programme, grNo, subGrNo, gID, subGID);
@@ -355,12 +359,12 @@ public class Manage_Student_Groups implements ActionListener {
 			
 		}else if(obj == deleteBtn) {
 			if(subGroupID.getText().isEmpty()) {
-				JOptionPane.showMessageDialog(frame,"Please select the record you want to delete","Alert",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(panel_manageStudentGroups,"Please select the record you want to delete","Alert",JOptionPane.WARNING_MESSAGE);
 				
 			}else {
-				int confirm = JOptionPane.showConfirmDialog(frame,"Are you sure you want to permenantly delete your record?","Delete Record",JOptionPane.YES_NO_OPTION);
+				int confirm = JOptionPane.showConfirmDialog(panel_manageStudentGroups,"Are you sure you want to permenantly delete your record?","Delete Record",JOptionPane.YES_NO_OPTION);
 				if(confirm == JOptionPane.YES_OPTION) {
-					Student_Group student_group = new Student_Group();
+					StudentGroupsDAOImpl student_group = new StudentGroupsDAOImpl();
 					student_group.deleteStudentGroup(Integer.parseInt(selectedID));
 					
 					DefaultTableModel model = (DefaultTableModel)table.getModel();
@@ -372,7 +376,12 @@ public class Manage_Student_Groups implements ActionListener {
 			}
 			
 		}else if(obj == clearBtn) {
-			resetFields();
+			if(subGroupID.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(panel_manageStudentGroups,"No fields to reset","Alert",JOptionPane.WARNING_MESSAGE);
+			}else {
+				resetFields();
+			}
+			
 		}
 		
 	}
