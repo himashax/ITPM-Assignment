@@ -167,10 +167,6 @@ public class Home_Page {
 		
 //		manageGroupsPanel = new Manage_Student_Groups().panel_manageStudentGroups;
 //		frame.getContentPane().add(manageGroupsPanel, "name_513457040055000");
-		
-//		addTagsPanel = new Add_Tags().panel;
-//		frame.getContentPane().add(addTagsPanel, "name_573098162615800");
-		
 	}
 
 }
