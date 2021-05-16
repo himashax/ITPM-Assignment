@@ -24,7 +24,6 @@ public class Home_Page {
 
 	private JFrame frame;
 	JPanel addStudentGroupsPanel, manageGroupsPanel, addTagsPanel, manageTagsPanel;
-	JPanel manageLocPanel, displayStatPanel;
 	private JMenuItem mntmManageSubject;
 	/**
 	 * Launch the application.
@@ -56,8 +55,7 @@ public class Home_Page {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 900, 520);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setTitle("Home");
-		frame.setLocationRelativeTo(null);
+		frame.setTitle("dashboard");
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setForeground(Color.WHITE);
@@ -188,49 +186,17 @@ public class Home_Page {
 		menuBar.add(mnLocation);
 		
 		JMenuItem mntmNewMenuItem = new JMenuItem("Add Location");
-		
 		mnLocation.add(mntmNewMenuItem);
-		
 		
 		JMenuItem mntmManageLocation = new JMenuItem("Manage Location");
 		mnLocation.add(mntmManageLocation);
-		mntmManageLocation.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-			
-				frame.getContentPane().removeAll();
-				manageLocPanel = new Manage_Location().manLocation_panel;
-				frame.getContentPane().add(manageLocPanel, "name_573107097077500");
-				frame.getContentPane().repaint();
-				frame.getContentPane().revalidate();
-				frame.setTitle("Manage Location");
-			}
-		});
-		
 		
 		JMenu mnStatistics = new JMenu("Statistics");
 		mnStatistics.setForeground(Color.WHITE);
 		menuBar.add(mnStatistics);
 		
 		JMenuItem mntmShowStat = new JMenuItem("Show Statistics");
-		mntmShowStat.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				frame.getContentPane().removeAll();
-				displayStatPanel = new Display_Statistics().statPanel;
-				frame.getContentPane().add(displayStatPanel, "name_573107097077500");
-				frame.getContentPane().repaint();
-				frame.getContentPane().revalidate();
-				frame.setTitle("Statistics");
-			}
-		});
 		mnStatistics.add(mntmShowStat);
-		
-		
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 		
 //		addStudentGroupsPanel = new Add_Student_Groups().panel_addStudentGroups;
