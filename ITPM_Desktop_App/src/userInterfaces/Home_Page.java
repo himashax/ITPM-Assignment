@@ -1,3 +1,4 @@
+
 package userInterfaces;
 
 import java.awt.EventQueue;
@@ -24,7 +25,17 @@ public class Home_Page {
 
 	private JFrame frame;
 	JPanel addStudentGroupsPanel, manageGroupsPanel, addTagsPanel, manageTagsPanel;
+
+	JPanel addWorkingDaysPanel,manageDaysPanel,timeslotPanel;
+
+
+
 	JPanel addLecturerPanel,manageLecturerPanel,addSubjectPanel,manageSubjectPanel;
+
+	JPanel manageLocPanel, displayStatPanel;
+
+
+
 	private JMenuItem mntmManageSubject;
 	/**
 	 * Launch the application.
@@ -56,8 +67,14 @@ public class Home_Page {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 900, 520);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
 		frame.setTitle("dashboard");
+
+		frame.setTitle("Home");
+
 		frame.setLocationRelativeTo(null);
+
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setForeground(Color.WHITE);
@@ -215,14 +232,44 @@ public class Home_Page {
 		mnNewMenu_2.setForeground(Color.WHITE);
 		menuBar.add(mnNewMenu_2);
 		
-		JMenuItem mntmAddDays = new JMenuItem("Add Days & Hours");
-		mnNewMenu_2.add(mntmAddDays);
+		JMenuItem Add_WorkingDays_Item = new JMenuItem("Add Days & Hours");
+		Add_WorkingDays_Item.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.getContentPane().removeAll();
+				addWorkingDaysPanel = new Add_WorkingDays().Add_WorkingDays_Panel;
+				frame.getContentPane().add(addWorkingDaysPanel, "name_573107097077500");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("Add Working Days");
+			}
+		});
+		mnNewMenu_2.add(Add_WorkingDays_Item);
 		
-		JMenuItem mntmManageDays = new JMenuItem("Manage Days & Hours");
-		mnNewMenu_2.add(mntmManageDays);
+		JMenuItem Manage_WorkingDays_Item = new JMenuItem("Manage Days & Hours");
+		Manage_WorkingDays_Item.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().removeAll();
+				manageDaysPanel = new Manage_WorkingDays().Manage_WorkingDays_Panel;
+				frame.getContentPane().add(manageDaysPanel, "name_573107097077500");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("Manage Working Days");
+			}
+		});
+		mnNewMenu_2.add(Manage_WorkingDays_Item);
 		
-		JMenuItem mntmCreateTimeSlots = new JMenuItem("Create Time Slots");
-		mnNewMenu_2.add(mntmCreateTimeSlots);
+		JMenuItem TimeSlot_Item = new JMenuItem("Create Time Slots");
+		TimeSlot_Item.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().removeAll();
+				timeslotPanel = new Add_Manage_TimeSlot().AddnManage_Timeslot;
+				frame.getContentPane().add(timeslotPanel, "name_573107097077500");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("Add TimeSlot");
+			}
+		});
+		mnNewMenu_2.add(TimeSlot_Item);
 		
 		JMenuItem mntmAddTimeForSessions = new JMenuItem("Add Session Time Slots ");
 		mnNewMenu_2.add(mntmAddTimeForSessions);
