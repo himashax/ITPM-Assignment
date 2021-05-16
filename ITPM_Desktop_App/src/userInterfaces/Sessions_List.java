@@ -17,7 +17,9 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import dao.ConsecSessionsDAOImpl;
 import dao.SessionDAOImpl;
+import models.ConsecutiveSessions;
 import models.Session;
 import models.Student_Group;
 
@@ -182,20 +184,16 @@ public class Sessions_List {
 					
 					System.out.println(tag1+ tag2);
 					
-					//check the subject
 					if(!obj1.getSubject().equals(obj2.getSubject())) {
 						JOptionPane.showMessageDialog(sessions_panel,"Select same","Alert",JOptionPane.WARNING_MESSAGE);
 						
 					}
-					else if((!tag1.equals("Lecture") && !tag2.equals("Tutorial")) || (!tag1.equals("Tutorial") && !tag2.equals("Lecture"))) {
+					else if((!tag1.equals("Lecture") && !tag2.equals("Tutorial"))/* || (!tag1.equals("Tutorial") && !tag2.equals("Lecture"))*/) {
 						JOptionPane.showMessageDialog(sessions_panel,"Select lec and tute","Alert",JOptionPane.WARNING_MESSAGE);
 					}
 					else {
-//						System.out.println(obj1.getId());
-//						JOptionPane.showMessageDialog(sessions_panel,"ela","Alert",JOptionPane.WARNING_MESSAGE);
-//						//do the insertion
-//						
-//						insertConsecSessions(Integer.parseInt(obj1.getId()), Integer.parseInt(obj2.getId()));
+						ConsecSessionsDAOImpl daoObj = new ConsecSessionsDAOImpl();
+						daoObj.createConsecSessions("one", obj1.getId(), obj2.getId());
 					}
 					
 				}

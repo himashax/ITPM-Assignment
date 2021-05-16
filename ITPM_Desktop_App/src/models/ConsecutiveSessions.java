@@ -4,6 +4,8 @@ public class ConsecutiveSessions {
 
 	int id;
 	
+	String consecSessionId;
+	
 	int lectureSessionId;
 	
 	int tuteSessionId;
@@ -31,6 +33,13 @@ public class ConsecutiveSessions {
 	public void setTuteSessionId(int tuteSessionId) {
 		this.tuteSessionId = tuteSessionId;
 	}
-	
+
+	public String getConsecSessionId() {
+		return consecSessionId;
+	}
+
+	public void setConsecSessionId(String consecSessionId) {
+		this.consecSessionId = consecSessionId;
+	}
 	
 }
