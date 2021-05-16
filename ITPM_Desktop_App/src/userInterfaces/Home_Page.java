@@ -24,6 +24,14 @@ public class Home_Page {
 
 	private JFrame frame;
 	JPanel addStudentGroupsPanel, manageGroupsPanel, addTagsPanel, manageTagsPanel;
+<<<<<<< HEAD
+=======
+
+	JPanel addLecturerPanel,manageLecturerPanel,addSubjectPanel,manageSubjectPanel;
+
+	JPanel manageLocPanel, displayStatPanel;
+
+>>>>>>> a57e94e74c0ac027ac0422df967e1879c22635d7
 	private JMenuItem mntmManageSubject;
 	/**
 	 * Launch the application.
@@ -55,7 +63,16 @@ public class Home_Page {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 900, 520);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+<<<<<<< HEAD
 		frame.setTitle("dashboard");
+=======
+
+		frame.setTitle("dashboard");
+
+		frame.setTitle("Home");
+
+		frame.setLocationRelativeTo(null);
+>>>>>>> a57e94e74c0ac027ac0422df967e1879c22635d7
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setForeground(Color.WHITE);
@@ -70,12 +87,27 @@ public class Home_Page {
 		JMenuItem addLecturer_menu = new JMenuItem("Add Lecturer");
 		addLecturer_menu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				frame.getContentPane().removeAll();
+				addLecturerPanel = new Add_Lecturer().panel_addLecturer;
+				frame.getContentPane().add(addLecturerPanel, "name_513472506769600");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("Add Lecturer");
 			}
 		});
 		mnNewMenu.add(addLecturer_menu);
 		
 		JMenuItem mntmManageLec = new JMenuItem("Manage Lecturer");
+		mntmManageLec.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().removeAll();
+				manageLecturerPanel = new Manage_Lecturer().panel_manageLecturer;
+				frame.getContentPane().add(manageLecturerPanel, "name_513472506769600");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("Manage Lecturer");
+			}
+		});
 		mnNewMenu.add(mntmManageLec);
 		
 		JMenu mnNewMenu_1 = new JMenu("Student Groups");
@@ -160,9 +192,38 @@ public class Home_Page {
 		menuBar.add(mnNewMenu_3);
 		
 		JMenuItem mntmAddSubject = new JMenuItem("Add Subject");
+		mntmAddSubject.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				frame.getContentPane().removeAll();
+				addSubjectPanel = new Add_Subject().panel_AddSubject;
+				frame.getContentPane().add(addSubjectPanel, "name_573107097077500");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("Add Subjects");
+			}
+		});
 		mnNewMenu_3.add(mntmAddSubject);
 		
+		//Home page subject menu
 		mntmManageSubject = new JMenuItem("Manage Subject");
+		mntmManageSubject.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				frame.getContentPane().removeAll();
+				manageSubjectPanel = new Manage_Subject().panel_manageSubject;
+				frame.getContentPane().add(manageSubjectPanel, "name_573107097077500");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("Manage Subjects");
+			}
+		});
 		mnNewMenu_3.add(mntmManageSubject);
 		
 		JMenu mnNewMenu_2 = new JMenu("Working Days & Hours");
