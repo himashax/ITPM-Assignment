@@ -47,6 +47,7 @@ public class Manage_Lecturer implements ActionListener {
 	private int idValue, delEmpID;
 	private JButton btnUpdate, btnDelete, btnClear,btnModifyRank;
 	private JSpinner spinner_mMon, spinner_mTue, spinner_mWed, spinner_mThur, spinner_mFri, spinner_mSat, spinner_mSun;
+	public JPanel panel_manageLecturer;
 
 	/**
 	 * Launch the application.
@@ -80,9 +81,14 @@ public class Manage_Lecturer implements ActionListener {
 		frmManageLecturer.getContentPane().setBackground(SystemColor.activeCaptionBorder);
 		frmManageLecturer.setBounds(100, 100, 807, 478);
 		frmManageLecturer.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmManageLecturer.setSize(856, 500);
+		frmManageLecturer.setSize(888, 500);
 		frmManageLecturer.getContentPane().setLayout(null);
-
+		frmManageLecturer.setLocationRelativeTo(null);
+		
+		panel_manageLecturer = new JPanel();
+		panel_manageLecturer.setBounds(0, 0, 872, 461);
+		panel_manageLecturer.setLayout(null);
+		
 		SpinnerModel monday = new SpinnerNumberModel(0, 0, 8, 1);
 		SpinnerModel tuesday = new SpinnerNumberModel(0, 0, 8, 1);
 		SpinnerModel wednesday = new SpinnerNumberModel(0, 0, 8, 1);
@@ -93,25 +99,24 @@ public class Manage_Lecturer implements ActionListener {
 
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(10, 11, 824, 151);
-		frmManageLecturer.getContentPane().add(panel);
+		panel.setBounds(10, 11, 852, 151);
 		panel.setLayout(null);
 
 		panel_1 = new JPanel();
 		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(10, 173, 824, 277);
-		frmManageLecturer.getContentPane().add(panel_1);
+		panel_1.setBounds(10, 173, 852, 277);
+		
 		panel_1.setLayout(null);
 
 		textField_mName = new JTextField();
-		textField_mName.setBounds(93, 11, 256, 20);
+		textField_mName.setBounds(113, 11, 256, 20);
 		panel_1.add(textField_mName);
 		textField_mName.setColumns(10);
 
 		String[] fac = { "Computing", "Engineering","Business" };
 		comboBox_mFaculty = new JComboBox(fac);
 		comboBox_mFaculty.setEditable(true);
-		comboBox_mFaculty.setBounds(93, 58, 256, 20);
+		comboBox_mFaculty.setBounds(113, 58, 256, 20);
 		panel_1.add(comboBox_mFaculty);
 
 		String[] level = { "1", "2", "3", "4", "5", "6" };
@@ -123,7 +128,7 @@ public class Manage_Lecturer implements ActionListener {
 		
 		comboBox_mDepartment = new JComboBox();
 		comboBox_mDepartment.setEditable(true);
-		comboBox_mDepartment.setBounds(557, 11, 235, 20);
+		comboBox_mDepartment.setBounds(589, 11, 235, 20);
 		panel_1.add(comboBox_mDepartment);
 		
 		comboBox_mFaculty.addActionListener(new ActionListener() {
@@ -153,19 +158,19 @@ public class Manage_Lecturer implements ActionListener {
 		String[] Malabe_build = { "Malabe New building", "Malabe Main building", "Malabe BM" };
 		String[] kandy_build = { "Kandy building 1", "Kandy Main building", "kandy MB" };
 		String[] matara_build = { "Matara building 1", "Matara Main building", "Matara BM" };
-		String[] jaffna_build = { "Jafna building 1", "Jafna Main building", "Jaffna BM" };
+		String[] jaffna_build = { "Jaffna building 1", "Jaffna Main building", "Jaffna BM" };
 		String[] metro_build = { "Metro building 1", "Metro Main building", "Metro BM" };
 		
 		String[] cen = { "Malabe", "Metro Campus", "Kandy", "Matara", "Jaffna" };
 		comboBox_mCampus = new JComboBox(cen);
 		comboBox_mCampus.setEditable(true);
-		comboBox_mCampus.setBounds(557, 58, 235, 20);
+		comboBox_mCampus.setBounds(589, 58, 235, 20);
 		panel_1.add(comboBox_mCampus);
 		
 
 		comboBox_mBuilding = new JComboBox();
 		comboBox_mBuilding.setEditable(true);
-		comboBox_mBuilding.setBounds(557, 103, 235, 20);
+		comboBox_mBuilding.setBounds(589, 103, 235, 20);
 		panel_1.add(comboBox_mBuilding);
 		
 		
@@ -202,28 +207,28 @@ public class Manage_Lecturer implements ActionListener {
 
 
 		JLabel lblNew_mName = new JLabel("NAME");
-		lblNew_mName.setBounds(10, 14, 46, 14);
+		lblNew_mName.setBounds(36, 14, 46, 14);
 		panel_1.add(lblNew_mName);
 
 		JLabel lblNew_mFaculty = new JLabel("FACULTY");
-		lblNew_mFaculty.setBounds(10, 61, 68, 14);
+		lblNew_mFaculty.setBounds(35, 61, 68, 14);
 		panel_1.add(lblNew_mFaculty);
 
 		JLabel lblNew_mCampus = new JLabel("CAMPUS/CENTRE");
-		lblNew_mCampus.setBounds(418, 61, 105, 14);
+		lblNew_mCampus.setBounds(444, 61, 105, 14);
 		panel_1.add(lblNew_mCampus);
 
 		JLabel lblNew_mDept = new JLabel("DEPARTMENT");
-		lblNew_mDept.setBounds(418, 14, 105, 14);
+		lblNew_mDept.setBounds(444, 14, 105, 14);
 		panel_1.add(lblNew_mDept);
 
 		JLabel lblNew_mBuilding = new JLabel("BUILDING");
-		lblNew_mBuilding.setBounds(418, 106, 105, 14);
+		lblNew_mBuilding.setBounds(444, 106, 105, 14);
 		panel_1.add(lblNew_mBuilding);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(SystemColor.inactiveCaption);
-		panel_2.setBounds(417, 164, 375, 102);
+		panel_2.setBounds(428, 164, 396, 102);
 		panel_1.add(panel_2);
 		panel_2.setLayout(null);
 
@@ -284,12 +289,12 @@ public class Manage_Lecturer implements ActionListener {
 		panel_2.add(spinner_mSun);
 
 		JLabel lblNew_mBuilding_1 = new JLabel("ACTIVE DAYS & HOURS");
-		lblNew_mBuilding_1.setBounds(418, 144, 131, 20);
+		lblNew_mBuilding_1.setBounds(444, 143, 131, 20);
 		panel_1.add(lblNew_mBuilding_1);
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(SystemColor.inactiveCaption);
-		panel_3.setBounds(15, 103, 334, 163);
+		panel_3.setBounds(35, 103, 334, 163);
 		panel_1.add(panel_3);
 		panel_3.setLayout(null);
 		
@@ -362,7 +367,7 @@ public class Manage_Lecturer implements ActionListener {
 		btnModifyRank.setBounds(175, 129, 130, 23);
 		panel_3.add(btnModifyRank);
 		
-		frmManageLecturer.setVisible(true);
+		//frmManageLecturer.setVisible(true);
 
 		// newly added two columns
 
@@ -375,7 +380,7 @@ public class Manage_Lecturer implements ActionListener {
 		table.setModel(modal);
 
 		JScrollPane pane = new JScrollPane(table);
-		pane.setBounds(10, 11, 708, 129);
+		pane.setBounds(10, 11, 736, 129);
 
 		// call method
 		lecturerGroupTable();
@@ -426,21 +431,25 @@ public class Manage_Lecturer implements ActionListener {
 			}
 		});
 		btnUpdate.setBackground(SystemColor.activeCaption);
-		btnUpdate.setBounds(728, 28, 86, 23);
+		btnUpdate.setBounds(756, 25, 86, 23);
 		btnUpdate.addActionListener(this);
 		panel.add(btnUpdate);
 
 		btnDelete = new JButton("DELETE");
 		btnDelete.setBackground(SystemColor.activeCaption);
-		btnDelete.setBounds(728, 71, 86, 23);
+		btnDelete.setBounds(756, 70, 86, 23);
 		btnDelete.addActionListener(this);
 		panel.add(btnDelete);
 
 		btnClear = new JButton("CLEAR");
 		btnClear.setBackground(SystemColor.activeCaption);
-		btnClear.setBounds(728, 117, 86, 23);
+		btnClear.setBounds(756, 117, 86, 23);
 		btnClear.addActionListener(this);
 		panel.add(btnClear);
+		
+		panel_manageLecturer.add(panel);
+		panel_manageLecturer.add(panel_1);
+		frmManageLecturer.getContentPane().add(panel_manageLecturer);
 
 	}
 
