@@ -2,6 +2,7 @@ package models;
 
 public class Member3_Location {
 	private int id;
+	private String session;
 	private String room;
 	private String startTime;
 	private String endTime;
@@ -39,6 +40,14 @@ public class Member3_Location {
 	public void setDay(String day) {
 		this.day = day;
 	}
+	public String getSession() {
+		return session;
+	}
+	public void setSession(String session) {
+		this.session = session;
+	}
+	
+	
 	
 	
 	

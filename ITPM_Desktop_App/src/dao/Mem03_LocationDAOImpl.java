@@ -14,19 +14,20 @@ import models.NotAvailable;
 public class Mem03_LocationDAOImpl {
 	private DBConnection db = new DBConnection();
 
-	public String insertNotAvailableLocation(String lRoom, String lDay,String startTime, String endTime) {
+	public String insertNotAvailableLocation(String session_ID, String lRoom, String lDay,String startTime, String endTime) {
 		String outcome2 = "";
 		
 		try {
 		    Connection connection = db.connect();
-		    String insertQuery2 = "insert into notavailable_location values (?,?,?,?,?)";
+		    String insertQuery2 = "insert into notavailable_location values (?,?,?,?,?,?)";
 		
 			PreparedStatement ps = connection.prepareStatement(insertQuery2);
 			ps.setInt(1, 0);
-			ps.setString(2, lRoom);
-			ps.setString(3, lDay);
-			ps.setString(4, startTime);
-			ps.setString(5, endTime);
+			ps.setString(2, session_ID);
+			ps.setString(3, lRoom);
+			ps.setString(4, lDay);
+			ps.setString(5, startTime);
+			ps.setString(6, endTime);
 			ps.execute();
 			
 			connection.close();
@@ -49,10 +50,11 @@ public class Mem03_LocationDAOImpl {
 			while(rs.next()) {
 				Member3_Location ml = new Member3_Location();
 				ml.setId(rs.getInt(1));
-				ml.setRoom(rs.getString(2));
-				ml.setDay(rs.getString(3));
-				ml.setStartTime(rs.getString(4));
-				ml.setEndTime(rs.getString(5));
+				ml.setSession(rs.getString(2));
+				ml.setRoom(rs.getString(3));
+				ml.setDay(rs.getString(4));
+				ml.setStartTime(rs.getString(5));
+				ml.setEndTime(rs.getString(6));
 				s3.add(ml);
 			}
 		} catch (SQLException e) {
@@ -63,10 +65,10 @@ public class Mem03_LocationDAOImpl {
 		
 	}
 	
-	public void updateNotAvailableLocation(int id, String lRoom, String lDay,String startTime, String endTime) {
+	public void updateNotAvailableLocation(int id, String session_ID, String lRoom, String lDay,String startTime, String endTime) {
 		try {
 		Connection connection = db.connect();
-		String updateQuery2 = "update notAvailableLocation set lRoom = '"+lRoom+"', lDay = '"+lDay+"', startTime = '"+startTime+"', endTime ='"+endTime+"' where id = '"+id+"' ";
+		String updateQuery2 = "update notAvailableLocation set session_ID = '"+session_ID+"',lRoom = '"+lRoom+"', lDay = '"+lDay+"', startTime = '"+startTime+"', endTime ='"+endTime+"' where id = '"+id+"' ";
 
 		PreparedStatement ps;
 		ps = connection.prepareStatement(updateQuery2);

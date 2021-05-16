@@ -14,20 +14,21 @@ import models.NotAvailable;
 public class NotAvailableDAOImpl {
 	private DBConnection db = new DBConnection();
 
-	public String insertNotAvailableTime(String session_ID, String lecturer,String group_ID,String subGroup_ID,String time) {
+	public String insertNotAvailableTime(int duration,String session_ID, String lecturer,String group_ID,String day,String time) {
 		String outcome1 = "";
 		
 		try {
 		    Connection connection = db.connect();
-		    String insertQuery1 = "insert into notAvailableTime values (?,?,?,?,?,?)";
+		    String insertQuery1 = "insert into notAvailableTime values (?,?,?,?,?,?,?)";
 		
 			PreparedStatement ps = connection.prepareStatement(insertQuery1);
 			ps.setInt(1, 0);
-			ps.setString(2, session_ID);
-			ps.setString(3, lecturer);
-			ps.setString(4, group_ID);
-			ps.setString(5, subGroup_ID);
-			ps.setString(6, time);
+			ps.setInt(2, duration);
+			ps.setString(3, session_ID);
+			ps.setString(4, lecturer);
+			ps.setString(5, group_ID);
+			ps.setString(6, day);
+			ps.setString(67, time);
 			ps.execute();
 			
 			connection.close();
@@ -50,11 +51,12 @@ public class NotAvailableDAOImpl {
 			while(rs.next()) {
 				NotAvailable na = new NotAvailable();
 				na.setId(rs.getInt(1));
-				na.setSessionID(rs.getString(2));
-				na.setLecturer(rs.getString(3));
-				na.setGroupID(rs.getString(4));
-				na.setSubGroupID(rs.getString(5));
-				na.setTime(rs.getString(6));
+				na.setDur(rs.getInt(2));
+				na.setSessionID(rs.getString(3));
+				na.setLecturer(rs.getString(4));
+				na.setGroupID(rs.getString(5));
+				na.setDay(rs.getString(6));
+				na.setTime(rs.getString(7));
 				s2.add(na);
 			}
 		} catch (SQLException e) {
@@ -66,10 +68,10 @@ public class NotAvailableDAOImpl {
 	}
 	
 	
-	public void updateNotAvailableTime(int id, String session_ID, String lecturer,String group_ID,String subGroup_ID,String time) {
+	public void updateNotAvailableTime(int id,int duration, String session_ID, String lecturer,String group_ID,String day,String time) {
 		try {
 		Connection connection = db.connect();
-		String updateQuery1 = "update notAvailableTime set session_ID = '"+session_ID+"', lecturer = '"+lecturer+"', group_ID = '"+group_ID+"', subGroup_ID ='"+subGroup_ID+"', time = '"+time+"' where id = '"+id+"' ";
+		String updateQuery1 = "update notAvailableTime set duration = '"+duration+"',session_ID = '"+session_ID+"', lecturer = '"+lecturer+"', group_ID = '"+group_ID+"', day ='"+day+"', time = '"+time+"' where id = '"+id+"' ";
 
 		PreparedStatement ps;
 		ps = connection.prepareStatement(updateQuery1);

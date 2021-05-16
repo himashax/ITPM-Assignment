@@ -68,16 +68,16 @@ public class Manage_Timeslot_For_Session {
 		panel_2.add(comboBox);
 		
 		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setBounds(238, 70, 171, 28);
+		comboBox_1.setBounds(238, 75, 171, 28);
 		panel_2.add(comboBox_1);
 		
 		JLabel lblNewLabel_1 = new JLabel("Timeslot");
-		lblNewLabel_1.setBounds(98, 72, 98, 21);
+		lblNewLabel_1.setBounds(98, 82, 98, 21);
 		panel_2.add(lblNewLabel_1);
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 15));
 		
 		JLabel lblNewLabel = new JLabel("Session");
-		lblNewLabel.setBounds(98, 22, 98, 21);
+		lblNewLabel.setBounds(98, 27, 98, 21);
 		panel_2.add(lblNewLabel);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
 		

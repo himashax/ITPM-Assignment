@@ -26,6 +26,7 @@ public class Not_Available_Location implements ActionListener{
 	private JTextField sTime;
 	private JTextField eTime;
 	private JComboBox day;
+	private JComboBox sess;
 	private JButton btnAddSession;
 	private JButton btnClear01;
 	public 	JPanel Add_NotAvailable_Location_Panel;
@@ -76,14 +77,14 @@ public class Not_Available_Location implements ActionListener{
 		
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(49, 42, 489, 234);
+		panel_2.setBounds(49, 28, 489, 248);
 		panel_1.add(panel_2);
 		panel_2.setLayout(null);
 		
 		String[] data= {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
 		day= new JComboBox(data);
 		day.setBackground(new Color(240, 255, 255));
-		day.setBounds(127, 103, 110, 21);
+		day.setBounds(138, 90, 110, 21);
 		panel_2.add(day);
 		
 		
@@ -94,14 +95,18 @@ public class Not_Available_Location implements ActionListener{
 		sTime.setColumns(10);
 		
 		eTime = new JTextField();
-		eTime.setBounds(367, 104, 96, 19);
+		eTime.setBounds(367, 91, 96, 19);
 		panel_2.add(eTime);
 		eTime.setColumns(10);
 		
 		room = new JTextField();
-		room.setBounds(127, 35, 110, 19);
+		room.setBounds(138, 35, 110, 19);
 		panel_2.add(room);
 		room.setColumns(10);
+		
+		sess = new JComboBox();
+		sess.setBounds(138, 139, 110, 21);
+		panel_2.add(sess);
 		
 		JLabel lblNewLabel = new JLabel("Select Room");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -110,7 +115,7 @@ public class Not_Available_Location implements ActionListener{
 		
 		JLabel lblNewLabel_1 = new JLabel("Select Day");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_1.setBounds(27, 104, 104, 19);
+		lblNewLabel_1.setBounds(27, 90, 104, 19);
 		panel_2.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("Start Time");
@@ -120,22 +125,31 @@ public class Not_Available_Location implements ActionListener{
 		
 		JLabel lblNewLabel_3 = new JLabel("End Time");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_3.setBounds(283, 107, 74, 17);
+		lblNewLabel_3.setBounds(283, 91, 74, 17);
 		panel_2.add(lblNewLabel_3);
+		
+		JLabel lblNewLabel_4 = new JLabel("Select Session");
+		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblNewLabel_4.setBounds(27, 138, 104, 21);
+		panel_2.add(lblNewLabel_4);
 		
 		
 		
 		
 		btnAddSession = new JButton("ADD SESSION");
-		btnAddSession.setBounds(97, 172, 116, 36);
+		btnAddSession.setBounds(97, 182, 116, 36);
 		btnAddSession.addActionListener(this);
 		panel_2.add(btnAddSession);
 		btnAddSession.setBackground(new Color(153, 204, 255));
 		
 		btnClear01 = new JButton("CLEAR");
-		btnClear01.setBounds(283, 172, 116, 36);
+		btnClear01.setBounds(284, 182, 116, 36);
 		panel_2.add(btnClear01);
 		btnClear01.setBackground(new Color(255, 255, 255));
+		
+		
+		
+		
 		
 		
 		
@@ -144,6 +158,7 @@ public class Not_Available_Location implements ActionListener{
 	public void clear() {
 		room.setText(null);
 		day.setSelectedIndex(0);
+		sess.setSelectedIndex(0);
 		sTime.setText(null);
 		eTime.setText(null);
 	}
@@ -156,11 +171,12 @@ public class Not_Available_Location implements ActionListener{
 			
 			String rooms =room.getText().toString() ;
 			String days = (String)day.getSelectedItem();
+			String sessions = (String)sess.getSelectedItem();
 			String startingTime = sTime.getText().toString();
 			String endingTime =eTime.getText().toString();
 			
 			Mem03_LocationDAOImpl nat = new Mem03_LocationDAOImpl();
-			nat.insertNotAvailableLocation(rooms, days, startingTime, endingTime);
+			nat.insertNotAvailableLocation(sessions,rooms, days, startingTime, endingTime);
 			System.out.println((String)day.getSelectedItem());
 	}
 

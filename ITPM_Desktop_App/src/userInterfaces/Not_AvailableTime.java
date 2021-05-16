@@ -22,14 +22,15 @@ import java.awt.Font;
 public class Not_AvailableTime implements ActionListener{
 
 	private JFrame frame;
-	private JTextField timeT;
 	private JComboBox session;
 	private JComboBox lecturerType;
-	private JComboBox groupT;
-	private JComboBox subGroupType;
+	private JComboBox time;
 	private JButton btnClear;
 	private JButton btnSubmit;
 	private JButton btnView;
+	private JTextField day;
+	private JTextField duration;
+	private JTextField group;
 	
 
 	/**
@@ -75,57 +76,66 @@ public class Not_AvailableTime implements ActionListener{
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(new Color(240, 248, 255));
-		panel_2.setBounds(27, 26, 310, 272);
+		panel_2.setBounds(27, 10, 352, 310);
 		panel_1.add(panel_2);
 		panel_2.setLayout(null);
 		
 		session = new JComboBox();
-		session.setBounds(141, 25, 143, 22);
+		session.setBounds(199, 27, 143, 22);
 		panel_2.add(session);
 		
 		lecturerType = new JComboBox();
-		lecturerType.setBounds(141, 77, 143, 22);
+		lecturerType.setBounds(199, 78, 143, 22);
 		panel_2.add(lecturerType);
-		
-		groupT = new JComboBox();
-		groupT.setBounds(141, 129, 143, 23);
-		panel_2.add(groupT);
-		
-		subGroupType = new JComboBox();
-		subGroupType.setBounds(141, 181, 143, 23);
-		panel_2.add(subGroupType);
 		
 		JLabel lblNewLabel = new JLabel("Select Session ID");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel.setBounds(10, 24, 112, 23);
+		lblNewLabel.setBounds(10, 26, 112, 23);
 		panel_2.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Select Lecturer");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_1.setBounds(10, 76, 101, 23);
+		lblNewLabel_1.setBounds(10, 77, 101, 23);
 		panel_2.add(lblNewLabel_1);
 		
-		JLabel lblNewLabel_2 = new JLabel("Select Group");
+		JLabel lblNewLabel_2 = new JLabel("Selected Group / Sub Group");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_2.setBounds(10, 128, 101, 23);
+		lblNewLabel_2.setBounds(10, 119, 182, 40);
 		panel_2.add(lblNewLabel_2);
 		
-		JLabel lblNewLabel_3 = new JLabel("Select Sub Group");
+		JLabel lblNewLabel_3 = new JLabel("Selected Day");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_3.setBounds(10, 177, 121, 28);
+		lblNewLabel_3.setBounds(10, 181, 121, 28);
 		panel_2.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("TIME");
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_4.setBounds(56, 240, 42, 23);
+		lblNewLabel_4.setBounds(81, 278, 42, 23);
 		panel_2.add(lblNewLabel_4);
 		
+		day = new JTextField();
+		day.setBounds(199, 186, 143, 22);
+		panel_2.add(day);
+		day.setColumns(10);
 		
-		timeT = new JTextField();
-		timeT.setBounds(112, 243, 112, 19);
-		panel_2.add(timeT);
-		timeT.setColumns(10);
-		timeT.setColumns(10);
+		JLabel lblNewLabel_5 = new JLabel("Allocated Duration");
+		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblNewLabel_5.setBounds(10, 231, 136, 19);
+		panel_2.add(lblNewLabel_5);
+		
+		duration = new JTextField();
+		duration.setColumns(10);
+		duration.setBounds(199, 231, 143, 22);
+		panel_2.add(duration);
+		
+		time = new JComboBox();
+		time.setBounds(133, 280, 143, 23);
+		panel_2.add(time);
+		
+		group = new JTextField();
+		group.setColumns(10);
+		group.setBounds(199, 131, 143, 22);
+		panel_2.add(group);
 		
 		btnView = new JButton("VIEW");
 		btnView.setBackground(new Color(255, 255, 255));
@@ -152,9 +162,10 @@ public class Not_AvailableTime implements ActionListener{
 	public void clear() {
 		session.setSelectedIndex(0);
 		lecturerType.setSelectedIndex(0);
-		groupT.setSelectedIndex(0);
-		subGroupType.setSelectedIndex(0);
-		timeT.setText(null);
+		time.setSelectedIndex(0);
+		group.setText(null);
+		duration.setText(null);
+		day.setText(null);
 	}
 	
 
@@ -166,9 +177,11 @@ public class Not_AvailableTime implements ActionListener{
 			
 			String sessions =session.getSelectedItem().toString();
 			String lecturers =lecturerType.getSelectedItem().toString();
-			String groups =groupT.getSelectedItem().toString();
-			String subGroups =subGroupType.getSelectedItem().toString();
-			String tTime = timeT.getText().toString();
+			String tTime = time.getSelectedItem().toString();
+			String groups =group.getText().toString();
+			String days =day.getText().toString();
+			String dur = duration.getText().toString();
+			
 			
 		}
 		

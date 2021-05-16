@@ -140,11 +140,12 @@ public class Manage_NotAvailable_Time implements ActionListener{
 		Object[] row = new Object[5];
 		for(int i=0;i<dayList.size();i++) {
 			row[0]=dayList.get(i).getId();
-			row[1]=dayList.get(i).getSessionID();
-			row[2]=dayList.get(i).getLecturer();
-			row[3]=dayList.get(i).getGroupID();
-			row[4]=dayList.get(i).getSubGroupID();			
-			row[5]=dayList.get(i).getTime();
+			row[1]=dayList.get(i).getDur();
+			row[2]=dayList.get(i).getSessionID();
+			row[3]=dayList.get(i).getLecturer();
+			row[4]=dayList.get(i).getGroupID();
+			row[5]=dayList.get(i).getDay();			
+			row[6]=dayList.get(i).getTime();
 			
 			tableModel1.addRow(row);
 		}

@@ -2,10 +2,11 @@ package models;
 
 public class NotAvailable {
 	private int id;
+	private int dur;
 	private String sessionID;
 	private String lecturer;
 	private String groupID;
-	private String subGroupID; 
+	private String day; 
 	private String time;
 	
 	
@@ -33,11 +34,18 @@ public class NotAvailable {
 	public void setGroupID(String groupID) {
 		this.groupID = groupID;
 	}
-	public String getSubGroupID() {
-		return subGroupID;
+	
+	public String getDay() {
+		return day;
 	}
-	public void setSubGroupID(String subGroupID) {
-		this.subGroupID = subGroupID;
+	public void setDay(String day) {
+		this.day = day;
+	}
+	public int getDur() {
+		return dur;
+	}
+	public void setDur(int dur) {
+		this.dur = dur;
 	}
 	public String getTime() {
 		return time;
