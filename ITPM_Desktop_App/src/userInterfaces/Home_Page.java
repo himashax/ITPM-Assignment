@@ -30,7 +30,7 @@ public class Home_Page {
 
 
 
-	JPanel addLecturerPanel,manageLecturerPanel,addSubjectPanel,manageSubjectPanel;
+	JPanel addLecturerPanel,manageLecturerPanel,addSubjectPanel,manageSubjectPanel,addSession,manageSession;
 
 	JPanel manageLocPanel, displayStatPanel;
 
@@ -292,6 +292,37 @@ public class Home_Page {
 		mnStatistics.add(mntmShowStat);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 		
+		
+		JMenu mnSessions = new JMenu("Session");
+		mnSessions.setForeground(Color.WHITE);
+		mnSessions.setBackground(SystemColor.activeCaption);
+		menuBar.add(mnSessions);
+		
+		JMenuItem mntmAddSesssion = new JMenuItem("Add Session");
+		mntmAddSesssion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().removeAll();
+				addSession = new Add_Session().panel_addSession;
+				frame.getContentPane().add(addSession, "name_573107097077500");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("Add Session");
+			}
+		});
+		mnSessions.add(mntmAddSesssion);
+		
+		JMenuItem mntmManageSession = new JMenuItem("Manage Session");
+		mntmManageSession.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().removeAll();
+				manageSession = new Manage_Session().panel_ManageSession;
+				frame.getContentPane().add(manageSession, "name_573107097077500");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("Manage Session");
+			}
+		});
+		mnSessions.add(mntmManageSession);
 //		addStudentGroupsPanel = new Add_Student_Groups().panel_addStudentGroups;
 //		frame.getContentPane().add(addStudentGroupsPanel, "name_513472506769600");
 		
