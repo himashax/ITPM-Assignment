@@ -209,7 +209,10 @@ public class Add_Student_Groups implements ActionListener{
 		
 			String unsavedGroupID = yearAndSemester.substring(1, 6) + "." + programme +"."+ gno +"."+ sgno;
 			
-			if(gid.isEmpty() || sid.isEmpty()) {
+			if((Integer)groupNumber.getValue() == 0 || (Integer)subGroupNumer.getValue() == 0) {
+				JOptionPane.showMessageDialog(panel_addStudentGroups,"Group number and Sub Group number cannot be empty.","Alert",JOptionPane.WARNING_MESSAGE);  
+			
+			}else if(gid.isEmpty() || sid.isEmpty()) {
 				JOptionPane.showMessageDialog(panel_addStudentGroups,"Please generate Group and Sub Group IDs","Alert",JOptionPane.WARNING_MESSAGE);
 				
 			}else if(sid.equals(unsavedGroupID) == false) {
