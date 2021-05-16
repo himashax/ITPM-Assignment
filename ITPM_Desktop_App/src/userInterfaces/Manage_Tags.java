@@ -129,7 +129,7 @@ public class Manage_Tags implements ActionListener{
 		lblNewLabel_4.setBounds(28, 14, 78, 14);
 		panel.add(lblNewLabel_4);
 		
-		tableModel = new DefaultTableModel(new String[]{"Tag ID", "Tag Name", "Tag Code"},0);
+		tableModel = new DefaultTableModel(new String[]{"Tag ID", "Tag Name", "Tag Name"},0);
 		table = new JTable(tableModel);
 		table.setBackground(SystemColor.menu);
 		table.setBounds(545, 158, -518, -110);
@@ -267,13 +267,7 @@ public class Manage_Tags implements ActionListener{
 			
 		}
 		else if(obj == clearBtn) {
-			if(selectedTagID == null) {
-				JOptionPane.showMessageDialog(panel_manageTags,"No fields to reset","Alert",JOptionPane.WARNING_MESSAGE);
-				
-			}else {
-				resetFields();
-			}
-			
+			resetFields();
 		}
 	}
 	
