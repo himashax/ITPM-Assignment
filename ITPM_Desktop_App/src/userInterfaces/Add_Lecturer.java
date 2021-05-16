@@ -30,6 +30,8 @@ import javax.swing.UIManager;
 
 public class Add_Lecturer implements ActionListener {
 
+	public JPanel panel_addLecturer;
+	
 	private JFrame frmAddLecturer;
 	private JTextField textFieldName;
 	private JLabel lblFaculty, lblDept, lblCampuscentre;
@@ -74,9 +76,15 @@ public class Add_Lecturer implements ActionListener {
 	private void initialize() {
 		frmAddLecturer = new JFrame();
 		frmAddLecturer.setTitle("ADD LECTURER");
-		frmAddLecturer.setBounds(100, 100, 756, 487);
+		frmAddLecturer.setBounds(100, 100, 897, 487);
 		frmAddLecturer.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmAddLecturer.getContentPane().setLayout(null);
+		frmAddLecturer.setLocationRelativeTo(null);
+		
+		panel_addLecturer = new JPanel();
+		panel_addLecturer.setBackground(Color.WHITE);
+		panel_addLecturer.setLayout(null);
+		panel_addLecturer.setBounds(0, 0, 881, 448);
 
 		SpinnerModel monday = new SpinnerNumberModel(0, 0, 8, 1);
 		SpinnerModel tuesday = new SpinnerNumberModel(0, 0, 8, 1);
@@ -85,32 +93,33 @@ public class Add_Lecturer implements ActionListener {
 		SpinnerModel friday = new SpinnerNumberModel(0, 0, 8, 1);
 		SpinnerModel saturday = new SpinnerNumberModel(0, 0, 8, 1);
 		SpinnerModel sunday = new SpinnerNumberModel(0, 0, 8, 1);
+		
 
 		textFieldName = new JTextField();
-		textFieldName.setBounds(148, 32, 192, 20);
-		frmAddLecturer.getContentPane().add(textFieldName);
+		textFieldName.setBounds(148, 32, 244, 20);
+		panel_addLecturer.add(textFieldName);
 		textFieldName.setColumns(10);
 
 		lblName = new JLabel("NAME");
 		lblName.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblName.setBounds(34, 30, 74, 25);
-		frmAddLecturer.getContentPane().add(lblName);
+		panel_addLecturer.add(lblName);
 
 		lblFaculty = new JLabel("FACULTY");
 		lblFaculty.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblFaculty.setBounds(34, 84, 74, 25);
-		frmAddLecturer.getContentPane().add(lblFaculty);
+		panel_addLecturer.add(lblFaculty);
 
 		lblDept = new JLabel("DEPARTMENT");
 		lblDept.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblDept.setBounds(34, 147, 86, 25);
-		frmAddLecturer.getContentPane().add(lblDept);
+		panel_addLecturer.add(lblDept);
 
 		String[] fac = { "Computing", "Engineering","Business" };
 		comboBox_fac = new JComboBox(fac);
 		comboBox_fac.setEditable(true);
-		comboBox_fac.setBounds(148, 86, 192, 20);
-		frmAddLecturer.getContentPane().add(comboBox_fac);
+		comboBox_fac.setBounds(148, 86, 244, 20);
+		panel_addLecturer.add(comboBox_fac);
 
 		String[] com_dep = { "Software Engineering", "CSSE" };
 		String[] eng_dep = { "Electrical", "Mechanical" };
@@ -119,8 +128,8 @@ public class Add_Lecturer implements ActionListener {
 
 		comboBox_dept = new JComboBox();
 		comboBox_dept.setEditable(true);
-		comboBox_dept.setBounds(148, 149, 192, 20);
-		frmAddLecturer.getContentPane().add(comboBox_dept);
+		comboBox_dept.setBounds(148, 149, 244, 20);
+		panel_addLecturer.add(comboBox_dept);
 		
 		
 		comboBox_fac.addActionListener(new ActionListener() {
@@ -147,28 +156,28 @@ public class Add_Lecturer implements ActionListener {
 
 		lblCampuscentre = new JLabel("CAMPUS/CENTRE");
 		lblCampuscentre.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblCampuscentre.setBounds(391, 30, 113, 25);
-		frmAddLecturer.getContentPane().add(lblCampuscentre);
+		lblCampuscentre.setBounds(427, 30, 113, 25);
+		panel_addLecturer.add(lblCampuscentre);
 
 		String[] cen = { "Malabe", "Metro Campus", "Kandy", "Matara", "Jaffna" };
 		comboBox_centre = new JComboBox(cen);
-		comboBox_centre.setBounds(519, 32, 205, 20);
-		frmAddLecturer.getContentPane().add(comboBox_centre);
+		comboBox_centre.setBounds(620, 32, 233, 20);
+		panel_addLecturer.add(comboBox_centre);
 
 		String[] Malabe_build = { "Malabe New building", "Malabe Main building", "Malabe BM" };
 		String[] kandy_build = { "Kandy building 1", "Kandy Main building", "kandy MB" };
 		String[] matara_build = { "Matara building 1", "Matara Main building", "Matara BM" };
-		String[] jaffna_build = { "Jafna building 1", "Jafna Main building", "Jaffna BM" };
+		String[] jaffna_build = { "Jaffna building 1", "Jaffna Main building", "Jaffna BM" };
 		String[] metro_build = { "Metro building 1", "Metro Main building", "Metro BM" };
 		
 		comboBox_build = new JComboBox();
-		comboBox_build.setBounds(519, 86, 205, 20);
-		frmAddLecturer.getContentPane().add(comboBox_build);
+		comboBox_build.setBounds(620, 86, 233, 20);
+		panel_addLecturer.add(comboBox_build);
 
 		lblBuilding = new JLabel("BUILDING");
 		lblBuilding.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblBuilding.setBounds(391, 89, 113, 25);
-		frmAddLecturer.getContentPane().add(lblBuilding);
+		lblBuilding.setBounds(427, 84, 113, 25);
+		panel_addLecturer.add(lblBuilding);
 
 		comboBox_centre.addActionListener(new ActionListener() {
 			@Override
@@ -204,8 +213,8 @@ public class Add_Lecturer implements ActionListener {
 		panel = new JPanel();
 		panel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.LIGHT_GRAY));
 		panel.setBackground(SystemColor.inactiveCaption);
-		panel.setBounds(391, 183, 333, 206);
-		frmAddLecturer.getContentPane().add(panel);
+		panel.setBounds(495, 197, 358, 195);
+		panel_addLecturer.add(panel);
 		panel.setLayout(null);
 
 		lblDay = new JLabel("Mon");
@@ -227,48 +236,48 @@ public class Add_Lecturer implements ActionListener {
 		panel.add(spinner_Tue);
 
 		spinner_Wed = new JSpinner(wednesday);
-		spinner_Wed.setBounds(231, 8, 54, 20);
+		spinner_Wed.setBounds(254, 8, 54, 20);
 		panel.add(spinner_Wed);
 
 		JLabel lblWed = new JLabel("Wed");
 		lblWed.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblWed.setBounds(171, 6, 39, 25);
+		lblWed.setBounds(182, 6, 39, 25);
 		panel.add(lblWed);
 
 		spinner_Thur = new JSpinner(thursday);
-		spinner_Thur.setBounds(231, 48, 54, 20);
+		spinner_Thur.setBounds(254, 48, 54, 20);
 		panel.add(spinner_Thur);
 
 		JLabel lblThur = new JLabel("Thur");
 		lblThur.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblThur.setBounds(171, 46, 39, 25);
+		lblThur.setBounds(182, 46, 39, 25);
 		panel.add(lblThur);
 
 		JLabel lblFriday = new JLabel("Friday");
 		lblFriday.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblFriday.setBounds(171, 86, 39, 25);
+		lblFriday.setBounds(182, 86, 39, 25);
 		panel.add(lblFriday);
 
 		spinner_Fri = new JSpinner(friday);
-		spinner_Fri.setBounds(231, 88, 54, 20);
+		spinner_Fri.setBounds(254, 88, 54, 20);
 		panel.add(spinner_Fri);
 
 		JLabel lblSat = new JLabel("Sat");
 		lblSat.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblSat.setBounds(10, 173, 39, 25);
+		lblSat.setBounds(10, 160, 39, 25);
 		panel.add(lblSat);
 
 		spinner_Sat = new JSpinner(saturday);
-		spinner_Sat.setBounds(59, 175, 54, 20);
+		spinner_Sat.setBounds(59, 162, 54, 20);
 		panel.add(spinner_Sat);
 
 		JLabel lblSun = new JLabel("Sun");
 		lblSun.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblSun.setBounds(171, 173, 39, 25);
+		lblSun.setBounds(171, 160, 39, 25);
 		panel.add(lblSun);
 
 		spinner_Sun = new JSpinner(sunday);
-		spinner_Sun.setBounds(231, 175, 54, 20);
+		spinner_Sun.setBounds(254, 162, 54, 20);
 		panel.add(spinner_Sun);
 
 		JLabel lbl_Weekday = new JLabel("WEEKDAY");
@@ -293,9 +302,9 @@ public class Add_Lecturer implements ActionListener {
 		});
 		btnClear.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnClear.setBackground(SystemColor.activeCaption);
-		btnClear.setBounds(427, 412, 113, 25);
+		btnClear.setBounds(564, 412, 113, 25);
 		btnClear.addActionListener(this);
-		frmAddLecturer.getContentPane().add(btnClear);
+		panel_addLecturer.add(btnClear);
 
 		btnSave = new JButton("SAVE");
 		btnSave.addActionListener(new ActionListener() {
@@ -305,15 +314,15 @@ public class Add_Lecturer implements ActionListener {
 		});
 		btnSave.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnSave.setBackground(SystemColor.activeCaption);
-		btnSave.setBounds(575, 412, 118, 25);
+		btnSave.setBounds(735, 412, 118, 25);
 		btnSave.addActionListener(this);
-		frmAddLecturer.getContentPane().add(btnSave);
+		panel_addLecturer.add(btnSave);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(Color.LIGHT_GRAY));
-		panel_1.setBackground(Color.LIGHT_GRAY);
-		panel_1.setBounds(27, 203, 330, 206);
-		frmAddLecturer.getContentPane().add(panel_1);
+		panel_1.setBackground(SystemColor.menu);
+		panel_1.setBounds(34, 197, 358, 195);
+		panel_addLecturer.add(panel_1);
 		panel_1.setLayout(null);
 
 		lblEmpId = new JLabel("EMPLOYEE ID");
@@ -322,7 +331,7 @@ public class Add_Lecturer implements ActionListener {
 		lblEmpId.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 
 		textFieldEmpId = new JTextField();
-		textFieldEmpId.setBounds(128, 28, 192, 20);
+		textFieldEmpId.setBounds(128, 28, 206, 20);
 		panel_1.add(textFieldEmpId);
 		textFieldEmpId.setColumns(10);
 
@@ -331,14 +340,14 @@ public class Add_Lecturer implements ActionListener {
 		panel_1.add(lblLevel);
 		lblLevel.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		comboBox_level = new JComboBox(level);
-		comboBox_level.setBounds(128, 68, 192, 20);
+		comboBox_level.setBounds(128, 68, 206, 20);
 		panel_1.add(comboBox_level);
 		comboBox_level.setEditable(true);
 
 		textField_Rank = new JTextField();
 		textField_Rank.setEditable(false);
 		textField_Rank.setColumns(10);
-		textField_Rank.setBounds(128, 119, 192, 20);
+		textField_Rank.setBounds(128, 119, 206, 20);
 		panel_1.add(textField_Rank);
 
 		lblRank = new JLabel("RANK");
@@ -347,15 +356,15 @@ public class Add_Lecturer implements ActionListener {
 		lblRank.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 
 		btnRank = new JButton("GENERATE RANK");
-		btnRank.setBounds(78, 172, 149, 23);
+		btnRank.setBounds(165, 160, 149, 23);
 		panel_1.add(btnRank);
 		btnRank.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnRank.setBackground(SystemColor.activeCaption);
 
 		JLabel lblSelectDays = new JLabel("ACTIVE DAYS & HOURS");
 		lblSelectDays.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblSelectDays.setBounds(391, 147, 149, 25);
-		frmAddLecturer.getContentPane().add(lblSelectDays);
+		lblSelectDays.setBounds(427, 147, 149, 25);
+		panel_addLecturer.add(lblSelectDays);
 		btnRank.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (textFieldEmpId.getText().isEmpty()) {
@@ -391,6 +400,10 @@ public class Add_Lecturer implements ActionListener {
 
 			}
 		});
+		
+
+		
+		frmAddLecturer.getContentPane().add(panel_addLecturer);
 
 	}
 
@@ -465,7 +478,7 @@ public class Add_Lecturer implements ActionListener {
 					JOptionPane.showMessageDialog(null, "Please click the 'Generate the rank!'", "Alert",
 							JOptionPane.WARNING_MESSAGE);
 				} else {
-					int confirm = JOptionPane.showConfirmDialog(null, "Save the record?", "Save the new Lecturer",
+					int confirm = JOptionPane.showConfirmDialog(null, "Save the record "+lecturer.getLecName()+ " ?", "Save the new Lecturer",
 							JOptionPane.YES_NO_OPTION);
 
 					if (confirm == JOptionPane.YES_OPTION) {
