@@ -1,3 +1,4 @@
+
 package userInterfaces;
 
 import java.awt.Color;
@@ -30,7 +31,7 @@ public class Add_WorkingDays implements ActionListener{
 	private JComboBox workingdays;
 	private JButton add,reset;
 	private JCheckBox monday,tuesday,wednesday,thursday,friday,sat,sun; 
-
+	public JPanel Add_WorkingDays_Panel;
 	/**
 	 * Launch the application.
 	 */
@@ -67,8 +68,7 @@ public class Add_WorkingDays implements ActionListener{
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(0, 0, 255), new Color(160, 160, 160)), "ADD WORKING DAYS HOURS", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(65, 105, 225)));
 		panel.setBackground(new Color(220, 220, 220));
-		panel.setBounds(38, 48, 753, 535);
-		frame.getContentPane().add(panel);
+		panel.setBounds(20, 24, 796, 411);
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("No of Working Days");
@@ -90,77 +90,77 @@ public class Add_WorkingDays implements ActionListener{
 		tuesday = new JCheckBox("Tuesday");
 		tuesday.setBackground(new Color(240, 255, 255));
 		tuesday.setFont(new Font("Arial", Font.PLAIN, 12));
-		tuesday.setBounds(286, 137, 111, 25);
+		tuesday.setBounds(433, 101, 111, 25);
 		panel.add(tuesday);
 		
 		wednesday = new JCheckBox("Wednesday");
 		wednesday.setBackground(new Color(240, 255, 255));
 		wednesday.setFont(new Font("Arial", Font.PLAIN, 12));
-		wednesday.setBounds(286, 180, 111, 23);
+		wednesday.setBounds(573, 102, 111, 23);
 		panel.add(wednesday);
 		
 		thursday = new JCheckBox("Thursday");
 		thursday.setBackground(new Color(240, 255, 255));
 		thursday.setFont(new Font("Arial", Font.PLAIN, 12));
-		thursday.setBounds(286, 219, 111, 23);
+		thursday.setBounds(286, 138, 111, 23);
 		panel.add(thursday);
 		
 		friday = new JCheckBox("Friday");
 		friday.setBackground(new Color(240, 255, 255));
 		friday.setFont(new Font("Arial", Font.PLAIN, 12));
-		friday.setBounds(286, 259, 111, 25);
+		friday.setBounds(433, 137, 111, 25);
 		panel.add(friday);
 		
 		sat = new JCheckBox("Saturday");
 		sat.setBackground(new Color(240, 255, 255));
 		sat.setFont(new Font("Arial", Font.PLAIN, 12));
-		sat.setBounds(444, 99, 101, 25);
+		sat.setBounds(573, 137, 111, 25);
 		panel.add(sat);
 		
 		sun = new JCheckBox("Sunday");
 		sun.setBackground(new Color(240, 255, 255));
 		sun.setFont(new Font("Arial", Font.PLAIN, 12));
-		sun.setBounds(444, 137, 101, 25);
+		sun.setBounds(286, 173, 111, 25);
 		panel.add(sun);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("Working Time Per Day");
 		lblNewLabel_1_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
-		lblNewLabel_1_1.setBounds(24, 324, 185, 23);
+		lblNewLabel_1_1.setBounds(25, 235, 185, 23);
 		panel.add(lblNewLabel_1_1);
 		
 		minutes = new JTextField();
 		minutes.setBackground(new Color(240, 255, 255));
 		minutes.setColumns(10);
-		minutes.setBounds(493, 321, 123, 35);
+		minutes.setBounds(493, 232, 123, 35);
 		panel.add(minutes);
 		
 		add = new JButton("ADD");
 		add.setForeground(SystemColor.window);
 		add.setBackground(new Color(153, 204, 255));
-		add.setBounds(170, 430, 120, 35);
+		add.setBounds(168, 302, 120, 35);
 		add.addActionListener(this);
 		panel.add(add);
 		
 		reset = new JButton("RESET");
 		reset.setBackground(new Color(255, 255, 255));
-		reset.setBounds(425, 430, 120, 35);
+		reset.setBounds(470, 302, 120, 35);
 		reset.addActionListener(this);
 		panel.add(reset);
 		
 		workingTime = new JTextField();
 		workingTime.setBackground(new Color(240, 255, 255));
-		workingTime.setBounds(286, 321, 123, 35);
+		workingTime.setBounds(286, 232, 123, 35);
 		panel.add(workingTime);
 		workingTime.setColumns(10);
 		
 		JLabel lblNewLabel_2 = new JLabel("Hours");
 		lblNewLabel_2.setFont(new Font("Arial", Font.PLAIN, 12));
-		lblNewLabel_2.setBounds(419, 332, 45, 13);
+		lblNewLabel_2.setBounds(419, 245, 45, 13);
 		panel.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("Minutes");
 		lblNewLabel_3.setFont(new Font("Arial", Font.PLAIN, 12));
-		lblNewLabel_3.setBounds(626, 332, 54, 13);
+		lblNewLabel_3.setBounds(626, 243, 54, 13);
 		panel.add(lblNewLabel_3);
 		
 		String[] data= {"5","2"};
@@ -169,16 +169,11 @@ public class Add_WorkingDays implements ActionListener{
 		workingdays.setBounds(286, 44, 164, 23);
 		panel.add(workingdays);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(102, 153, 255));
-		panel_1.setBounds(38, 10, 753, 28);
-		frame.getContentPane().add(panel_1);
-		panel_1.setLayout(null);
-		
-		JLabel lblNewLabel_4 = new JLabel("WORKING DAYS AND HOURS");
-		lblNewLabel_4.setForeground(new Color(255, 255, 255));
-		lblNewLabel_4.setBounds(10, 10, 237, 13);
-		panel_1.add(lblNewLabel_4);
+		Add_WorkingDays_Panel = new JPanel();
+		Add_WorkingDays_Panel.setLayout(null);
+		Add_WorkingDays_Panel.setBounds(0, 0, 826, 487);
+		Add_WorkingDays_Panel.add(panel);
+		frame.getContentPane().add(Add_WorkingDays_Panel);
 
 	}
 	
