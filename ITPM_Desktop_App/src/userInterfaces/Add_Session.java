@@ -69,6 +69,7 @@ public class Add_Session implements ActionListener{
 		panel_addSession.setVisible(true);
 		panel_addSession.setLayout(null);
 		
+		//new object
 		SessionDAOImpl sessionDAO = new SessionDAOImpl();
 		
 		JLabel lblLecTags = new JLabel("SELECT LECTURERS & TAGS");
