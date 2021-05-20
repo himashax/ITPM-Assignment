@@ -14,12 +14,12 @@ import models.NotAvailable;
 public class NotAvailableDAOImpl {
 	private DBConnection db = new DBConnection();
 
-	public String insertNotAvailableTime(int duration,int session_ID, String first_lecturer,String second_lecturer,String group_ID,String day,String time) {
+	public String insertNotAvailableTime(int duration,int session_ID, String first_lecturer,String second_lecturer,String group_ID,String day,String time, String endTime) {
 		String outcome1 = "";
 		
 		try {
 		    Connection connection = db.connect();
-		    String insertQuery1 = "insert into notAvailableTime values (?,?,?,?,?,?,?,?)";
+		    String insertQuery1 = "insert into notAvailableTime values (?,?,?,?,?,?,?,?,?)";
 		
 			PreparedStatement ps = connection.prepareStatement(insertQuery1);
 			ps.setInt(1, 0);
@@ -30,6 +30,7 @@ public class NotAvailableDAOImpl {
 			ps.setString(6, group_ID);
 			ps.setString(7, day);
 			ps.setString(8, time);
+			ps.setString(9, endTime);
 			ps.execute();
 			
 			connection.close();
@@ -59,6 +60,7 @@ public class NotAvailableDAOImpl {
 				na.setGroupID(rs.getString(6));
 				na.setDay(rs.getString(7));
 				na.setTime(rs.getString(8));
+				na.setEndTm(rs.getString(9));
 				s2.add(na);
 			}
 		} catch (SQLException e) {
@@ -70,10 +72,10 @@ public class NotAvailableDAOImpl {
 	}
 	
 	
-	public void updateNotAvailableTime(int id,int duration, int session_ID, String first_lecturer,String second_lecturer, String group_ID,String day,String time) {
+	public void updateNotAvailableTime(int id,int duration, int session_ID, String first_lecturer,String second_lecturer, String group_ID,String day,String time, String endTime) {
 		try {
 		Connection connection = db.connect();
-		String updateQuery1 = "update notAvailableTime set duration = '"+duration+"',session_ID = '"+session_ID+"', first_lecturer = '"+first_lecturer+"',second_lecturer = '"+second_lecturer+"', group_ID = '"+group_ID+"', day ='"+day+"', time = '"+time+"' where id = '"+id+"' ";
+		String updateQuery1 = "update notAvailableTime set duration = '"+duration+"',session_ID = '"+session_ID+"', first_lecturer = '"+first_lecturer+"',second_lecturer = '"+second_lecturer+"', group_ID = '"+group_ID+"', day ='"+day+"', time = '"+time+"',endTime = '"+endTime+"' where id = '"+id+"' ";
 
 		PreparedStatement ps;
 		ps = connection.prepareStatement(updateQuery1);
@@ -103,16 +105,16 @@ public class NotAvailableDAOImpl {
 
 		}
 	
-	public ArrayList<String> retrieveTime(){
+	public ArrayList<String> retrieveTime1(){
 		ArrayList<String> ob = new ArrayList<String>();
 		Connection conn = db.connect();
-		String retrieveTSlot = "select * from timeslot";
+		String retrieveTSlot1 = "select * from timeslot";
 		Statement st;
 		try {
 			st = conn.createStatement();
-			ResultSet rs = st.executeQuery(retrieveTSlot);
+			ResultSet rs = st.executeQuery(retrieveTSlot1);
 			while(rs.next()) {
-				ob.add(rs.getString(2)+" - "+rs.getString(3));
+				ob.add(rs.getString(2));
 			}
 			System.out.println(ob);
 			conn.close();
@@ -121,6 +123,28 @@ public class NotAvailableDAOImpl {
 			e.printStackTrace();
 		}
 	return ob;
+			
+	}
+	
+	
+	public ArrayList<String> retrieveTime2(){
+		ArrayList<String> ob1 = new ArrayList<String>();
+		Connection conn = db.connect();
+		String retrieveTSlot2 = "select * from timeslot";
+		Statement st;
+		try {
+			st = conn.createStatement();
+			ResultSet rs = st.executeQuery(retrieveTSlot2);
+			while(rs.next()) {
+				ob1.add(rs.getString(3));
+			}
+			System.out.println(ob1);
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	return ob1;
 			
 	}
 	
@@ -145,6 +169,7 @@ public class NotAvailableDAOImpl {
 		nta.setGroupID(rs.getString(6));
 		nta.setDay(rs.getString(7));
 		nta.setTime(rs.getString(8));
+		nta.setEndTm(rs.getString(9));
 		
 		}
 		} catch (SQLException e) {

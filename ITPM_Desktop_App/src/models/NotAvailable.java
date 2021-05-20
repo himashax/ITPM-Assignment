@@ -9,8 +9,15 @@ public class NotAvailable {
 	private String groupID;
 	private String day; 
 	private String time;
+	private String endTm;
 	
 	
+	public String getEndTm() {
+		return endTm;
+	}
+	public void setEndTm(String endTm) {
+		this.endTm = endTm;
+	}
 	public int getId() {
 		return id;
 	}
