@@ -34,8 +34,8 @@ import javax.swing.UIManager;
 
 public class Sessions_List implements ActionListener{
 
-	private JFrame frame;
 	public JPanel sessions_panel;
+	private JFrame frame;
 	private JTable table;
 	private DefaultTableModel tableModel;
 	private JScrollPane scrollPane;
@@ -77,13 +77,13 @@ public class Sessions_List implements ActionListener{
 		frame.getContentPane().setLayout(null);
 		
 		sessions_panel = new JPanel();
-		sessions_panel.setBounds(0, 0, 884, 481);
+		sessions_panel.setBounds(0, 0, 854, 454);
 		frame.getContentPane().add(sessions_panel);
 		sessions_panel.setLayout(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(10, 11, 864, 448);
+		panel.setBounds(10, 11, 864, 432);
 		
 		resultLabel = new JLabel("");
 		resultLabel.setBounds(301, 387, 309, 14);

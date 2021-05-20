@@ -71,18 +71,18 @@ public class Session_Categories {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 900, 520);
+		frame.setBounds(100, 80, 900, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		Categoriespanel = new JPanel();
-		Categoriespanel.setBounds(0, 0, 884, 481);
+		Categoriespanel.setBounds(0, 0, 854, 461);
 		frame.getContentPane().add(Categoriespanel);
 		Categoriespanel.setLayout(null);
 		
 		JPanel panel_5 = new JPanel();
 		panel_5.setBackground(Color.WHITE);
-		panel_5.setBounds(10, 11, 864, 459);
+		panel_5.setBounds(10, 11, 864, 439);
 		panel_5.setLayout(null);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -180,7 +180,7 @@ public class Session_Categories {
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnNewButton_1.setForeground(Color.WHITE);
 		btnNewButton_1.setBackground(new Color(102, 153, 255));
-		btnNewButton_1.setBounds(520, 403, 148, 30);
+		btnNewButton_1.setBounds(520, 397, 148, 30);
 		panel_5.add(btnNewButton_1);
 		
 		Categoriespanel.add(tabbedPane);
@@ -228,7 +228,7 @@ public class Session_Categories {
 			}
 		});
 		deleteBtn.setBackground(Color.LIGHT_GRAY);
-		deleteBtn.setBounds(183, 403, 148, 30);
+		deleteBtn.setBounds(181, 398, 148, 30);
 		panel_5.add(deleteBtn);
 		
 		
