@@ -1,25 +1,31 @@
 package dao;
 
-import java.sql.*;
+import java.sql.Connection;
 
 
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import dbConnection.DBConnection;
-import models.ConsecutiveSessions;
-import dao.ISessionService;
+import models.ParallelSessions;
 import models.SessionType;
 
-public class ConsecSessionsDAOImpl implements ISessionService{
-	
+public class ParallelSessionDAOImpl implements ISessionService{
+
 	private DBConnection dbconnect = new DBConnection();
+
 	
+
 	@Override
-	public ArrayList<String> getSessionID(){
+	public ArrayList<String> getSessionID() {
 		ArrayList<String> arrayList = new ArrayList<>();
 		
-		String getSessionIDs = "select sessionCode from consecutive_sessions";
+		String getSessionIDs = "select sessionCode from parallel_sessions";
 		
 		Connection connection = dbconnect.connect();
 		
@@ -37,10 +43,11 @@ public class ConsecSessionsDAOImpl implements ISessionService{
 		}
 		return arrayList;
 	}
-	
+
+
 	@Override
 	public String generateSessionCode(ArrayList<String> sessionIdList) {
-		String sessionCode = "CS10";
+		String sessionCode = "PS10";
 		
 		String sessionID;
 		int count = sessionIdList.size();
@@ -54,67 +61,60 @@ public class ConsecSessionsDAOImpl implements ISessionService{
 		return sessionID;
 	}
 	
-	public void createConsecSessions(int lecId, int tuteId) {
-		
+	public void createParallelSession(String sessionCode, int sessionID) {
 		Connection connection = dbconnect.connect();
 		
-		String insertQuery = "insert into consecutive_sessions values(?,?,?,?)";
+		String insertQuery = "insert into parallel_sessions values (?,?,?)";
 		
 		try {
 			PreparedStatement ps = connection.prepareStatement(insertQuery);
-			
-			String sessionCode = generateSessionCode(getSessionID());
-			
 			ps.setInt(1, 0);
 			ps.setString(2, sessionCode);
-			ps.setInt(3, lecId);
-			ps.setInt(4, tuteId);
+			ps.setInt(3, sessionID);
 			ps.execute();
 			
 			connection.close();
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
+		
 	}
 	
-	
 	@Override
-	public ArrayList<ConsecutiveSessions> getSessionList() {
+	public ArrayList<ParallelSessions> getSessionList() {
 		Connection connection = dbconnect.connect();
 		
-		String listQuery = "select * from consecutive_sessions";
+		String listQuery = "select * from parallel_sessions";
 		
-		ArrayList<ConsecutiveSessions> listSessions = new ArrayList<>();
+		ArrayList<ParallelSessions> list = new ArrayList<ParallelSessions>();
 		
 		try {
 			Statement st = connection.createStatement();
 			ResultSet rs = st.executeQuery(listQuery);
 			
 			while(rs.next()) {
-				ConsecutiveSessions consecObj = new ConsecutiveSessions();
-				consecObj.setId(rs.getInt(1));
-				consecObj.setSessionCode(rs.getString(2));
-				consecObj.setLectureSessionId(rs.getInt(3));
-				consecObj.setTuteSessionId(rs.getInt(4));
-				listSessions.add(consecObj);
+				ParallelSessions obj = new ParallelSessions();
+				obj.setId(rs.getInt(1));
+				obj.setSessionCode(rs.getString(2));
+				obj.setParallelSessionID(rs.getInt(3));
+				list.add(obj);
 			}
 			
 			connection.close();
-			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return listSessions;
+		
+		return list;
 	}
+
 
 	@Override
 	public void deleteSession(String sessionCode) {
 		Connection connection = dbconnect.connect();
 		
-		String deleteQuery = "delete from consecutive_sessions where sessionCode = '"+sessionCode+"' ";
+		String deleteQuery = "delete from parallel_sessions where sessionCode = '"+sessionCode+"' ";
 		
 		try {
 			PreparedStatement ps = connection.prepareStatement(deleteQuery);
@@ -124,31 +124,8 @@ public class ConsecSessionsDAOImpl implements ISessionService{
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-		
+		}	
 	}
-
-	public boolean checkExistence(int sessionID) {
-		boolean exist = false;
-		try {
-			Connection connection = dbconnect.connect();
-			
-			String sessionIDs = "select id from consecutive_sessions where session_lec = '"+sessionID+"' or session_tute='"+sessionID+"'";
-			PreparedStatement ps = connection.prepareStatement(sessionIDs);
-			ResultSet rs = ps.executeQuery();
-			if(rs.next()) {
-				exist = true;
-			}else {
-				exist = false;
-			}
-			connection.close();
-			
-		}catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return exist;
-	}
-	
 	
 	
 }

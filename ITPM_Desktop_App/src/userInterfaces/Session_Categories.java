@@ -21,8 +21,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import dao.ConsecSessionsDAOImpl;
+import dao.NonOverlapSessionDAOImpl;
+import dao.ParallelSessionDAOImpl;
 import dao.SessionDAOImpl;
 import models.ConsecutiveSessions;
+import models.NonOverlapSession;
+import models.ParallelSessions;
 import models.Session;
 
 import javax.swing.JButton;
@@ -33,11 +37,11 @@ public class Session_Categories {
 
 	public JPanel Categoriespanel; 
 	private JFrame frame;
-	private DefaultTableModel tableModel, parTableModel;
-	private JTable table, parTable;
-	private JScrollPane scrollpane, parScrollPane;
+	private DefaultTableModel tableModel, parTableModel, nonOverlapTableModel;
+	private JTable table, parTable, nonOverlapTable;
+	private JScrollPane scrollpane, parScrollPane, nonOverlapScrollPane;
 	
-	private String selectedSessions, selectedParSessions;
+	private String selectedConSessions, selectedParSessions, nonOverlapSessions;
 
 	/**
 	 * Launch the application.
@@ -105,38 +109,13 @@ public class Session_Categories {
 		table.addMouseListener((MouseListener) new MouseAdapter() {
 	    	public void mouseClicked(MouseEvent e) {
 				int selectedRecord = table.getSelectedRow();	
-				selectedSessions = tableModel.getValueAt(selectedRecord, 1).toString();
+				selectedConSessions = tableModel.getValueAt(selectedRecord, 1).toString();
 			}
 	    });
 		
-		JButton deleteBtn = new JButton("Delete");
-		deleteBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				if(selectedSessions == null) {
-					JOptionPane.showMessageDialog(Categoriespanel,"Please select the record you want to delete","Alert",JOptionPane.WARNING_MESSAGE);
-					
-				}else {
-					int confirm = JOptionPane.showConfirmDialog(Categoriespanel,"Are you sure you want to permenantly delete your record?","Delete Record",JOptionPane.YES_NO_OPTION);
-					if(confirm == JOptionPane.YES_OPTION) {
-						ConsecSessionsDAOImpl daoObj = new ConsecSessionsDAOImpl();
-						
-						daoObj.deleteSession(selectedSessions);
-						
-						DefaultTableModel model = (DefaultTableModel)table.getModel();
-			            model.setRowCount(0);
-			            consecSessionsTable();
-					}
-				}
-			}
-		});
-		deleteBtn.setBackground(Color.LIGHT_GRAY);
-		deleteBtn.setBounds(183, 403, 148, 30);
-		panel_5.add(deleteBtn);
-		
 		tabbedPane.addTab("Consecutive Sessions", null, consecutive, null);
 		
-		
+
 		JPanel Parallel = new JPanel();
 		
 		parTableModel = new DefaultTableModel(new String[]{"ID","Session Code","Lecture1", "Lecture2", "Subject","Group ID","Tag", "Students", "Day", "Duration"}, 0);
@@ -150,7 +129,7 @@ public class Session_Categories {
 		parScrollPane = new JScrollPane(parTable);
 		parScrollPane.setBounds(10,5,793,312);
 	
-		//parSessionsTable();
+		parSessionsTable();
 		Parallel.setLayout(null);
 		Parallel.add(parScrollPane);
 		
@@ -163,21 +142,96 @@ public class Session_Categories {
 		
 		tabbedPane.addTab("Parallel Sessions", null, Parallel, null);
 		
-		JPanel panel_3 = new JPanel();
-		tabbedPane.addTab("New tab", null, panel_3, null);
 		
+		//Non overlapping
+		JPanel NonOverlapping = new JPanel();
+		NonOverlapping.setLayout(null);
+		
+		nonOverlapTableModel = new DefaultTableModel(new String[]{"ID","Session Code","Lecture1", "Lecture2", "Subject","Group ID","Tag", "Students", "Day", "Duration"}, 0);
+		nonOverlapTable = new JTable(nonOverlapTableModel);
+		nonOverlapTable.setBackground(SystemColor.menu);
+		JTableHeader nonOverlapHeader = nonOverlapTable.getTableHeader();
+		nonOverlapHeader.setBackground(new Color(102, 153, 255));
+		nonOverlapHeader.setFont(new Font("Tahoma", Font.BOLD, 11));
+		nonOverlapHeader.setForeground(Color.white);
+		
+		nonOverlapSessionsTable();
+		nonOverlapScrollPane = new JScrollPane(nonOverlapTable);
+		nonOverlapScrollPane.setBounds(10,5,793,312);
+		
+		NonOverlapping.add(nonOverlapScrollPane);
+		
+		nonOverlapTable.addMouseListener((MouseListener) new MouseAdapter() {
+	    	public void mouseClicked(MouseEvent e) {
+				int selectedRecord = nonOverlapTable.getSelectedRow();	
+				nonOverlapSessions = nonOverlapTable.getValueAt(selectedRecord, 1).toString();
+			}
+	    });
+		
+		
+		
+		tabbedPane.addTab("Non Overlapping Sessions", null, NonOverlapping, null);
+
 		JPanel panel_4 = new JPanel();
 		tabbedPane.addTab("New tab", null, panel_4, null);
 
 		
-		
-		
-		JButton btnNewButton_1 = new JButton("New button");
-		btnNewButton_1.setBackground(SystemColor.activeCaption);
+		JButton btnNewButton_1 = new JButton("Add Sessions");
+		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnNewButton_1.setForeground(Color.WHITE);
+		btnNewButton_1.setBackground(new Color(102, 153, 255));
 		btnNewButton_1.setBounds(520, 403, 148, 30);
 		panel_5.add(btnNewButton_1);
 		
 		Categoriespanel.add(tabbedPane);
+		
+		JButton deleteBtn = new JButton("Delete");
+		deleteBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(selectedConSessions == null && selectedParSessions == null && nonOverlapSessions == null) {
+					JOptionPane.showMessageDialog(Categoriespanel,"Please select the record you want to delete","Alert",JOptionPane.WARNING_MESSAGE);
+					
+				}else {
+						
+					int confirm = JOptionPane.showConfirmDialog(Categoriespanel,"Are you sure you want to permenantly delete your record?","Delete Record",JOptionPane.YES_NO_OPTION);
+					if(confirm == JOptionPane.YES_OPTION) {
+						
+						
+						if(selectedConSessions != null) {
+							ConsecSessionsDAOImpl daoObj = new ConsecSessionsDAOImpl();
+							daoObj.deleteSession(selectedConSessions);
+							
+							DefaultTableModel model = (DefaultTableModel)table.getModel();
+				            model.setRowCount(0);
+				            consecSessionsTable();
+				            
+						}else if(selectedParSessions != null) {
+							ParallelSessionDAOImpl parDaoObj = new ParallelSessionDAOImpl();
+							parDaoObj.deleteSession(selectedParSessions);
+							
+
+							DefaultTableModel model = (DefaultTableModel)parTable.getModel();
+				            model.setRowCount(0);
+				            parSessionsTable();
+							
+						}else {
+							NonOverlapSessionDAOImpl nonOverDaoObj = new NonOverlapSessionDAOImpl();
+							nonOverDaoObj.deleteSession(nonOverlapSessions);
+							
+							DefaultTableModel model = (DefaultTableModel)nonOverlapTable.getModel();
+				            model.setRowCount(0);
+				            nonOverlapSessionsTable();
+						}
+					}
+				}
+			}
+		});
+		deleteBtn.setBackground(Color.LIGHT_GRAY);
+		deleteBtn.setBounds(183, 403, 148, 30);
+		panel_5.add(deleteBtn);
+		
+		
 		Categoriespanel.add(panel_5);
 	}
 	
@@ -185,7 +239,7 @@ public class Session_Categories {
 	public void consecSessionsTable() {
 		SessionDAOImpl sessionDao = new SessionDAOImpl();
 		ConsecSessionsDAOImpl daoObj = new ConsecSessionsDAOImpl();
-		List<ConsecutiveSessions> session_list = daoObj.getSessionList();
+		ArrayList<ConsecutiveSessions> session_list = daoObj.getSessionList();
 		DefaultTableModel tableModel = (DefaultTableModel)table.getModel();
 		Object[] row = new Object[11];
 		Object[] row2 = new Object[11];
@@ -223,20 +277,57 @@ public class Session_Categories {
 		} 
 	}
 	
-//	public void parSessionsTable() {
-//		SessionDAOImpl sessionDao = new SessionDAOImpl();
-//		ParellelSessionsDAOImpl daoObj = new ParellelSessionsDAOImpl();
-//		List<ParellelSessions> parallelList = daoObj.getSessionList();
-//		DefaultTableModel tableModel = (DefaultTableModel)parTable.getModel();
-//		Object[] row = new Object[7];
-//		
-//		for(int i=0;i<parallelList.size();i++) {
-//			row[0] = parallelList.get(i).getId();
-//			row[1] = parallelList.get(i).getSessionCode();
-//			row[2] = parallelList.get(i).getId1();
-//			row[3] = sessionDao.getSessionById(parallelList.get(i).getId()).getTag();
-//			row[4] = sessionDao.getSessionById(parallelList.get(i).getId()).getSubject();
-//			tableModel.addRow(row);
-//		}
-//	}
+	public void parSessionsTable() {
+		SessionDAOImpl sessionDao = new SessionDAOImpl();
+		ParallelSessionDAOImpl daoObj = new ParallelSessionDAOImpl();
+		ArrayList<ParallelSessions> parallelList = daoObj.getSessionList();
+		DefaultTableModel tableModel = (DefaultTableModel)parTable.getModel();
+		Object[] row = new Object[10];
+		
+		for(int i=0;i<parallelList.size();i++) {
+			
+			row[0] = parallelList.get(i).getId();
+			row[1] = parallelList.get(i).getSessionCode();
+			
+			Session parallelSeObj = sessionDao.getSessionById(parallelList.get(i).getParallelSessionID());
+			row[2] = parallelSeObj.getFirstLecturer();
+			row[3] = parallelSeObj.getSecLecturer();
+			row[4] = parallelSeObj.getSubject();
+			row[5] = parallelSeObj.getGroupId();
+			row[6] = parallelSeObj.getTag();
+			row[7] = parallelSeObj.getNoOfStudents();
+			row[8] = parallelSeObj.getDay();
+			row[9] = parallelSeObj.getDuration();
+			
+			tableModel.addRow(row);
+		}
+	}
+	
+	
+	public void nonOverlapSessionsTable() {
+		SessionDAOImpl sessionDao = new SessionDAOImpl();
+		NonOverlapSessionDAOImpl daoObj = new NonOverlapSessionDAOImpl();
+		ArrayList<NonOverlapSession> nonOverlapList = daoObj.getSessionList();
+		DefaultTableModel tableModel = (DefaultTableModel)nonOverlapTable.getModel();
+		Object[] row = new Object[10];
+		
+		for(int i=0;i<nonOverlapList.size();i++) {
+			
+			row[0] = nonOverlapList.get(i).getId();
+			row[1] = nonOverlapList.get(i).getSessionCode();
+			
+			Session nonOverlapObj = sessionDao.getSessionById(nonOverlapList.get(i).getNonOverlapSessionID());
+			row[2] = nonOverlapObj.getFirstLecturer();
+			row[3] = nonOverlapObj.getSecLecturer();
+			row[4] = nonOverlapObj.getSubject();
+			row[5] = nonOverlapObj.getGroupId();
+			row[6] = nonOverlapObj.getTag();
+			row[7] = nonOverlapObj.getNoOfStudents();
+			row[8] = nonOverlapObj.getDay();
+			row[9] = nonOverlapObj.getDuration();
+			
+			tableModel.addRow(row);
+		}
+	}
+	
 }

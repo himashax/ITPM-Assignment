@@ -23,20 +23,23 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import dao.ConsecSessionsDAOImpl;
+import dao.NonOverlapSessionDAOImpl;
+import dao.ParallelSessionDAOImpl;
 import dao.SessionDAOImpl;
 import models.ConsecutiveSessions;
 import models.Session;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 public class Sessions_List implements ActionListener{
 
-	public JPanel sessions_panel;
 	private JFrame frame;
+	public JPanel sessions_panel;
 	private JTable table;
 	private DefaultTableModel tableModel;
 	private JScrollPane scrollPane;
-	private JButton addConSessions;
+	private JButton ConSessionsBtn, parSessionBtn, nonOverlapBtn;
 	private JLabel resultLabel;
 	private ConsecSessionsDAOImpl consecDaoObj;
 	private SessionDAOImpl daoObj;
@@ -112,7 +115,7 @@ public class Sessions_List implements ActionListener{
 			}
 		};
 			
-		JTable table = new JTable(tableModel);
+		table = new JTable(tableModel);
 		tableModel.addColumn("Select");
 		tableModel.addColumn("ID");
 		tableModel.addColumn("Lecturer 1");
@@ -125,10 +128,8 @@ public class Sessions_List implements ActionListener{
 		tableModel.addColumn("Duration");
 		table.setBackground(SystemColor.menu);
 		
-
-		Session session = new Session();
+		
 		daoObj = new SessionDAOImpl();
-		consecDaoObj = new ConsecSessionsDAOImpl();
 		ArrayList<Session> sessionList = daoObj.getSessionList();
 		
 		for(int i=0;i<sessionList.size();i++) {
@@ -157,35 +158,34 @@ public class Sessions_List implements ActionListener{
 		scrollPane.setBounds(10,24,699,318);
 		panel.add(scrollPane);
 		
-		
-		addConSessions = new JButton("Add Consecutive Sessions");
-		addConSessions.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		addConSessions.setBackground(SystemColor.activeCaption);
-		addConSessions.setBounds(713, 79, 141, 23);
-		addConSessions.addActionListener(this); 
-		panel.add(addConSessions);
+		//Consecutive Sessions
+		ConSessionsBtn = new JButton("Add Consecutive Sessions");
+		ConSessionsBtn.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		ConSessionsBtn.setBackground(SystemColor.activeCaption);
+		ConSessionsBtn.setBounds(713, 79, 141, 23);
+		ConSessionsBtn.addActionListener(this);
+		panel.add(ConSessionsBtn);
 		sessions_panel.add(panel);
 		
-		
 		//Parallel Sessions
-		JButton parSessionBtn = new JButton("Add Parallel Sessions");
-		parSessionBtn.addActionListener(this);
+		parSessionBtn = new JButton("Add Parallel Sessions");
+		parSessionBtn.addActionListener(this); 
 		parSessionBtn.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		parSessionBtn.setBackground(SystemColor.activeCaption);
+		parSessionBtn.setBackground(new Color(102, 153, 255));
+		parSessionBtn.setForeground(Color.WHITE);
 		parSessionBtn.setBounds(713, 142, 141, 23);
 		panel.add(parSessionBtn);
 	
-		
-		JButton nonOverlapBtn = new JButton("Add Non Overalapping Sessions");
-		nonOverlapBtn.addActionListener(this);
+		//Non overlapping Sessions
+		nonOverlapBtn = new JButton("Add Non Overalapping Sessions");
+		nonOverlapBtn.addActionListener(this); 
 		nonOverlapBtn.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		nonOverlapBtn.setBackground(SystemColor.activeCaption);
+		nonOverlapBtn.setBackground(Color.LIGHT_GRAY);
 		nonOverlapBtn.setBounds(713, 200, 141, 23);
 		panel.add(nonOverlapBtn);
 		
 		panel.add(resultLabel);
 	}
-	
 	
 	public boolean validateParallelSession(List<String> list) {
 		for(String value: list) {
@@ -196,11 +196,124 @@ public class Sessions_List implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		
+		Object obj = e.getSource();
+		
+		ArrayList<String> array = new ArrayList<>();
+		
+		for(int i=0;i<table.getRowCount();i++) {
+			Boolean checked = Boolean.valueOf(table.getValueAt(i, 0).toString());
+		
+			if(checked) {
+				String checkedID = table.getValueAt(i, 1).toString();
+				array.add(checkedID);
+			}	
+		}
+		
+		ArrayList<Session> selectedSessions = new ArrayList<>();
+		ArrayList<String> days = new ArrayList<String>();
+		ArrayList<String> duration = new ArrayList<String>();
+		ArrayList<String> groupAndSubject = new ArrayList<String>();
+		
+		for(int i=0;i<array.size();i++) {
+			Session object = daoObj.getSessionById(Integer.parseInt(array.get(i)));
+			selectedSessions.add(object);
+			days.add(object.getDay());
+			duration.add(String.valueOf(object.getDuration()));
+			groupAndSubject.add(object.getGroupId()+object.getSubject());
+		}
+		
+		if(obj == ConSessionsBtn) {
+			if(selectedSessions.size() < 2 || selectedSessions.size() > 2) {
+				JOptionPane.showMessageDialog(sessions_panel,"Select only two Lecture ans Tutorial Sessions","Alert",JOptionPane.WARNING_MESSAGE);
+			
+			}else if(!selectedSessions.get(0).getTag().equals("Lecture") && !selectedSessions.get(1).getTag().equals("Tutorial")) {
+				JOptionPane.showMessageDialog(sessions_panel,"Select Lecture and Tutorial Sessions","Alert",JOptionPane.WARNING_MESSAGE);
+			
+			}else if(!validateParallelSession(groupAndSubject)) {
+				JOptionPane.showMessageDialog(sessions_panel,"Groups and Subject should be the same","Alert",JOptionPane.WARNING_MESSAGE);
+			
+			}else if(!validateParallelSession(days)) {
+				JOptionPane.showMessageDialog(sessions_panel,"Sessions should be held in the same day","Alert",JOptionPane.WARNING_MESSAGE);
+				
+			}else {
+				ConsecSessionsDAOImpl consecDaoObj = new ConsecSessionsDAOImpl();
+				int sessionID1 = daoObj.getSessionById(Integer.parseInt(array.get(0))).getId();
+				int sessionID2 = daoObj.getSessionById(Integer.parseInt(array.get(1))).getId();
+				
+				if(consecDaoObj.checkExistence(sessionID1) || consecDaoObj.checkExistence(sessionID2)){
+					JOptionPane.showMessageDialog(sessions_panel,"This Session already exists as a Consecutive Session","Alert",JOptionPane.WARNING_MESSAGE);
+				
+				}else if(consecDaoObj.checkExistence(sessionID1) || consecDaoObj.checkExistence(sessionID2)){
+					JOptionPane.showMessageDialog(sessions_panel,"These Lecture and Tutorial Sessions exist as Consecutive Session","Alert",JOptionPane.WARNING_MESSAGE);
+				
+				}else {
+					int confirm = JOptionPane.showConfirmDialog(sessions_panel,"Are you sure you want to add selected sessions?","Submit Data",JOptionPane.YES_NO_OPTION);
+					
+					if(confirm == JOptionPane.YES_OPTION) {
+						
+						consecDaoObj.createConsecSessions(sessionID1, sessionID2);
+						
+						resultLabel.setText("Consecutive Sessions Added Successfully");	
+					}
+				}	
+			}  
+			
+		}else if(obj == parSessionBtn ) {
+			if(selectedSessions.size() < 2) {
+				JOptionPane.showMessageDialog(sessions_panel,"Select at least two Parallel Sessions","Alert",JOptionPane.WARNING_MESSAGE);
+			
+			}else if(!validateParallelSession(days)) {
+				JOptionPane.showMessageDialog(sessions_panel,"Parallel Sessions' days should be the same","Alert",JOptionPane.WARNING_MESSAGE);
+			
+			}else if(!validateParallelSession(duration)) {
+				JOptionPane.showMessageDialog(sessions_panel,"Parallel Sessions' duration should be the same","Alert",JOptionPane.WARNING_MESSAGE);
+			
+			}else {
+				ParallelSessionDAOImpl parDaoObj = new ParallelSessionDAOImpl();
+				String sessionCode = parDaoObj.generateSessionCode(parDaoObj.getSessionID());
+				
+				int confirm = JOptionPane.showConfirmDialog(sessions_panel,"Are you sure you want to add selected sessions?","Submit Data",JOptionPane.YES_NO_OPTION);
+				
+				if(confirm == JOptionPane.YES_OPTION) {
+					for(int i=0;i<selectedSessions.size();i++) {
+						int sessionID = selectedSessions.get(i).getId();
+						parDaoObj.createParallelSession(sessionCode, sessionID);
+					}
+					
+					resultLabel.setText("Parallel Sessions Added Successfully");
+				}
+			}
+			
+		}else if(obj == nonOverlapBtn) {
+			if(selectedSessions.size() < 2) {
+				JOptionPane.showMessageDialog(sessions_panel,"Select at least two Non Overlapping Sessions","Alert",JOptionPane.WARNING_MESSAGE);
+			
+			}else if(!validateParallelSession(days)) {
+				JOptionPane.showMessageDialog(sessions_panel,"Non Overlapping Sessions' days should be the same","Alert",JOptionPane.WARNING_MESSAGE);
+			
+			}else if(!validateParallelSession(duration)) {
+				JOptionPane.showMessageDialog(sessions_panel,"Non Overlapping Sessions' duration should be the same","Alert",JOptionPane.WARNING_MESSAGE);
+			
+			}else {
+				NonOverlapSessionDAOImpl nonOverDaoObj = new NonOverlapSessionDAOImpl();
+				String sessionCode = nonOverDaoObj.generateSessionCode(nonOverDaoObj.getSessionID());
+				
+				int confirm = JOptionPane.showConfirmDialog(sessions_panel,"Are you sure you want to add selected sessions?","Submit Data",JOptionPane.YES_NO_OPTION);
+				
+				if(confirm == JOptionPane.YES_OPTION) {
+					for(int i=0;i<selectedSessions.size();i++) {
+						int sessionID = selectedSessions.get(i).getId();
+						nonOverDaoObj.createNonOverlapSession(sessionCode, sessionID);
+					}
+					
+					resultLabel.setText("Non Overlapping Sessions Added Successfully");
+				}
+			}
+		}		
+
 		
 	}
-	
-	
-	 
+
 	
 }
