@@ -39,7 +39,7 @@ public class Manage_Timeslot_For_Session {
 	private JComboBox session,timeslot;
 	private JButton btnAdd;
 	private int id;
-	
+	public JPanel mng;
 	/**
 	 * Launch the application.
 	 */
@@ -72,9 +72,9 @@ public class Manage_Timeslot_For_Session {
 		frame.setBounds(200, 200, 650, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel panel = new JPanel();
-		frame.getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(null);
+		mng = new JPanel();
+		frame.getContentPane().add(mng, BorderLayout.CENTER);
+		mng.setLayout(null);
 		
 		SessionDAOImpl obj = new SessionDAOImpl();
 		ArrayList<Session> list = obj.getSessionList();
@@ -101,12 +101,12 @@ public class Manage_Timeslot_For_Session {
 		scPane = new JScrollPane(mngTSession);
 		scPane.setBounds(67,10,521,146);
 		sessionTimeList();
-		panel.add(scPane);
+		mng.add(scPane);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(SystemColor.controlHighlight);
 		panel_1.setBounds(22, 10, 588, 331);
-		panel.add(panel_1);
+		mng.add(panel_1);
 		panel_1.setLayout(null);
 		
 		
@@ -127,7 +127,7 @@ public class Manage_Timeslot_For_Session {
 		panel_2.add(session);
 		
 		NotAvailableDAOImpl notAvailable = new NotAvailableDAOImpl();
-		ArrayList<String> ob2 = notAvailable.retrieveTime();
+		ArrayList<String> ob2 = notAvailable.retrieveTime1();
 		timeslot = new JComboBox(ob2.toArray());
 		timeslot.setBounds(238, 75, 171, 28);
 		panel_2.add(timeslot);

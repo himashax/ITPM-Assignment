@@ -26,7 +26,7 @@ public class Home_Page {
 	private JFrame frame;
 	JPanel addStudentGroupsPanel, manageGroupsPanel, addTagsPanel, manageTagsPanel;
 
-	JPanel addWorkingDaysPanel,manageDaysPanel,timeslotPanel;
+	JPanel addWorkingDaysPanel,manageDaysPanel,timeslotPanel,addNotAvailableTimePanel,addNotAvailableLocation,manageNotAvailableTimePanel,tPanel;
 
 
 
@@ -229,10 +229,14 @@ public class Home_Page {
 		});
 		mnNewMenu_3.add(mntmManageSubject);
 		
+		
+		//menu for Working Days and Hours
 		JMenu mnNewMenu_2 = new JMenu("Working Days & Hours");
 		mnNewMenu_2.setForeground(Color.WHITE);
 		menuBar.add(mnNewMenu_2);
 		
+		
+		//Add days and hours
 		JMenuItem Add_WorkingDays_Item = new JMenuItem("Add Days & Hours");
 		Add_WorkingDays_Item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -246,6 +250,8 @@ public class Home_Page {
 		});
 		mnNewMenu_2.add(Add_WorkingDays_Item);
 		
+		
+		//manage working days and hours
 		JMenuItem Manage_WorkingDays_Item = new JMenuItem("Manage Days & Hours");
 		Manage_WorkingDays_Item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -259,6 +265,8 @@ public class Home_Page {
 		});
 		mnNewMenu_2.add(Manage_WorkingDays_Item);
 		
+		
+		//create timeslots for timetable
 		JMenuItem TimeSlot_Item = new JMenuItem("Create Time Slots");
 		TimeSlot_Item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -272,8 +280,64 @@ public class Home_Page {
 		});
 		mnNewMenu_2.add(TimeSlot_Item);
 		
+		
+		//add not available time for sessions
+		JMenuItem NotAvailableT_Item = new JMenuItem("Add Not Available Time for Sessions");
+		NotAvailableT_Item.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().removeAll();
+				addNotAvailableTimePanel = new Not_AvailableTime().ad;
+				frame.getContentPane().add(addNotAvailableTimePanel, "name_573107097077500");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("Manage Not Available Time for Sessions");
+			}
+		});
+		mnNewMenu_2.add(NotAvailableT_Item);
+		
+		
+		//manage not available time for sessions
+		JMenuItem NotAvailableTime_Item = new JMenuItem("Manage Not Available Time for Sessions");
+		NotAvailableTime_Item.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().removeAll();
+				manageNotAvailableTimePanel = new Manage_NotAvailable_Time().Manage_NotAvailableTime_Panel;
+				frame.getContentPane().add(manageNotAvailableTimePanel, "name_573107097077500");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("Manage Not Available Time for Sessions");
+			}
+		});
+		mnNewMenu_2.add(NotAvailableTime_Item);
+		
+		
+		//add not available rooms
+		JMenuItem NotAvailableRoom_Item = new JMenuItem("Add Not Available Rooms");
+		NotAvailableRoom_Item.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().removeAll();
+				addNotAvailableLocation = new Not_Available_Location().Add_NotAvailable_Location_Panel;
+				frame.getContentPane().add(addNotAvailableLocation, "name_573107097077500");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("Add Not Available Rooms");
+			}
+		});
+		mnNewMenu_2.add(NotAvailableRoom_Item);
+		
 		JMenuItem mntmAddTimeForSessions = new JMenuItem("Add Session Time Slots ");
+		mntmAddTimeForSessions.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().removeAll();
+				tPanel = new Manage_Timeslot_For_Session().mng;
+				frame.getContentPane().add(tPanel, "name_573107097077500");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("Manage Not Available Time for Sessions");
+			}
+		});
 		mnNewMenu_2.add(mntmAddTimeForSessions);
+		
 		
 		JMenu mnLocation = new JMenu("Location");
 		mnLocation.setForeground(Color.WHITE);

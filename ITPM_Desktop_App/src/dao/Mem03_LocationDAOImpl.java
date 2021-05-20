@@ -12,7 +12,32 @@ import models.Member3_Location;
 import models.NotAvailable;
 
 public class Mem03_LocationDAOImpl {
-	private DBConnection db = new DBConnection();
+	private  DBConnection db = new DBConnection();
+	
+	public  boolean checkTime(String room, String day, String sTime, String eTime) {
+		boolean value = false;
+		try {
+		    Connection connection = db.connect();
+		    String chkTime = "select id from notavailable_location "
+		    		+ "where lRoom = '"+room+"' and lDay = '"+day+"' and startTime ='"+sTime+"' and endTime = '"+eTime+"'";
+		
+			Statement st = connection.createStatement();
+			ResultSet rs = st.executeQuery(chkTime);
+			if(rs.next()){
+				value = true;
+			}else {
+				value = false;
+			}
+			
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return value;
+	}
+	
+	
 
 	public String insertNotAvailableLocation(int session_ID, String lRoom, String lDay,String startTime, String endTime) {
 		String outcome2 = "";

@@ -78,13 +78,13 @@ public class Not_Available_Location implements ActionListener{
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(211, 211, 211));
-		panel_1.setBounds(21, 21, 592, 312);
+		panel_1.setBounds(30, 8, 819, 429);
 		Add_NotAvailable_Location_Panel.add(panel_1);
 		panel_1.setLayout(null);
 		
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(39, 28, 516, 262);
+		panel_2.setBounds(47, 31, 726, 360);
 		panel_1.add(panel_2);
 		panel_2.setLayout(null);
 		
@@ -116,7 +116,7 @@ public class Not_Available_Location implements ActionListener{
 		
 		btnClear01 = new JButton("CLEAR");
 		btnClear01.setBackground(new Color(255, 255, 255));
-		btnClear01.setBounds(283, 198, 116, 36);
+		btnClear01.setBounds(431, 278, 116, 36);
 		btnClear01.addActionListener(this);
 		panel_2.add(btnClear01);
 		
@@ -125,12 +125,12 @@ public class Not_Available_Location implements ActionListener{
 		day = new JTextField();
 		day.setEditable(false);
 		day.setColumns(10);
-		day.setBounds(138, 156, 110, 19);
+		day.setBounds(138, 193, 193, 28);
 		panel_2.add(day);
 		
 		room = new JTextField();
 		room.setEditable(false);
-		room.setBounds(138, 108, 110, 19);
+		room.setBounds(138, 121, 193, 28);
 		panel_2.add(room);
 		room.setColumns(10);
 		
@@ -138,13 +138,13 @@ public class Not_Available_Location implements ActionListener{
 		Mem03_LocationDAOImpl nt1 = new Mem03_LocationDAOImpl();
 		ArrayList<String> ob2 = nt1.retrieveTimeSeperate1();
 		sTime = new JComboBox(ob2.toArray());
-		sTime.setBounds(386, 53, 96, 21);
+		sTime.setBounds(476, 53, 164, 28);
 		panel_2.add(sTime);
 		
 		//retrieve time for end time
 		ArrayList<String> ob3 = nt1.retrieveTimeSeperate2();
 		eTime = new JComboBox(ob3.toArray());
-		eTime.setBounds(386, 107, 96, 21);
+		eTime.setBounds(476, 120, 164, 29);
 		panel_2.add(eTime);
 		
 		
@@ -162,27 +162,27 @@ public class Not_Available_Location implements ActionListener{
 				
 			}
 		});
-		sess_1.setBounds(138, 53, 110, 21);
+		sess_1.setBounds(138, 53, 193, 28);
 		panel_2.add(sess_1);
 		
 		JLabel lblNewLabel = new JLabel("Select Room");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel.setBounds(27, 106, 104, 21);
+		lblNewLabel.setBounds(24, 119, 104, 21);
 		panel_2.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Select Day");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_1.setBounds(27, 155, 104, 19);
+		lblNewLabel_1.setBounds(24, 192, 104, 19);
 		panel_2.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("Start Time");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_2.setBounds(283, 54, 74, 17);
+		lblNewLabel_2.setBounds(367, 54, 74, 17);
 		panel_2.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("End Time");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_3.setBounds(283, 108, 74, 17);
+		lblNewLabel_3.setBounds(367, 121, 74, 17);
 		panel_2.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("Select Session");
@@ -194,7 +194,7 @@ public class Not_Available_Location implements ActionListener{
 		
 		
 		btnAddSession = new JButton("ADD SESSION");
-		btnAddSession.setBounds(97, 198, 116, 36);
+		btnAddSession.setBounds(215, 278, 116, 36);
 		btnAddSession.addActionListener(this);
 		panel_2.add(btnAddSession);
 		btnAddSession.setBackground(new Color(153, 204, 255));
@@ -205,6 +205,7 @@ public class Not_Available_Location implements ActionListener{
 		
 	}
 	
+	//clear method 
 	public void clear() {
 		sess_1.setSelectedIndex(0);
 		room.setText(null);
@@ -215,39 +216,49 @@ public class Not_Available_Location implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		// get the clickable
 		Object ob = e.getSource();
 		//submit the values
 		if(ob == btnAddSession) {
-			int results = JOptionPane.showConfirmDialog(frame,"Are you sure you want to add a session?","Submit Data",JOptionPane.YES_NO_OPTION);
 			
-			if(results == JOptionPane.YES_OPTION) {
-			
+			//validate the start time and end time, as they cannot be the same time
 			if (sTime.getSelectedItem().toString().equals(eTime.getSelectedItem().toString()) || eTime.getSelectedItem().toString().equals(sTime.getSelectedItem().toString() )) {
 				JOptionPane.showMessageDialog(null,"Cannot be same start and end time","Alert",JOptionPane.WARNING_MESSAGE);
 				} 
-			else if(sess_1.getSelectedItem().toString().equals(sess_1.getSelectedItem().toString())) {
-				//System.out.println("min empty");
-				JOptionPane.showMessageDialog(null,"Give different session number","Alert",JOptionPane.WARNING_MESSAGE);
-			}
+			
 			else {
 					
+					//set values
 					String rooms =room.getText().toString() ;
 					String days = day.getText().toString();
 					String sessions = sess_1.getSelectedItem().toString();
 					String startingTime = sTime.getSelectedItem().toString();
 					String endingTime =eTime.getSelectedItem().toString();
 					
+					
 					Mem03_LocationDAOImpl nat = new Mem03_LocationDAOImpl();
-					nat.insertNotAvailableLocation(Integer.parseInt(sessions),rooms, days, startingTime, endingTime);
+					
+					//validate that the room cannot be reserve to the previously allocated time period
+					if(nat.checkTime(rooms, days, startingTime, endingTime)) {
+						JOptionPane.showMessageDialog(null,"Already the room is scheduled for this timeslot","Alert",JOptionPane.WARNING_MESSAGE);
+					}
+					
+			else {
+						//pop up the confirmation message to submit the data
+						int results = JOptionPane.showConfirmDialog(frame,"Are you sure you want to add a session?","Submit Data",JOptionPane.YES_NO_OPTION);
+						
+						if(results == JOptionPane.YES_OPTION) {
+						nat.insertNotAvailableLocation(Integer.parseInt(sessions),rooms, days, startingTime, endingTime);
 				}
 			
+			}
 			}
 			
 	}
 		//clear the values
 		if(ob == btnClear01 ) {
 			
+			//call the clear method
 			clear();
 		}
 	}

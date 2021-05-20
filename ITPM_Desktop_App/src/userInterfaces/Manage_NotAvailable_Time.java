@@ -48,7 +48,9 @@ public class Manage_NotAvailable_Time implements ActionListener{
 	private JTextField secLec;
 	private JTextField grp;
 	private JTextField day;
-	private JComboBox times;
+	private JComboBox time1;
+	private JComboBox time2;
+	public JPanel Manage_NotAvailableTime_Panel;
 	
 	
 
@@ -87,12 +89,13 @@ public class Manage_NotAvailable_Time implements ActionListener{
 		
 		
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(240, 248, 255));
-		panel.setBounds(10, 23, 816, 423);
-		panel.setLayout(null);
+		Manage_NotAvailableTime_Panel = new JPanel();
+		Manage_NotAvailableTime_Panel.setBackground(new Color(240, 248, 255));
+		Manage_NotAvailableTime_Panel.setBounds(10, 23, 816, 423);
+		Manage_NotAvailableTime_Panel.setLayout(null);
 		
-		manageTime = new DefaultTableModel(new String[]{"id","duration","session_ID", "first_lecturer", "second_lecturer","group_ID","day","time"}, 0);
+		//Retrieve the fields related to not available time for sessions
+		manageTime = new DefaultTableModel(new String[]{"id","duration","session_ID", "first_lecturer", "second_lecturer","group_ID","day","sTime","eTime"}, 0);
 		manageTimeSet = new JTable(manageTime);
 		manageTimeSet.setBounds(622, 154, -500, -93);
 		
@@ -106,26 +109,28 @@ public class Manage_NotAvailable_Time implements ActionListener{
 		
 		
 		scPane1 = new JScrollPane(manageTimeSet);
-		scPane1.setBounds(21,38,774,264);
+		scPane1.setBounds(61,39,774,264);
 		NotAvailableTimeList();
 		
+		//delete button
 		btnDelete1 = new JButton("DELETE");
 		btnDelete1.setBackground(new Color(153, 204, 255));
-		btnDelete1.setBounds(317, 334, 123, 45);
+		btnDelete1.setBounds(387, 334, 123, 45);
 		btnDelete1.addActionListener(this);
-		panel.add(btnDelete1);
+		Manage_NotAvailableTime_Panel.add(btnDelete1);
 		
 		btnBack1 = new JButton("BACK");
 		btnBack1.setBackground(new Color(255, 255, 255));
-		btnBack1.setBounds(82, 334, 123, 45);
+		btnBack1.setBounds(140, 334, 123, 45);
 		btnBack1.addActionListener(this);
-		panel.add(btnBack1);
+		Manage_NotAvailableTime_Panel.add(btnBack1);
 		
+		//view button
 		btnView = new JButton("VIEW");
 		btnView.setBackground(new Color(255, 255, 255));
-		btnView.setBounds(561, 334, 123, 45);
+		btnView.setBounds(624, 334, 123, 45);
 		btnView.addActionListener(this);
-		panel.add(btnView);
+		Manage_NotAvailableTime_Panel.add(btnView);
 		
 		
 	
@@ -140,13 +145,14 @@ public class Manage_NotAvailable_Time implements ActionListener{
 				secLec.setText(manageTime.getValueAt(row, 4).toString());
 				grp.setText(manageTime.getValueAt(row, 5).toString());
 				day.setText(manageTime.getValueAt(row, 6).toString());
-				times.setSelectedItem(manageTime.getValueAt(row,7).toString());
+				time1.setSelectedItem(manageTime.getValueAt(row,7).toString());
+				time2.setSelectedItem(manageTime.getValueAt(row,8).toString());
 				
 			}});
 		
 		
-		panel.add(scPane1);
-		frame.getContentPane().add(panel);
+		Manage_NotAvailableTime_Panel.add(scPane1);
+		frame.getContentPane().add(Manage_NotAvailableTime_Panel);
 		
 		
 		
@@ -155,11 +161,12 @@ public class Manage_NotAvailable_Time implements ActionListener{
 		
 	}
 	
+	//take the values to not available time for sessions in the table 
 	public void NotAvailableTimeList() {
 		NotAvailableDAOImpl nt = new NotAvailableDAOImpl();
 		ArrayList<NotAvailable> notAvailableList = nt.notAvailableTimeList();
 		DefaultTableModel tableModel1 = (DefaultTableModel)manageTimeSet.getModel();
-		Object[] row = new Object[8];
+		Object[] row = new Object[9];
 		for(int i=0;i<notAvailableList.size();i++) {
 			row[0]=notAvailableList.get(i).getId();
 			row[1]=notAvailableList.get(i).getDur();
@@ -169,6 +176,7 @@ public class Manage_NotAvailable_Time implements ActionListener{
 			row[5]=notAvailableList.get(i).getGroupID();
 			row[6]=notAvailableList.get(i).getDay();			
 			row[7]=notAvailableList.get(i).getTime();
+			row[8]=notAvailableList.get(i).getEndTm();
 			
 			tableModel1.addRow(row);
 		}
@@ -177,13 +185,15 @@ public class Manage_NotAvailable_Time implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		
 		Object ob = e.getSource();
 		
+		//view all the details related to that record
 		if(ob == btnView) {
 				NotAvailableDAOImpl dh = new NotAvailableDAOImpl();
+				//display all the values as a pop up box
 				JOptionPane.showMessageDialog(frame,dh.getByNotAvailableId(id).getSessionID()+"  "+dh.getByNotAvailableId(id).getDur()+" "+dh.getByNotAvailableId(id).getFistLecturer()+" "
-				+dh.getByNotAvailableId(id).getSecondLecturer()+" "+dh.getByNotAvailableId(id).getGroupID()+" "+dh.getByNotAvailableId(id).getDay()+" "+dh.getByNotAvailableId(id).getTime());
+				+dh.getByNotAvailableId(id).getSecondLecturer()+" "+dh.getByNotAvailableId(id).getGroupID()+" "+dh.getByNotAvailableId(id).getDay()+" "+dh.getByNotAvailableId(id).getTime()+" "+dh.getByNotAvailableId(id).getEndTm());
 				
 				
 			
@@ -191,11 +201,13 @@ public class Manage_NotAvailable_Time implements ActionListener{
 			
 			
 		
-		
+		//delete button to remove records
 		if(ob == btnDelete1) {
 			
+			//confirmation message to clarify that we need to delete the particular record
 			int result = JOptionPane.showConfirmDialog(frame,"Are you sure you want to delete your data?","Delete Data",JOptionPane.YES_NO_OPTION);
 			
+			//delete the record to the given id
 			if(result == JOptionPane.YES_OPTION) {
 				NotAvailableDAOImpl dh = new NotAvailableDAOImpl();
 				dh.deleteNotAvailableTime(id);
