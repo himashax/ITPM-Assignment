@@ -52,6 +52,7 @@ public class Manage_Session_Rooms implements ActionListener{
 	private JTextField textFieldSelectedTag;
 	private JTextField textFieldRoomType;
 	private JLabel lblSelectedRoomType;
+	public JPanel panel;
 	String id;
 	
 
@@ -87,7 +88,7 @@ public class Manage_Session_Rooms implements ActionListener{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBounds(0, 0, 632, 450);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);

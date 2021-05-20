@@ -25,21 +25,16 @@ public class Home_Page {
 
 	private JFrame frame;
 	JPanel addStudentGroupsPanel, manageGroupsPanel, addTagsPanel, manageTagsPanel;
-<<<<<<< HEAD
+
 	JPanel manageLocationPanel, displayStatPanel,addLocationPanel;
-=======
 
 	JPanel addWorkingDaysPanel,manageDaysPanel,timeslotPanel;
-
+	
+	JPanel sessionRoomPanel,viewSessionRoomPanel;
 
 
 	JPanel addLecturerPanel,manageLecturerPanel,addSubjectPanel,manageSubjectPanel,addSession,manageSession;
 
-	JPanel manageLocPanel, displayStatPanel;
-
-
-
->>>>>>> c56367de363c415135f7979fa06b948ed15136cf
 	private JMenuItem mntmManageSubject;
 	/**
 	 * Launch the application.
@@ -362,7 +357,38 @@ public class Home_Page {
 		});
 		mnSessions.add(mntmManageSession);
 
-	}
+	
+	
+	JMenu sessionRoom = new JMenu("Session Rooms");
+	sessionRoom.setForeground(Color.WHITE);
+	menuBar.add(sessionRoom);
+	
+	JMenuItem manageSessionRom = new JMenuItem("Manage Session Room");
+	manageSessionRom.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			frame.getContentPane().removeAll();
+			sessionRoomPanel = new Manage_Session_Rooms().panel;
+			frame.getContentPane().add(sessionRoomPanel, "name_573107097077500");
+			frame.getContentPane().repaint();
+			frame.getContentPane().revalidate();
+			frame.setTitle("Manage Session Room");
+		}
+	});
+	sessionRoom.add(manageSessionRom);
+	
+	JMenuItem addLocationS2 = new JMenuItem("View Session Rooms");
+	addLocationS2.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			frame.getContentPane().removeAll();
+			viewSessionRoomPanel = new Add_Location_S2().panel_S2;
+			frame.getContentPane().add(viewSessionRoomPanel, "name_573107097077500");
+			frame.getContentPane().repaint();
+			frame.getContentPane().revalidate();
+			frame.setTitle("View Session Rooms");
+		}
+	});
+	sessionRoom.add(addLocationS2);
 
+}
 }
 
