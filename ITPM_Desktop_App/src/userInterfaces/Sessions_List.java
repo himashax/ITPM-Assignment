@@ -1,12 +1,17 @@
 package userInterfaces;
 
 import java.awt.Color;
+
+
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,9 +26,10 @@ import dao.ConsecSessionsDAOImpl;
 import dao.SessionDAOImpl;
 import models.ConsecutiveSessions;
 import models.Session;
-import models.Student_Group;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
-public class Sessions_List {
+public class Sessions_List implements ActionListener{
 
 	public JPanel sessions_panel;
 	private JFrame frame;
@@ -31,6 +37,9 @@ public class Sessions_List {
 	private DefaultTableModel tableModel;
 	private JScrollPane scrollPane;
 	private JButton addConSessions;
+	private JLabel resultLabel;
+	private ConsecSessionsDAOImpl consecDaoObj;
+	private SessionDAOImpl daoObj;
 
 	/**
 	 * Launch the application.
@@ -71,8 +80,10 @@ public class Sessions_List {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(10, 34, 864, 425);
+		panel.setBounds(10, 11, 864, 448);
 		
+		resultLabel = new JLabel("");
+		resultLabel.setBounds(301, 387, 309, 14);
 		
 		tableModel = new DefaultTableModel() {
 			public Class<?> getColumnClass(int column) {
@@ -100,8 +111,7 @@ public class Sessions_List {
 				}
 			}
 		};
-		
-		
+			
 		JTable table = new JTable(tableModel);
 		tableModel.addColumn("Select");
 		tableModel.addColumn("ID");
@@ -117,11 +127,14 @@ public class Sessions_List {
 		
 
 		Session session = new Session();
-		SessionDAOImpl daoObj = new SessionDAOImpl();
+		daoObj = new SessionDAOImpl();
+		consecDaoObj = new ConsecSessionsDAOImpl();
 		ArrayList<Session> sessionList = daoObj.getSessionList();
 		
 		for(int i=0;i<sessionList.size();i++) {
+			
 			tableModel.addRow(new Object[0]);
+		
 			tableModel.setValueAt(false, i,0);
 			tableModel.setValueAt(sessionList.get(i).getId(), i, 1);
 			tableModel.setValueAt(sessionList.get(i).getFirstLecturer(), i, 2);
@@ -141,69 +154,53 @@ public class Sessions_List {
 		panel.setLayout(null);
 	    
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(10,42,699,334);
+		scrollPane.setBounds(10,24,699,318);
 		panel.add(scrollPane);
 		
 		
 		addConSessions = new JButton("Add Consecutive Sessions");
-		addConSessions.setBounds(719, 98, 135, 23);
-		addConSessions.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int checkedCount = 0;
-				String[] idArray = {};
-				ArrayList<String> array = new ArrayList<>();
-				
-				Session sessionObj = new Session();
-				
-				for(int i=0;i<table.getRowCount();i++) {
-					Boolean checked = Boolean.valueOf(table.getValueAt(i, 0).toString());
-				
-					if(checked) {
-						checkedCount++;
-						String checkedID = table.getValueAt(i, 1).toString();
-						array.add(checkedID);
-					}	
-				}
-			
-				System.out.println(array);
-		
-				if(checkedCount < 2) {
-					JOptionPane.showMessageDialog(sessions_panel,"Please select two records","Alert",JOptionPane.WARNING_MESSAGE);
-					
-				}else if(checkedCount > 2){
-					JOptionPane.showMessageDialog(sessions_panel,"Select only two records","Alert",JOptionPane.WARNING_MESSAGE);
-					
-				}else{
-					
-					Session obj1 = daoObj.getSessionById(Integer.parseInt(array.get(0)));
-					Session obj2 = daoObj.getSessionById(Integer.parseInt(array.get(1)));
-					
-					String tag1 = obj1.getTag();  //sg.getbyid(Integer.parseInt(array.get(0))).getProgramme();
-					String tag2 = obj2.getTag();
-					
-					System.out.println(tag1+ tag2);
-					
-					if(!obj1.getSubject().equals(obj2.getSubject())) {
-						JOptionPane.showMessageDialog(sessions_panel,"Select same","Alert",JOptionPane.WARNING_MESSAGE);
-						
-					}
-					else if((!tag1.equals("Lecture") && !tag2.equals("Tutorial"))/* || (!tag1.equals("Tutorial") && !tag2.equals("Lecture"))*/) {
-						JOptionPane.showMessageDialog(sessions_panel,"Select lec and tute","Alert",JOptionPane.WARNING_MESSAGE);
-					}
-					else {
-						ConsecSessionsDAOImpl daoObj = new ConsecSessionsDAOImpl();
-						daoObj.createConsecSessions("one", obj1.getId(), obj2.getId());
-					}
-					
-				}
-			}
-		});
+		addConSessions.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		addConSessions.setBackground(SystemColor.activeCaption);
+		addConSessions.setBounds(713, 79, 141, 23);
+		addConSessions.addActionListener(this); 
 		panel.add(addConSessions);
-		
-		
 		sessions_panel.add(panel);
+		
+		
+		//Parallel Sessions
+		JButton parSessionBtn = new JButton("Add Parallel Sessions");
+		parSessionBtn.addActionListener(this);
+		parSessionBtn.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		parSessionBtn.setBackground(SystemColor.activeCaption);
+		parSessionBtn.setBounds(713, 142, 141, 23);
+		panel.add(parSessionBtn);
+	
+		
+		JButton nonOverlapBtn = new JButton("Add Non Overalapping Sessions");
+		nonOverlapBtn.addActionListener(this);
+		nonOverlapBtn.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		nonOverlapBtn.setBackground(SystemColor.activeCaption);
+		nonOverlapBtn.setBounds(713, 200, 141, 23);
+		panel.add(nonOverlapBtn);
+		
+		panel.add(resultLabel);
 	}
 	
+	
+	public boolean validateParallelSession(List<String> list) {
+		for(String value: list) {
+			if(!value.equals(list.get(0)))
+				return false;
+		}return true;
+	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	 
+	
 }

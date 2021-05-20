@@ -1,22 +1,12 @@
 package models;
 
-public class ConsecutiveSessions {
+import java.util.ArrayList;
 
-	int id;
-	
-	String consecSessionId;
+public class ConsecutiveSessions extends SessionType{
 	
 	int lectureSessionId;
 	
 	int tuteSessionId;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public int getLectureSessionId() {
 		return lectureSessionId;
@@ -34,12 +24,7 @@ public class ConsecutiveSessions {
 		this.tuteSessionId = tuteSessionId;
 	}
 
-	public String getConsecSessionId() {
-		return consecSessionId;
-	}
 
-	public void setConsecSessionId(String consecSessionId) {
-		this.consecSessionId = consecSessionId;
-	}
+
 	
 }
