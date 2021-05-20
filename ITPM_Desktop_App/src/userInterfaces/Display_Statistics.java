@@ -26,6 +26,8 @@ import java.awt.event.ActionEvent;
 
 public class Display_Statistics {
 
+	public JPanel statPanel;
+	
 	private JFrame frmAaaaa;
 	private JLabel lastlec;
 	private JLabel lastgroup;
@@ -75,7 +77,7 @@ public class Display_Statistics {
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
 		panel.setBounds(39, 70, 506, 422);
-		frmAaaaa.getContentPane().add(panel);
+		//frmAaaaa.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JPanel showChart = new JPanel();
@@ -147,24 +149,11 @@ public class Display_Statistics {
 		btnNewButton.setBounds(363, 212, 125, 25);
 		panel.add(btnNewButton);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(153, 153, 255));
-		panel_1.setBounds(0, 0, 785, 44);
-		frmAaaaa.getContentPane().add(panel_1);
-		panel_1.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("Statistics");
-		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel.setBackground(Color.WHITE);
-		lblNewLabel.setBounds(12, 13, 91, 16);
-		panel_1.add(lblNewLabel);
-		
 		JPanel panel_4_3 = new JPanel();
 		panel_4_3.setBackground(Color.WHITE);
 		panel_4_3.setLayout(null);
 		panel_4_3.setBounds(596, 400, 157, 92);
-		frmAaaaa.getContentPane().add(panel_4_3);
+		//frmAaaaa.getContentPane().add(panel_4_3);
 		
 		JLabel lblNewLabel_1_3 = new JLabel("Registered Rooms");
 		lblNewLabel_1_3.setBounds(12, 13, 125, 16);
@@ -178,7 +167,7 @@ public class Display_Statistics {
 		panel_4_3_1.setLayout(null);
 		panel_4_3_1.setBackground(Color.WHITE);
 		panel_4_3_1.setBounds(596, 295, 157, 92);
-		frmAaaaa.getContentPane().add(panel_4_3_1);
+		//frmAaaaa.getContentPane().add(panel_4_3_1);
 		
 		JLabel lblNewLabel_1_3_1 = new JLabel("Registered Students");
 		lblNewLabel_1_3_1.setBounds(12, 13, 125, 16);
@@ -192,7 +181,7 @@ public class Display_Statistics {
 		panel_4_3_2.setLayout(null);
 		panel_4_3_2.setBackground(Color.WHITE);
 		panel_4_3_2.setBounds(596, 178, 157, 92);
-		frmAaaaa.getContentPane().add(panel_4_3_2);
+		//frmAaaaa.getContentPane().add(panel_4_3_2);
 		
 		JLabel lblNewLabel_1_3_2 = new JLabel("Registered Subjects");
 		lblNewLabel_1_3_2.setBounds(12, 13, 125, 16);
@@ -206,7 +195,7 @@ public class Display_Statistics {
 		panel_4_3_3.setLayout(null);
 		panel_4_3_3.setBackground(Color.WHITE);
 		panel_4_3_3.setBounds(596, 70, 157, 92);
-		frmAaaaa.getContentPane().add(panel_4_3_3);
+		//frmAaaaa.getContentPane().add(panel_4_3_3);
 		
 		JLabel lblNewLabel_1_3_3 = new JLabel("Registered Lectures");
 		lblNewLabel_1_3_3.setBounds(12, 13, 125, 16);
@@ -217,5 +206,15 @@ public class Display_Statistics {
 		countlec.setBackground(Color.LIGHT_GRAY);
 		countlec.setBounds(42, 50, 56, 16);
 		panel_4_3_3.add(countlec);
+		
+		 statPanel = new JPanel();
+		statPanel.setBounds(0, 0, 787, 517);
+		statPanel.setLayout(null);
+		statPanel.add(panel);
+		statPanel.add(panel_4_3_3);
+		statPanel.add(panel_4_3_2);
+		statPanel.add(panel_4_3_1);
+		statPanel.add(panel_4_3);
+		frmAaaaa.getContentPane().add(statPanel);
 	}
 }
