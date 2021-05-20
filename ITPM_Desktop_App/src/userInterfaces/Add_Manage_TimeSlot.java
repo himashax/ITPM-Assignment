@@ -1,3 +1,4 @@
+
 package userInterfaces;
 
 import java.awt.Color;
@@ -43,6 +44,7 @@ public class Add_Manage_TimeSlot implements ActionListener {
 	private JScrollPane scPane;
 	private JPanel panel_1;
 	private int id;
+	public JPanel AddnManage_Timeslot;
 	/**
 	 * Launch the application.
 	 */
@@ -82,15 +84,15 @@ public class Add_Manage_TimeSlot implements ActionListener {
 		frame.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(110, 77, 590, 220);
+		panel.setBounds(117, 28, 590, 187);
 		panel.setBackground(new Color(220, 220, 220));
-		frame.getContentPane().add(panel);
+		//frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		panel_1 = new JPanel();
 		panel_1.setBackground(SystemColor.activeCaption);
-		panel_1.setBounds(146, 321, 530, 194);
-		frame.getContentPane().add(panel_1);
+		panel_1.setBounds(146, 238, 530, 178);
+		//frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
 		
@@ -122,7 +124,7 @@ public class Add_Manage_TimeSlot implements ActionListener {
 		createBtn = new JButton("CREATE");
 		createBtn.setBackground(SystemColor.textHighlight);
 		createBtn.setForeground(SystemColor.window);
-		createBtn.setBounds(201, 146, 164, 32);
+		createBtn.setBounds(209, 128, 164, 32);
 		createBtn.addActionListener(this);
 		panel.add(createBtn);
 		
@@ -140,31 +142,23 @@ public class Add_Manage_TimeSlot implements ActionListener {
 		
 		timeSlots();
 		scPane = new JScrollPane(timeslotTable);
-		scPane.setBounds(21, 21, 396, 152);
+		scPane.setBounds(28, 10, 396, 152);
 		panel_1.add(scPane);
 		
 		deleteBtn = new JButton("DELETE");
-		deleteBtn.setBounds(427, 75, 89, 39);
+		deleteBtn.setBounds(431, 48, 89, 39);
 		panel_1.add(deleteBtn);
 		deleteBtn.addActionListener(this);
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(100, 149, 237));
-		panel_2.setBounds(10, 5, 804, 34);
-		frame.getContentPane().add(panel_2);
-		panel_2.setLayout(null);
-		
-		JLabel lblNewLabel_1 = new JLabel("CREATE TIME SLOTS");
-		lblNewLabel_1.setForeground(new Color(255, 255, 255));
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblNewLabel_1.setBounds(26, 10, 165, 18);
-		panel_2.add(lblNewLabel_1);
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "ADDING TIMESLOT", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(102, 153, 255)));
 		panel_3.setBackground(new Color(240, 248, 255));
-		panel_3.setBounds(10, 49, 804, 491);
-		frame.getContentPane().add(panel_3);
+		panel_3.setBounds(33, 10, 804, 434);
+		panel_3.setLayout(null);
+//		panel_3.add(panel);
+//		frame.getContentPane().add(panel_3);
+		
+		
 		
 		JTableHeader head = timeslotTable.getTableHeader();
 		head.setBackground(new Color(102, 153, 255));
@@ -177,6 +171,15 @@ public class Add_Manage_TimeSlot implements ActionListener {
 				id = Integer.parseInt(mngModel.getValueAt(row, 0).toString());
 			}
 			});
+		
+		panel_3.add(panel_1);
+		panel_3.add(panel);
+		//frame.getContentPane().add(panel_3);
+		AddnManage_Timeslot = new JPanel();
+		AddnManage_Timeslot.setBounds(0, 0, 831, 563);
+		AddnManage_Timeslot.setLayout(null);
+		AddnManage_Timeslot.add(panel_3);
+		frame.getContentPane().add(AddnManage_Timeslot);
 		
 		
 	}

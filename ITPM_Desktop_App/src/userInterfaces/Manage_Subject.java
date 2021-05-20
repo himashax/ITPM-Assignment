@@ -1,3 +1,4 @@
+
 package userInterfaces;
 
 import java.awt.EventQueue;
@@ -45,6 +46,7 @@ public class Manage_Subject implements ActionListener {
 	private JButton btnSubUpdate,btnSubDelete,btnSubClear;
 	private int id;
 	private ButtonGroup bg;
+	public JPanel panel_manageSubject;
 	
 	/**
 	 * Launch the application.
@@ -76,9 +78,14 @@ public class Manage_Subject implements ActionListener {
 		frmManageSubjects = new JFrame();
 		frmManageSubjects.setTitle("MANAGE SUBJECTS");
 		frmManageSubjects.getContentPane().setBackground(Color.LIGHT_GRAY);
-		frmManageSubjects.setBounds(100, 100, 875, 491);
+		frmManageSubjects.setBounds(100, 100, 898, 491);
 		frmManageSubjects.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmManageSubjects.getContentPane().setLayout(null);
+		frmManageSubjects.setLocationRelativeTo(null);
+		
+		panel_manageSubject = new JPanel();
+		panel_manageSubject.setLayout(null);
+		panel_manageSubject.setBounds(0, 0, 882, 452);
 		
 		SpinnerModel model_1 = new SpinnerNumberModel(0, 0, 12, 1);
 		SpinnerModel model_2 = new SpinnerNumberModel(0, 0, 12, 1);
@@ -88,8 +95,8 @@ public class Manage_Subject implements ActionListener {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(10, 11, 839, 156);
-		frmManageSubjects.getContentPane().add(panel);
+		panel.setBounds(10, 11, 862, 156);
+
 		panel.setLayout(null);
 		
 		
@@ -101,7 +108,7 @@ public class Manage_Subject implements ActionListener {
 		table.setModel(modal);
 		
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(10, 11, 712, 134);
+		scrollPane.setBounds(10, 11, 730, 134);
 		
 
 		subjectGroupTable();
@@ -142,103 +149,107 @@ public class Manage_Subject implements ActionListener {
 		
 		btnSubUpdate = new JButton("UPDATE");
 		btnSubUpdate.setBackground(SystemColor.activeCaption);
-		btnSubUpdate.setBounds(732, 38, 89, 23);
+		btnSubUpdate.setBounds(750, 27, 89, 23);
 		btnSubUpdate.addActionListener(this);
 		panel.add(btnSubUpdate);
 		
 		btnSubDelete = new JButton("DELETE");
 		btnSubDelete.setBackground(SystemColor.activeCaption);
-		btnSubDelete.setBounds(732, 72, 89, 23);
+		btnSubDelete.setBounds(750, 67, 89, 23);
 		btnSubDelete.addActionListener(this);
 		panel.add(btnSubDelete);
 		
 		btnSubClear = new JButton("CLEAR");
 		btnSubClear.setBackground(SystemColor.activeCaption);
-		btnSubClear.setBounds(732, 106, 89, 23);
+		btnSubClear.setBounds(750, 111, 89, 23);
 		btnSubClear.addActionListener(this);
 		panel.add(btnSubClear);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(10, 178, 839, 249);
-		frmManageSubjects.getContentPane().add(panel_1);
+		panel_1.setBounds(10, 178, 862, 249);
+		
 		panel_1.setLayout(null);
 		
 		textField_mSubCode = new JTextField();
 		textField_mSubCode.setColumns(10);
-		textField_mSubCode.setBounds(149, 141, 243, 20);
+		textField_mSubCode.setBounds(162, 141, 243, 20);
 		panel_1.add(textField_mSubCode);
 		
 		textField_mSubName = new JTextField();
 		textField_mSubName.setColumns(10);
-		textField_mSubName.setBounds(149, 192, 243, 20);
+		textField_mSubName.setBounds(162, 192, 243, 20);
 		panel_1.add(textField_mSubName);
 		
 		bg = new ButtonGroup();
 		rdbtn_mFSem = new JRadioButton("1st Semester");
-		rdbtn_mFSem.setBounds(149, 87, 109, 23);
+		rdbtn_mFSem.setBounds(162, 87, 109, 23);
 		panel_1.add(rdbtn_mFSem);
 		
 		rdbtnSecSem = new JRadioButton("2nd Semester");
-		rdbtnSecSem.setBounds(283, 87, 109, 23);
+		rdbtnSecSem.setBounds(296, 87, 109, 23);
 		panel_1.add(rdbtnSecSem);
 		
 		bg.add(rdbtn_mFSem);
 		bg.add(rdbtnSecSem);
 		
 		spinner_mLecHrs = new JSpinner(model_1);
-		spinner_mLecHrs.setBounds(603, 30, 186, 20);
+		spinner_mLecHrs.setBounds(626, 30, 204, 20);
 		panel_1.add(spinner_mLecHrs);
 		
 		spinner_mTuteHrs = new JSpinner(model_2);
-		spinner_mTuteHrs.setBounds(603, 90, 186, 20);
+		spinner_mTuteHrs.setBounds(626, 88, 204, 20);
 		panel_1.add(spinner_mTuteHrs);
 		
 		spinner_mLabHrs = new JSpinner(model_3);
-		spinner_mLabHrs.setBounds(603, 141, 186, 20);
+		spinner_mLabHrs.setBounds(626, 141, 204, 20);
 		panel_1.add(spinner_mLabHrs);
 		
 		spinner_mEvlHrs = new JSpinner(model_4);
-		spinner_mEvlHrs.setBounds(603, 192, 186, 20);
+		spinner_mEvlHrs.setBounds(626, 192, 204, 20);
 		panel_1.add(spinner_mEvlHrs);
 		
 		String[] year = {"1","2","3","4"};
 		comboBox_mYear = new JComboBox(year);
 		comboBox_mYear.setEditable(true);
-		comboBox_mYear.setBounds(149, 30, 243, 20);
+		comboBox_mYear.setBounds(162, 30, 243, 20);
 		panel_1.add(comboBox_mYear);
 		
 		lbl_mYear = new JLabel("OFFERED YEAR");
-		lbl_mYear.setBounds(10, 33, 108, 14);
+		lbl_mYear.setBounds(23, 33, 108, 14);
 		panel_1.add(lbl_mYear);
 		
 		JLabel lbl_mSem = new JLabel("OFFERED SEMESTER");
-		lbl_mSem.setBounds(10, 91, 133, 14);
+		lbl_mSem.setBounds(23, 91, 133, 14);
 		panel_1.add(lbl_mSem);
 		
 		JLabel lbl_mSubCode = new JLabel("SUBJECT CODE");
-		lbl_mSubCode.setBounds(10, 144, 108, 14);
+		lbl_mSubCode.setBounds(23, 144, 108, 14);
 		panel_1.add(lbl_mSubCode);
 		
 		JLabel lbl_mSubName = new JLabel("SUBJECT NAME");
-		lbl_mSubName.setBounds(10, 195, 108, 14);
+		lbl_mSubName.setBounds(23, 195, 108, 14);
 		panel_1.add(lbl_mSubName);
 		
 		JLabel lbl_mLecHrs = new JLabel("NO OF LEC HOURS");
-		lbl_mLecHrs.setBounds(437, 33, 143, 14);
+		lbl_mLecHrs.setBounds(452, 33, 143, 14);
 		panel_1.add(lbl_mLecHrs);
 		
 		JLabel lbl_mTuteHrs = new JLabel("NO OF TUTE HOURS");
-		lbl_mTuteHrs.setBounds(437, 91, 117, 14);
+		lbl_mTuteHrs.setBounds(453, 91, 117, 14);
 		panel_1.add(lbl_mTuteHrs);
 		
 		JLabel lbl_mLabHrs = new JLabel("NO OF LAB HOURS");
-		lbl_mLabHrs.setBounds(437, 144, 133, 14);
+		lbl_mLabHrs.setBounds(452, 144, 133, 14);
 		panel_1.add(lbl_mLabHrs);
 		
 		JLabel lbl_mEvalHrs = new JLabel("NO OF EVALUATION HOURS");
-		lbl_mEvalHrs.setBounds(437, 195, 143, 14);
+		lbl_mEvalHrs.setBounds(452, 195, 143, 14);
 		panel_1.add(lbl_mEvalHrs);
+		
+		panel_manageSubject.add(panel);
+		panel_manageSubject.add(panel_1);
+		frmManageSubjects.getContentPane().add(panel_manageSubject);
 	}
 	
 	

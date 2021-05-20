@@ -1,3 +1,4 @@
+
 package userInterfaces;
 
 import java.awt.Color;
@@ -44,6 +45,7 @@ public class Manage_WorkingDays implements ActionListener {
 	private int id;
 	private JCheckBox chkMonday, chkTuesday, chkWednesday, chkThursday, chkFriday, chkSaturday, chkSunday;
 	private JPanel panel_2;
+	public JPanel Manage_WorkingDays_Panel;
 
 	/**
 	 * Launch the application.
@@ -79,8 +81,8 @@ public class Manage_WorkingDays implements ActionListener {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(240, 248, 255));
-		panel.setBounds(48, 69, 726, 179);
-		frame.getContentPane().add(panel);
+		panel.setBounds(47, 23, 726, 168);
+		//frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		
@@ -95,19 +97,19 @@ public class Manage_WorkingDays implements ActionListener {
 		head.setForeground(Color.white);
 		
 		scPane = new JScrollPane(manageDays);
-		scPane.setBounds(67,20,521,146);
+		scPane.setBounds(67,10,521,146);
 		workingDayList();
 		panel.add(scPane);
 		
 		btnUpdate = new JButton("UPDATE");
 		btnUpdate.setBackground(new Color(30, 144, 255));
 		btnUpdate.setForeground(new Color(255, 255, 255));
-		btnUpdate.setBounds(598, 40, 85, 35);
+		btnUpdate.setBounds(598, 34, 85, 35);
 		btnUpdate.addActionListener(this);
 		panel.add(btnUpdate);
 		
 		btnDelete = new JButton("DELETE");
-		btnDelete.setBounds(598, 110, 85, 35);
+		btnDelete.setBounds(598, 92, 85, 35);
 		btnDelete.addActionListener(this);
 		panel.add(btnDelete);
 		
@@ -173,90 +175,99 @@ public class Manage_WorkingDays implements ActionListener {
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(65, 105, 225)), "Update | Delete Working Days and Hours", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(70, 130, 180)));
 		panel_1.setBackground(new Color(211, 211, 211));
-		panel_1.setBounds(48, 270, 732, 250);
-		frame.getContentPane().add(panel_1);
+		panel_1.setBounds(47, 201, 732, 218);
+		//frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
 		JLabel lblNoOfWorking = new JLabel("No of Working Days");
-		lblNoOfWorking.setBounds(59, 50, 113, 23);
+		lblNoOfWorking.setBounds(59, 31, 113, 23);
 		panel_1.add(lblNoOfWorking);
 		
 		JLabel lblWorkingDays = new JLabel("Working Days");
-		lblWorkingDays.setBounds(59, 100, 90, 23);
+		lblWorkingDays.setBounds(62, 77, 90, 23);
 		panel_1.add(lblWorkingDays);
 		
 		String[] data= {"5","2"};
 		noOfDays = new JComboBox(data);
-		noOfDays.setBounds(210, 50, 167, 23);
+		noOfDays.setBounds(210, 31, 167, 23);
 		panel_1.add(noOfDays);
 		
 		chkMonday = new JCheckBox("Monday");
-		chkMonday.setBounds(210, 101, 77, 21);
+		chkMonday.setBounds(210, 78, 77, 21);
 		panel_1.add(chkMonday);
 		
 		chkTuesday = new JCheckBox("Tuesday");
-		chkTuesday.setBounds(296, 101, 81, 21);
+		chkTuesday.setBounds(296, 78, 81, 21);
 		panel_1.add(chkTuesday);
 		
 		chkWednesday = new JCheckBox("Wednesday");
-		chkWednesday.setBounds(390, 101, 93, 21);
+		chkWednesday.setBounds(393, 78, 93, 21);
 		panel_1.add(chkWednesday);
 		
 		chkThursday = new JCheckBox("Thursday");
-		chkThursday.setBounds(496, 101, 93, 21);
+		chkThursday.setBounds(497, 78, 93, 21);
 		panel_1.add(chkThursday);
 		
 		chkFriday = new JCheckBox("Friday");
-		chkFriday.setBounds(603, 101, 93, 21);
+		chkFriday.setBounds(604, 78, 93, 21);
 		panel_1.add(chkFriday);
 		
 		chkSaturday = new JCheckBox("Saturday");
-		chkSaturday.setBounds(210, 145, 77, 21);
+		chkSaturday.setBounds(210, 117, 77, 21);
 		panel_1.add(chkSaturday);
 		
 		chkSunday = new JCheckBox("Sunday");
-		chkSunday.setBounds(296, 145, 80, 21);
+		chkSunday.setBounds(297, 117, 80, 21);
 		panel_1.add(chkSunday);
 		
 		JLabel lblWorkingTimePer = new JLabel("Working Time Per Day");
-		lblWorkingTimePer.setBounds(59, 199, 130, 23);
+		lblWorkingTimePer.setBounds(59, 164, 130, 23);
 		panel_1.add(lblWorkingTimePer);
 		
 		hours = new JTextField();
-		hours.setBounds(210, 199, 96, 23);
+		hours.setBounds(210, 164, 96, 23);
 		panel_1.add(hours);
 		hours.setColumns(10);
 		
 		JLabel lblHours = new JLabel("Hours");
-		lblHours.setBounds(316, 204, 45, 13);
+		lblHours.setBounds(316, 169, 45, 13);
 		panel_1.add(lblHours);
 		
 		min = new JTextField();
-		min.setBounds(390, 199, 96, 23);
+		min.setBounds(393, 164, 96, 23);
 		panel_1.add(min);
 		min.setColumns(10);
 		
 		JLabel lblMinutes = new JLabel("Minutes");
-		lblMinutes.setBounds(496, 204, 55, 14);
+		lblMinutes.setBounds(497, 168, 55, 14);
 		panel_1.add(lblMinutes);
 		
 		panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "WORKING DAYS AND HOURS", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(102, 153, 255)));
 		panel_2.setBackground(new Color(240, 248, 255));
-		panel_2.setBounds(10, 49, 804, 490);
-		frame.getContentPane().add(panel_2);
+		panel_2.setBounds(30, 5, 819, 439);
+		panel_2.setLayout(null);
+		panel_2.add(panel);
+		panel_2.add(panel_1);
+		
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(new Color(102, 153, 255));
 		panel_3.setBounds(10, 10, 804, 28);
-		frame.getContentPane().add(panel_3);
 		panel_3.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("MANAGE WORKING DYAS AND HOURS");
+		JLabel lblNewLabel = new JLabel("MANAGE WORKING DAYS AND HOURS");
 		lblNewLabel.setForeground(new Color(255, 255, 255));
 		lblNewLabel.setBackground(new Color(255, 255, 255));
 		lblNewLabel.setBounds(10, 10, 242, 13);
 		panel_3.add(lblNewLabel);
+		
+		Manage_WorkingDays_Panel = new JPanel();
+		Manage_WorkingDays_Panel.setBounds(0, 0, 865, 563);
+		Manage_WorkingDays_Panel.setLayout(null);
+	
+		Manage_WorkingDays_Panel.add(panel_2);
+		frame.getContentPane().add(Manage_WorkingDays_Panel);
 		
 	}
 	
@@ -340,3 +351,5 @@ public class Manage_WorkingDays implements ActionListener {
 		
 	}
 }
+
+

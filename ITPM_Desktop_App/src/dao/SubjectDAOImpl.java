@@ -1,3 +1,4 @@
+
 package dao;
 
 import java.sql.Connection;
@@ -13,11 +14,11 @@ import models.Subject;
 public class SubjectDAOImpl {
 	DBConnection db = new DBConnection();
 	
-	public String insertSubQuery(Subject subject) {
+	public String insertSubQuery(Subject subject) throws Exception{
 		
 		String result = "";
 		
-		try {
+		
 			Connection connection = db.connect();
 			
 			String insertSub = "insert into subject values(?,?,?,?,?,?,?,?,?)";
@@ -37,11 +38,7 @@ public class SubjectDAOImpl {
 			ps.execute();
 			
 			connection.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+
 		return result;
 		
 	}
@@ -147,5 +144,6 @@ public class SubjectDAOImpl {
 		}
 		
 	}
+	
 	
 }

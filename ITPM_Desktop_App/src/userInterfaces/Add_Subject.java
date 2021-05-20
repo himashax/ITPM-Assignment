@@ -1,3 +1,4 @@
+
 package userInterfaces;
 
 import java.awt.EventQueue;
@@ -50,6 +51,7 @@ public class Add_Subject implements ActionListener {
 	private JButton btnClear;
 	private JButton btnSave;
 	ButtonGroup G1; 
+	public JPanel panel_AddSubject;
 
 	/**
 	 * Launch the application.
@@ -82,36 +84,38 @@ public class Add_Subject implements ActionListener {
 		frmAddSubject.setTitle("ADD SUBJECT");
 		frmAddSubject.setForeground(Color.WHITE);
 		frmAddSubject.setBackground(Color.WHITE);
-		frmAddSubject.setBounds(100, 100, 684, 439);
+		frmAddSubject.setBounds(100, 100, 902, 467);
 		frmAddSubject.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmAddSubject.getContentPane().setLayout(null);
+		frmAddSubject.setLocationRelativeTo(null);
 		
 		SpinnerModel model_1 = new SpinnerNumberModel(0, 0, 12, 1);
 		SpinnerModel model_2 = new SpinnerNumberModel(0, 0, 12, 1);
 		SpinnerModel model_3 = new SpinnerNumberModel(0, 0, 12, 1);
 		SpinnerModel model_4 = new SpinnerNumberModel(0, 0, 12, 1);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.WHITE);
-		panel.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
-		panel.setBounds(0, 0, 698, 400);
-		frmAddSubject.getContentPane().add(panel);
-		panel.setLayout(null);
+		panel_AddSubject = new JPanel();
+		panel_AddSubject.setBackground(Color.WHITE);
+		panel_AddSubject.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
+		panel_AddSubject.setBounds(0, 0, 886, 428);
+
+		panel_AddSubject.setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new LineBorder(UIManager.getColor("Button.background")));
 		panel_1.setBackground(UIManager.getColor("Button.background"));
-		panel_1.setBounds(10, 43, 332, 293);
-		panel.add(panel_1);
+		panel_1.setBounds(38, 43, 378, 293);
+		panel_AddSubject.add(panel_1);
 		panel_1.setLayout(null);
 		
 		textFieldSubCode = new JTextField();
-		textFieldSubCode.setBounds(157, 180, 165, 21);
+		textFieldSubCode.setBounds(157, 180, 183, 21);
 		panel_1.add(textFieldSubCode);
 		textFieldSubCode.setColumns(10);
 		
 		textFieldSubName = new JTextField();
 		textFieldSubName.setColumns(10);
-		textFieldSubName.setBounds(157, 241, 165, 21);
+		textFieldSubName.setBounds(157, 241, 183, 21);
 		panel_1.add(textFieldSubName);
 		
 		String[] year = {"1","2","3","4"};
@@ -119,7 +123,7 @@ public class Add_Subject implements ActionListener {
 		comboBoxOffYear = new JComboBox(year);
 		comboBoxOffYear.setEditable(true);
 		comboBoxOffYear.setBackground(Color.WHITE);
-		comboBoxOffYear.setBounds(150, 28, 160, 20);
+		comboBoxOffYear.setBounds(150, 28, 190, 20);
 		panel_1.add(comboBoxOffYear);
 		
 		lblOffYear = new JLabel("OFFERED YEAR");
@@ -148,23 +152,24 @@ public class Add_Subject implements ActionListener {
 		rdbtnFirstSem = new JRadioButton("1st Semester");
 		rdbtnFirstSem.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		rdbtnFirstSem.setBackground(SystemColor.text);
-		rdbtnFirstSem.setBounds(66, 121, 96, 23);
+		rdbtnFirstSem.setBounds(97, 121, 96, 23);
 		panel_1.add(rdbtnFirstSem);
 		
 		
 		rdbtnSecSem = new JRadioButton("2nd Semester");
 		rdbtnSecSem.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		rdbtnSecSem.setBackground(SystemColor.text);
-		rdbtnSecSem.setBounds(201, 121, 96, 23);
+		rdbtnSecSem.setBounds(244, 121, 96, 23);
 		panel_1.add(rdbtnSecSem);
 		
 		G1.add(rdbtnFirstSem); 
 		G1.add(rdbtnSecSem);
 		
 		JPanel panel_1_1 = new JPanel();
+		panel_1_1.setBorder(new LineBorder(UIManager.getColor("Button.background")));
 		panel_1_1.setBackground(UIManager.getColor("Button.background"));
-		panel_1_1.setBounds(352, 43, 305, 293);
-		panel.add(panel_1_1);
+		panel_1_1.setBounds(470, 43, 378, 293);
+		panel_AddSubject.add(panel_1_1);
 		panel_1_1.setLayout(null);
 		
 		lblNoOfHrs = new JLabel("NO OF LECTURE HOURS");
@@ -188,19 +193,19 @@ public class Add_Subject implements ActionListener {
 		panel_1_1.add(lblNoOfEvaluation);
 		
 		spinner_LecHrs = new JSpinner(model_1);
-		spinner_LecHrs.setBounds(214, 30, 80, 20);
+		spinner_LecHrs.setBounds(214, 30, 120, 20);
 		panel_1_1.add(spinner_LecHrs);
 		
 		spinner_Tute = new JSpinner(model_2);
-		spinner_Tute.setBounds(214, 104, 80, 20);
+		spinner_Tute.setBounds(214, 104, 120, 20);
 		panel_1_1.add(spinner_Tute);
 		
 		spinner_Lab = new JSpinner(model_3);
-		spinner_Lab.setBounds(214, 174, 80, 20);
+		spinner_Lab.setBounds(214, 174, 120, 20);
 		panel_1_1.add(spinner_Lab);
 		
 		spinner_EvHrs = new JSpinner(model_4);
-		spinner_EvHrs.setBounds(214, 232, 80, 20);
+		spinner_EvHrs.setBounds(214, 232, 120, 20);
 		panel_1_1.add(spinner_EvHrs);
 		
 		btnClear = new JButton("CLEAR");
@@ -212,17 +217,18 @@ public class Add_Subject implements ActionListener {
 		});
 		btnClear.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnClear.setBackground(SystemColor.activeCaption);
-		btnClear.setBounds(362, 364, 123, 25);
+		btnClear.setBounds(494, 378, 146, 39);
 		btnClear.addActionListener(this);
-		panel.add(btnClear);
+		panel_AddSubject.add(btnClear);
 		
 		btnSave = new JButton("SAVE");
 		btnSave.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnSave.setBackground(SystemColor.activeCaption);
-		btnSave.setBounds(524, 364, 119, 25);
+		btnSave.setBounds(687, 378, 138, 39);
 		btnSave.addActionListener(this);
-		panel.add(btnSave);
+		panel_AddSubject.add(btnSave);
 		
+		frmAddSubject.getContentPane().add(panel_AddSubject);
 	}
 	
 	
@@ -279,7 +285,12 @@ public class Add_Subject implements ActionListener {
 				
 				if(confirm == JOptionPane.YES_OPTION) {
 					SubjectDAOImpl subjectDAOImpl = new SubjectDAOImpl();
-					subjectDAOImpl.insertSubQuery(subject);
+					try {
+						subjectDAOImpl.insertSubQuery(subject);
+					} catch (Exception e2) {
+						System.out.println("Hiii");
+						JOptionPane.showMessageDialog(null,e2.getMessage());
+					}
 					
 				}
 				resetSubFields();

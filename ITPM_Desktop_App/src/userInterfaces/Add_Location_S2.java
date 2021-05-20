@@ -19,8 +19,11 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import dao.LecturerDAOImpl;
 import dao.Manage_Session_RoomDAOImpl;
 import dao.SessionDAOImpl;
+import models.Active_Days;
+import models.Lecturer;
 import models.Manage_Session_Room;
 import models.Session;
 import java.awt.event.ActionListener;
@@ -70,7 +73,7 @@ public class Add_Location_S2 {
 		
 
 		
-		DefaultTableModel modal = new DefaultTableModel(new String[] {"ID","Lecturer 1","Lecturer 2","Subject","Group ID","Tag","Room"},0);
+		DefaultTableModel modal = new DefaultTableModel(new String[] {"ID","Lecturer 1","Lecturer 2","Tag","Group ID","Subject","No.Students","Day","Duration"},0);
 		table_Room_Session = new JTable(modal);
 		table_Room_Session.setBounds(10, 11, 800, 116);
 		JTableHeader header = table_Room_Session.getTableHeader();
