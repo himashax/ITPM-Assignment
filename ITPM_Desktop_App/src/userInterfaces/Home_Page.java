@@ -35,6 +35,11 @@ public class Home_Page {
 
 	JPanel addLecturerPanel,manageLecturerPanel,addSubjectPanel,manageSubjectPanel,addSession,manageSession;
 
+
+
+	JPanel sessionsListPanel, categoriesPanel;
+
+
 	private JMenuItem mntmManageSubject;
 	/**
 	 * Launch the application.
@@ -357,6 +362,7 @@ public class Home_Page {
 		});
 		mnSessions.add(mntmManageSession);
 
+
 	
 	
 	JMenu sessionRoom = new JMenu("Session Rooms");
@@ -389,6 +395,44 @@ public class Home_Page {
 	});
 	sessionRoom.add(addLocationS2);
 
+		
+		JMenu sessionsAnsNotAv = new JMenu("Sessions|Not Available Times");
+		sessionsAnsNotAv.setForeground(Color.WHITE);
+		sessionsAnsNotAv.setBackground(SystemColor.activeCaption);
+		menuBar.add(sessionsAnsNotAv);
+		
+		JMenuItem viewSessions = new JMenuItem("View Sesssions");
+		viewSessions.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().removeAll();
+				sessionsListPanel = new Sessions_List().sessions_panel;
+				frame.getContentPane().add(sessionsListPanel, "name_573107097077500");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("View Sessions");
+			}
+		});
+		sessionsAnsNotAv.add(viewSessions);
+		
+		JMenuItem sessionCate = new JMenuItem("Sessions | Not Available Times");
+		sessionCate.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().removeAll();
+				categoriesPanel = new Session_Categories().Categoriespanel;
+				frame.getContentPane().add(categoriesPanel, "name_573107097077500");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("View Sessions");
+			}
+		});
+		sessionsAnsNotAv.add(sessionCate);
+	}
+
+
 }
-}
+
 
