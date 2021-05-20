@@ -14,21 +14,22 @@ import models.NotAvailable;
 public class NotAvailableDAOImpl {
 	private DBConnection db = new DBConnection();
 
-	public String insertNotAvailableTime(int duration,String session_ID, String lecturer,String group_ID,String day,String time) {
+	public String insertNotAvailableTime(int duration,int session_ID, String first_lecturer,String second_lecturer,String group_ID,String day,String time) {
 		String outcome1 = "";
 		
 		try {
 		    Connection connection = db.connect();
-		    String insertQuery1 = "insert into notAvailableTime values (?,?,?,?,?,?,?)";
+		    String insertQuery1 = "insert into notAvailableTime values (?,?,?,?,?,?,?,?)";
 		
 			PreparedStatement ps = connection.prepareStatement(insertQuery1);
 			ps.setInt(1, 0);
 			ps.setInt(2, duration);
-			ps.setString(3, session_ID);
-			ps.setString(4, lecturer);
-			ps.setString(5, group_ID);
-			ps.setString(6, day);
-			ps.setString(67, time);
+			ps.setInt(3, session_ID);
+			ps.setString(4, first_lecturer);
+			ps.setString(5, second_lecturer);
+			ps.setString(6, group_ID);
+			ps.setString(7, day);
+			ps.setString(8, time);
 			ps.execute();
 			
 			connection.close();
@@ -52,11 +53,12 @@ public class NotAvailableDAOImpl {
 				NotAvailable na = new NotAvailable();
 				na.setId(rs.getInt(1));
 				na.setDur(rs.getInt(2));
-				na.setSessionID(rs.getString(3));
-				na.setLecturer(rs.getString(4));
-				na.setGroupID(rs.getString(5));
-				na.setDay(rs.getString(6));
-				na.setTime(rs.getString(7));
+				na.setSessionID(rs.getInt(3));
+				na.setFistLecturer(rs.getString(4));
+				na.setSecondLecturer(rs.getString(5));
+				na.setGroupID(rs.getString(6));
+				na.setDay(rs.getString(7));
+				na.setTime(rs.getString(8));
 				s2.add(na);
 			}
 		} catch (SQLException e) {
@@ -68,10 +70,10 @@ public class NotAvailableDAOImpl {
 	}
 	
 	
-	public void updateNotAvailableTime(int id,int duration, String session_ID, String lecturer,String group_ID,String day,String time) {
+	public void updateNotAvailableTime(int id,int duration, int session_ID, String first_lecturer,String second_lecturer, String group_ID,String day,String time) {
 		try {
 		Connection connection = db.connect();
-		String updateQuery1 = "update notAvailableTime set duration = '"+duration+"',session_ID = '"+session_ID+"', lecturer = '"+lecturer+"', group_ID = '"+group_ID+"', day ='"+day+"', time = '"+time+"' where id = '"+id+"' ";
+		String updateQuery1 = "update notAvailableTime set duration = '"+duration+"',session_ID = '"+session_ID+"', first_lecturer = '"+first_lecturer+"',second_lecturer = '"+second_lecturer+"', group_ID = '"+group_ID+"', day ='"+day+"', time = '"+time+"' where id = '"+id+"' ";
 
 		PreparedStatement ps;
 		ps = connection.prepareStatement(updateQuery1);
@@ -100,4 +102,59 @@ public class NotAvailableDAOImpl {
 		}
 
 		}
+	
+	public ArrayList<String> retrieveTime(){
+		ArrayList<String> ob = new ArrayList<String>();
+		Connection conn = db.connect();
+		String retrieveTSlot = "select * from timeslot";
+		Statement st;
+		try {
+			st = conn.createStatement();
+			ResultSet rs = st.executeQuery(retrieveTSlot);
+			while(rs.next()) {
+				ob.add(rs.getString(2)+" - "+rs.getString(3));
+			}
+			System.out.println(ob);
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	return ob;
+			
+	}
+	
+	public NotAvailable getByNotAvailableId(int id) {
+
+		NotAvailable nta = new NotAvailable();
+		Connection con = db.connect();
+
+		String getByNotAvailableId = "select * from notavailabletime where id = '"+id+"'";
+
+		Statement st;
+		try {
+		st = con.createStatement();
+		ResultSet rs = st.executeQuery(getByNotAvailableId);
+
+		while(rs.next()) {
+		nta.setId(rs.getInt(1));
+		nta.setDur(rs.getInt(2));
+		nta.setSessionID(rs.getInt(3));
+		nta.setFistLecturer(rs.getString(4));
+		nta.setSecondLecturer(rs.getString(5));
+		nta.setGroupID(rs.getString(6));
+		nta.setDay(rs.getString(7));
+		nta.setTime(rs.getString(8));
+		
+		}
+		} catch (SQLException e) {
+		e.printStackTrace();
+		}
+
+		return nta;
+		}
+	
+	
+	
+	
 }

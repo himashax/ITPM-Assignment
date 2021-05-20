@@ -2,7 +2,7 @@ package models;
 
 public class Member3_Location {
 	private int id;
-	private String session;
+	private int session;
 	private String room;
 	private String startTime;
 	private String endTime;
@@ -40,10 +40,10 @@ public class Member3_Location {
 	public void setDay(String day) {
 		this.day = day;
 	}
-	public String getSession() {
+	public int getSession() {
 		return session;
 	}
-	public void setSession(String session) {
+	public void setSession(int session) {
 		this.session = session;
 	}
 	
