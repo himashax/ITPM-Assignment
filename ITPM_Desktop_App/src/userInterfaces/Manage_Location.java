@@ -33,6 +33,7 @@ import javax.swing.JTable;
 
 public class Manage_Location implements ActionListener {
 	
+	public JPanel manLocation_panel;
 	
 	private ButtonGroup bg;
 	private JFrame frame;
@@ -79,9 +80,14 @@ public class Manage_Location implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+	    manLocation_panel = new JPanel();
+	    manLocation_panel.setBackground(Color.LIGHT_GRAY);
+		manLocation_panel.setBounds(0, 0, 870, 513);
+		manLocation_panel.setLayout(null);
+		
 		JPanel panel = new JPanel();
 		panel.setBounds(36, 282, 783, 152);
-		frame.getContentPane().add(panel);
+		//frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		MRname = new JTextField();
@@ -129,29 +135,16 @@ public class Manage_Location implements ActionListener {
 		 btnclear = new JButton("Clear");
 		btnclear.setBounds(310, 455, 97, 25);
 		btnclear.addActionListener(this);
-		frame.getContentPane().add(btnclear);
+		manLocation_panel.add(btnclear);
 		
 		 btnSave = new JButton("Update");
 		btnSave.setBounds(488, 455, 97, 25);
 		btnSave.addActionListener(this);
-		frame.getContentPane().add(btnSave);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(51, 102, 204));
-		panel_1.setBounds(0, 0, 868, 46);
-		frame.getContentPane().add(panel_1);
-		panel_1.setLayout(null);
-		
-		JLabel lblNewLabel_2 = new JLabel("Manage Location");
-		lblNewLabel_2.setForeground(new Color(255, 255, 255));
-		lblNewLabel_2.setBounds(12, 13, 118, 20);
-		panel_1.add(lblNewLabel_2);
-		lblNewLabel_2.setBackground(new Color(255, 255, 255));
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		manLocation_panel.add(btnSave);
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(36, 74, 778, 185);
-		frame.getContentPane().add(panel_2);
+		panel_2.setBounds(36, 54, 778, 185);
+		//frame.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 		
 		DefaultTableModel model = new DefaultTableModel(new String[] {"ID","Building" , "Room", "Room Type" , "Capacity"},0);
@@ -168,8 +161,8 @@ public class Manage_Location implements ActionListener {
 		btndelete = new JButton("Delete");
 		btndelete.setBounds(659, 455, 97, 25);
 		btndelete.addActionListener(this);
+		manLocation_panel.add(btndelete);
 		
-		frame.getContentPane().add(btndelete);
 		
 		table.addMouseListener((MouseListener) new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -196,6 +189,11 @@ public class Manage_Location implements ActionListener {
 			
 			}
 			});
+		
+
+		manLocation_panel.add(panel);
+		manLocation_panel.add(panel_2);
+		frame.getContentPane().add(manLocation_panel);
 	}
 	
 	public void locationtable () {
@@ -238,12 +236,12 @@ public class Manage_Location implements ActionListener {
 			else if (ob == btnSave ){
 				
 				if(locid == 0) {
-					JOptionPane.showMessageDialog(frame,"Please select the row first","Alert",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(manLocation_panel,"Please select the row first","Alert",JOptionPane.WARNING_MESSAGE);
 				}
 				
 				else if (MRname.getText().isEmpty() || MBname.getText().isEmpty() || (Integer) Mcapa.getValue() == 0) {
 					
-					JOptionPane.showMessageDialog(frame,"Please Enter the all details","Alert",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(manLocation_panel,"Please Enter the all details","Alert",JOptionPane.WARNING_MESSAGE);
 				}
 				
 				else {
@@ -260,20 +258,27 @@ public class Manage_Location implements ActionListener {
 						value = "lab";
 					}
 					
-					LocationDAOImpl lo = new LocationDAOImpl();
-					lo.updatelocation(locid, name, room, value, cap);
 					
-					DefaultTableModel model = (DefaultTableModel)table.getModel();
-					model.setRowCount(0);
+					int result = JOptionPane.showConfirmDialog(manLocation_panel,"Are you sure you want to submit your data?","Submit Data",JOptionPane.YES_NO_OPTION);
 					
-					locationtable();
+					if(result == JOptionPane.YES_OPTION) {
+						LocationDAOImpl lo = new LocationDAOImpl();
+						lo.updatelocation(locid, name, room, value, cap);
+						DefaultTableModel model = (DefaultTableModel)table.getModel();
+						model.setRowCount(0);
+						
+						locationtable();
+						
+						reset();
+					}
 					
-					reset();
+					
+					
 				}
 									
 			}else if (ob == btndelete) {
 				
-				int confirm =JOptionPane.showConfirmDialog(null,"Are you sure?","An Inane Question",JOptionPane.YES_NO_OPTION);
+				int confirm =JOptionPane.showConfirmDialog(manLocation_panel,"Are you sure?","An Inane Question",JOptionPane.YES_NO_OPTION);
 
 				if(confirm == JOptionPane.YES_OPTION) {
 				LocationDAOImpl loc = new LocationDAOImpl();

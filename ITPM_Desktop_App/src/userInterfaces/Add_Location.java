@@ -32,6 +32,7 @@ import javax.swing.JSpinner;
 
 public class Add_Location implements ActionListener {
 
+	public JPanel addLocPanel;
 	private JFrame frame;
 	private JTextField name;
 	private JTextField room;
@@ -73,16 +74,16 @@ public class Add_Location implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 		
-		JPanel panel = new JPanel();
-		panel.setForeground(Color.BLACK);
-		frame.getContentPane().add(panel);
-		panel.setLayout(null);
+		addLocPanel = new JPanel();
+		addLocPanel.setForeground(Color.BLACK);
+		frame.getContentPane().add(addLocPanel);
+		addLocPanel.setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setForeground(new Color(51, 153, 255));
 		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(113, 130, 584, 373);
-		panel.add(panel_1);
+		panel_1.setBounds(130, 50, 584, 373);
+		addLocPanel.add(panel_1);
 		panel_1.setLayout(null);
 		
 		name = new JTextField();
@@ -142,19 +143,6 @@ public class Add_Location implements ActionListener {
 		capacity1 = new JSpinner();
 		capacity1.setBounds(206, 230, 86, 22);
 		panel_1.add(capacity1);
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(102, 102, 204));
-		panel_2.setForeground(new Color(102, 153, 255));
-		panel_2.setBounds(0, 0, 843, 56);
-		panel.add(panel_2);
-		panel_2.setLayout(null);
-		
-		JLabel lblNewLabel_1 = new JLabel("Add Location");
-		lblNewLabel_1.setForeground(new Color(255, 255, 255));
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_1.setBounds(12, 27, 129, 16);
-		panel_2.add(lblNewLabel_1);
 	}
 	
 	public void reset() {
@@ -177,7 +165,7 @@ public class Add_Location implements ActionListener {
 			
 			if(name.getText().isEmpty()|| room.getText().isEmpty() || (Integer) capacity1.getValue() == 0) {
 				
-				JOptionPane.showMessageDialog(frame,"Please Enter the all details","Alert",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(addLocPanel,"Please Enter the all details","Alert",JOptionPane.WARNING_MESSAGE);
 	
 			}
 			else {
@@ -196,8 +184,15 @@ public class Add_Location implements ActionListener {
 					value = "lab";
 				}
 				System.out.println(value);
-				LocationDAOImpl loca = new LocationDAOImpl();
-				loca.insertLocation(bname, roomname, value, capacity);
+				
+				int result = JOptionPane.showConfirmDialog(addLocPanel,"Are you sure you want to submit your data?","Submit Data",JOptionPane.YES_NO_OPTION);
+				
+				if(result == JOptionPane.YES_OPTION) {
+					LocationDAOImpl loca = new LocationDAOImpl();
+					loca.insertLocation(bname, roomname, value, capacity);
+				}
+				
+				
 				
 				reset();
 
