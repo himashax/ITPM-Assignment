@@ -3,8 +3,9 @@ package models;
 public class NotAvailable {
 	private int id;
 	private int dur;
-	private String sessionID;
-	private String lecturer;
+	private int sessionID;
+	private String fistLecturer;
+	private String secondLecturer;
 	private String groupID;
 	private String day; 
 	private String time;
@@ -13,21 +14,28 @@ public class NotAvailable {
 	public int getId() {
 		return id;
 	}
+	public String getFistLecturer() {
+		return fistLecturer;
+	}
+	public void setFistLecturer(String fistLecturer) {
+		this.fistLecturer = fistLecturer;
+	}
+	public String getSecondLecturer() {
+		return secondLecturer;
+	}
+	public void setSecondLecturer(String secondLecturer) {
+		this.secondLecturer = secondLecturer;
+	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getSessionID() {
+	public int getSessionID() {
 		return sessionID;
 	}
-	public void setSessionID(String sessionID) {
+	public void setSessionID(int sessionID) {
 		this.sessionID = sessionID;
 	}
-	public String getLecturer() {
-		return lecturer;
-	}
-	public void setLecturer(String lecturer) {
-		this.lecturer = lecturer;
-	}
+	
 	public String getGroupID() {
 		return groupID;
 	}
