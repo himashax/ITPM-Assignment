@@ -26,15 +26,19 @@ public class Home_Page {
 	private JFrame frame;
 	JPanel addStudentGroupsPanel, manageGroupsPanel, addTagsPanel, manageTagsPanel;
 
-	JPanel addWorkingDaysPanel,manageDaysPanel,timeslotPanel;
+	JPanel manageLocationPanel, displayStatPanel,addLocationPanel;
 
+	JPanel addWorkingDaysPanel,manageDaysPanel,timeslotPanel;
+	
+	JPanel sessionRoomPanel,viewSessionRoomPanel;
 
 
 	JPanel addLecturerPanel,manageLecturerPanel,addSubjectPanel,manageSubjectPanel,addSession,manageSession;
 
-	JPanel manageLocPanel, displayStatPanel;
+
 
 	JPanel sessionsListPanel, categoriesPanel;
+
 
 	private JMenuItem mntmManageSubject;
 	/**
@@ -279,10 +283,30 @@ public class Home_Page {
 		mnLocation.setForeground(Color.WHITE);
 		menuBar.add(mnLocation);
 		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Add Location");
-		mnLocation.add(mntmNewMenuItem);
+		JMenuItem mntmAddLocation = new JMenuItem("Add Location");
+		mntmAddLocation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().removeAll();
+				addLocationPanel = new Add_Location().addLocPanel;
+				frame.getContentPane().add(addLocationPanel, "name_573107097077500");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("Add Location");
+			}
+		});
+		mnLocation.add(mntmAddLocation);
 		
 		JMenuItem mntmManageLocation = new JMenuItem("Manage Location");
+		mntmManageLocation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().removeAll();
+				manageLocationPanel = new Manage_Location().manLocation_panel;
+				frame.getContentPane().add(manageLocationPanel, "name_573107097077500");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("Manage Location");
+			}
+		});
 		mnLocation.add(mntmManageLocation);
 		
 		JMenu mnStatistics = new JMenu("Statistics");
@@ -290,6 +314,16 @@ public class Home_Page {
 		menuBar.add(mnStatistics);
 		
 		JMenuItem mntmShowStat = new JMenuItem("Show Statistics");
+		mntmShowStat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().removeAll();
+				displayStatPanel = new Display_Statistics().statPanel;
+				frame.getContentPane().add(displayStatPanel, "name_573107097077500");
+				frame.getContentPane().repaint();
+				frame.getContentPane().revalidate();
+				frame.setTitle("Show Statistics");
+			}
+		});
 		mnStatistics.add(mntmShowStat);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 		
@@ -327,6 +361,40 @@ public class Home_Page {
 			}
 		});
 		mnSessions.add(mntmManageSession);
+
+
+	
+	
+	JMenu sessionRoom = new JMenu("Session Rooms");
+	sessionRoom.setForeground(Color.WHITE);
+	menuBar.add(sessionRoom);
+	
+	JMenuItem manageSessionRom = new JMenuItem("Manage Session Room");
+	manageSessionRom.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			frame.getContentPane().removeAll();
+			sessionRoomPanel = new Manage_Session_Rooms().panel;
+			frame.getContentPane().add(sessionRoomPanel, "name_573107097077500");
+			frame.getContentPane().repaint();
+			frame.getContentPane().revalidate();
+			frame.setTitle("Manage Session Room");
+		}
+	});
+	sessionRoom.add(manageSessionRom);
+	
+	JMenuItem addLocationS2 = new JMenuItem("View Session Rooms");
+	addLocationS2.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			frame.getContentPane().removeAll();
+			viewSessionRoomPanel = new Add_Location_S2().panel_S2;
+			frame.getContentPane().add(viewSessionRoomPanel, "name_573107097077500");
+			frame.getContentPane().repaint();
+			frame.getContentPane().revalidate();
+			frame.setTitle("View Session Rooms");
+		}
+	});
+	sessionRoom.add(addLocationS2);
+
 		
 		JMenu sessionsAnsNotAv = new JMenu("Sessions|Not Available Times");
 		sessionsAnsNotAv.setForeground(Color.WHITE);
@@ -364,5 +432,7 @@ public class Home_Page {
 		sessionsAnsNotAv.add(sessionCate);
 	}
 
+
 }
+
 

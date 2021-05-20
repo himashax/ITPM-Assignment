@@ -1,6 +1,7 @@
 package models;
 
 public class Manage_Session_Room {
+
 	private int id;
 	public int getId() {
 		return id;
@@ -22,5 +23,6 @@ public class Manage_Session_Room {
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
+	
 	
 }
