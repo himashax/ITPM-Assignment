@@ -81,11 +81,13 @@ public class Home_Page {
 		menuBar.setBackground(SystemColor.activeCaption);
 		frame.setJMenuBar(menuBar);
 		
+		//menu for Lecturer
 		JMenu mnNewMenu = new JMenu("Lecturer");
 		mnNewMenu.setBackground(SystemColor.activeCaption);
 		mnNewMenu.setForeground(Color.WHITE);
 		menuBar.add(mnNewMenu);
 		
+		//menu item 'Add Lecturer' for the menu Lecturer
 		JMenuItem addLecturer_menu = new JMenuItem("Add Lecturer");
 		addLecturer_menu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -99,6 +101,7 @@ public class Home_Page {
 		});
 		mnNewMenu.add(addLecturer_menu);
 		
+		//menu item 'Manage Lecturer' for the menu Lecturer
 		JMenuItem mntmManageLec = new JMenuItem("Manage Lecturer");
 		mntmManageLec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -189,17 +192,17 @@ public class Home_Page {
 		});
 		Tags.add(manageTags_item);
 		
+		//menu for Subject
 		JMenu mnNewMenu_3 = new JMenu("Subject");
 		mnNewMenu_3.setForeground(Color.WHITE);
 		menuBar.add(mnNewMenu_3);
 		
+		//menu item 'Add Subject' for the menu Subject
 		JMenuItem mntmAddSubject = new JMenuItem("Add Subject");
 		mntmAddSubject.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
 				frame.getContentPane().removeAll();
 				addSubjectPanel = new Add_Subject().panel_AddSubject;
 				frame.getContentPane().add(addSubjectPanel, "name_573107097077500");
@@ -210,14 +213,12 @@ public class Home_Page {
 		});
 		mnNewMenu_3.add(mntmAddSubject);
 		
-		//Home page subject menu
+		//menu item 'Manage Subject' for the menu Subject
 		mntmManageSubject = new JMenuItem("Manage Subject");
 		mntmManageSubject.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
 				frame.getContentPane().removeAll();
 				manageSubjectPanel = new Manage_Subject().panel_manageSubject;
 				frame.getContentPane().add(manageSubjectPanel, "name_573107097077500");
@@ -293,11 +294,13 @@ public class Home_Page {
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 		
 		
+		//menu for Session
 		JMenu mnSessions = new JMenu("Session");
 		mnSessions.setForeground(Color.WHITE);
 		mnSessions.setBackground(SystemColor.activeCaption);
 		menuBar.add(mnSessions);
 		
+		//menu item 'Add Session' for the menu Session
 		JMenuItem mntmAddSesssion = new JMenuItem("Add Session");
 		mntmAddSesssion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -311,6 +314,7 @@ public class Home_Page {
 		});
 		mnSessions.add(mntmAddSesssion);
 		
+		//menu item 'Manage Session' for the menu Session
 		JMenuItem mntmManageSession = new JMenuItem("Manage Session");
 		mntmManageSession.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -323,11 +327,7 @@ public class Home_Page {
 			}
 		});
 		mnSessions.add(mntmManageSession);
-//		addStudentGroupsPanel = new Add_Student_Groups().panel_addStudentGroups;
-//		frame.getContentPane().add(addStudentGroupsPanel, "name_513472506769600");
-		
-//		manageGroupsPanel = new Manage_Student_Groups().panel_manageStudentGroups;
-//		frame.getContentPane().add(manageGroupsPanel, "name_513457040055000");
+
 	}
 
 }
