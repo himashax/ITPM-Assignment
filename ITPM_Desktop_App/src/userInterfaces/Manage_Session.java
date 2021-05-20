@@ -7,7 +7,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,17 +24,22 @@ import javax.swing.JOptionPane;
 
 import java.awt.Color;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import dao.SessionDAOImpl;
-import dao.SubjectDAOImpl;
+
 import models.Session;
-import models.Subject;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+
 
 public class Manage_Session implements ActionListener{
 
@@ -42,6 +51,7 @@ public class Manage_Session implements ActionListener{
 	private JButton btnRefresh,btnUpdate,btnViewSession,btnAddNewSession,btnSearch,btnDelSession;
 	JComboBox comboBoxSearchYear,comboBoxSearchLec,comboBoxLec1,comboBoxLec2,comboBoxSelectTag,comboBox_mSelectGroup,comboBox_mSelectSub,comboBox_mDay;
 	private int idValue;
+
 
 	/**
 	 * Launch the application.
@@ -90,21 +100,29 @@ public class Manage_Session implements ActionListener{
 		panel_ManageSession.add(panel_Search);
 		panel_Search.setLayout(null);
 
+		//academic year and semesters
 		String year_semValues[]={"(Y1.S1) Year 1 Semester 1","(Y1.S2) Year 1 Semester 2","(Y2.S1) Year 2 Semester 1","(Y2.S2) Year 2 Semester 2","(Y3.S1) Year 3 Semester 1",
 				 "(Y3.S2) Year 3 Semester 2", "(Y4.S1) Year 4 Semester 1", "(Y4.S2) Year 4 Semester 2"}; 
 		comboBoxSearchYear = new JComboBox(year_semValues);
 		comboBoxSearchYear.setEditable(true);
-		comboBoxSearchYear.setBounds(10, 11, 119, 20);
+		comboBoxSearchYear.setBounds(10, 11, 163, 20);
+		
+		//auto complete function in the year combo box
 		AutoCompleteDecorator.decorate(comboBoxSearchYear);
 		panel_Search.add(comboBoxSearchYear);
 		
+		//get all the lecturer list to a string array list
 		ArrayList<String> lecturerList = sessionDAO.getLecturers();
 		
+		//set the array list as a array in the combobox
 		comboBoxSearchLec = new JComboBox(lecturerList.toArray());
-		comboBoxSearchLec.setBounds(161, 11, 213, 20);
+		comboBoxSearchLec.setBounds(183, 11, 191, 20);
+		
+		//auto complete function in the lecturer combo box
 		AutoCompleteDecorator.decorate(comboBoxSearchLec);
 		panel_Search.add(comboBoxSearchLec);
 		
+		//search button
 		btnSearch = new JButton("SEARCH");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -113,8 +131,10 @@ public class Manage_Session implements ActionListener{
 		});
 		btnSearch.setBackground(SystemColor.activeCaption);
 		btnSearch.setBounds(400, 10, 89, 23);
+		btnSearch.addActionListener(this);
 		panel_Search.add(btnSearch);
 		
+		//button add new session
 		btnAddNewSession = new JButton("ADD SESSION");
 		btnAddNewSession.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -122,9 +142,10 @@ public class Manage_Session implements ActionListener{
 		});
 		btnAddNewSession.setBackground(new Color(189, 183, 107));
 		btnAddNewSession.setBounds(736, 11, 117, 33);
+		btnAddNewSession.addActionListener(this);
 		panel_ManageSession.add(btnAddNewSession);
 		
-				
+		//JTable to retrieve all the session records		
 		DefaultTableModel modal = new DefaultTableModel(new String[] {"ID","Lecturer 1","Lecturer 2","Tag","Group ID","Subject","No.Students","Day","Duration"},0);
 		table_Session = new JTable();
 		table_Session.setBounds(20, 195, 701, -102);
@@ -135,39 +156,59 @@ public class Manage_Session implements ActionListener{
 		JScrollPane scrollPane = new JScrollPane(table_Session);
 		scrollPane.setBounds(20, 76, 730, 134);
 	
-		//retrieving records to the table
+		//call the method to retrieve the session records to the table
 		sessionGroupTable();
 		panel_ManageSession.add(scrollPane);
 		
-		//click the record
-		table_Session.addMouseListener((MouseListener)new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				int rowId = table_Session.getSelectedRow();
-				
-				SessionDAOImpl sessionDao = new SessionDAOImpl();
-				idValue = Integer.parseInt(modal.getValueAt(rowId, 0).toString());
-				
-				
-				Session session = sessionDao.getSessionById(idValue);
-				
-				comboBoxLec1.setSelectedItem(session.getFirstLecturer());
-				comboBoxLec2.setSelectedItem(session.getSecLecturer());
-				comboBoxSelectTag.setSelectedItem(session.getTag());
-				comboBox_mSelectGroup.setSelectedItem(session.getGroupId());
-				comboBox_mSelectSub.setSelectedItem(session.getSubject());
-				textField_mNoOfStud.setText(Integer.toString(session.getNoOfStudents()));
-				comboBox_mDay.setSelectedItem(session.getDay());
-				textField_mDuration.setText(Integer.toString(session.getDuration()));
-				
-			}
-		});
+		//click the record in the table
+       table_Session.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+					@Override
+					public void valueChanged(ListSelectionEvent e) {
+						
+						int viewRow = table_Session.getSelectedRow();
+                        if (viewRow < 0) {
+                            //Selection got filtered away.
+                        	System.out.println("");
+                        } else {
+                            int modelRow = 
+                                table_Session.convertRowIndexToModel(viewRow);
+                            System.out.println(
+                                String.format("Selected Row in view: %d. " +
+                                    "Selected Row in model: %d.", 
+                                    viewRow, modelRow));
+                            
+                            SessionDAOImpl sessionDao = new SessionDAOImpl();
+                          //get the modal row id of the selected row
+            				idValue = Integer.parseInt(modal.getValueAt(modelRow, 0).toString());
+            				
+            				//pass the id and get the values of the particular session
+            				Session session = sessionDao.getSessionById(idValue);
+            				System.out.println(idValue);
+            				
+            				//set the values from retrieved record data
+            				comboBoxLec1.setSelectedItem(session.getFirstLecturer());
+            				comboBoxLec2.setSelectedItem(session.getSecLecturer());
+            				comboBoxSelectTag.setSelectedItem(session.getTag());
+            				comboBox_mSelectGroup.setSelectedItem(session.getGroupId());
+            				comboBox_mSelectSub.setSelectedItem(session.getSubject());
+            				textField_mNoOfStud.setText(Integer.toString(session.getNoOfStudents()));
+            				comboBox_mDay.setSelectedItem(session.getDay());
+            				textField_mDuration.setText(Integer.toString(session.getDuration()));
+                        }
+						
+					}
+                }
+        );
 		
+       //delete button
 		btnDelSession = new JButton("DELETE");
 		btnDelSession.setBackground(SystemColor.activeCaption);
 		btnDelSession.setBounds(764, 143, 89, 23);
 		btnDelSession.addActionListener(this);
 		panel_ManageSession.add(btnDelSession);
 		
+		//view session button
 		btnViewSession = new JButton("VIEW");
 		btnViewSession.setBackground(SystemColor.activeCaption);
 		btnViewSession.setBounds(764, 95, 89, 23);
@@ -182,18 +223,21 @@ public class Manage_Session implements ActionListener{
 		//get list of lecturers
 		ArrayList<String> lecturers = sessionDAO.getLecturers();
 		
+		//set the values as an array in the combo box of lecturer 1
 		comboBoxLec1 = new JComboBox(lecturers.toArray());
 		comboBoxLec1.setBounds(177, 28, 197, 20);
 		panel_LecTags.add(comboBoxLec1);
 		
+		//set the values as an array in the combo box of lecturer 2
 		comboBoxLec2 = new JComboBox(lecturers.toArray());
 		comboBoxLec2.setBounds(177, 80, 197, 20);
 		panel_LecTags.add(comboBoxLec2);
 		
-		//default values for lecturer 1 and 2
+		//set default values for lecturer 1 and 2
 		comboBoxLec1.setSelectedIndex(0);
 		comboBoxLec2.setSelectedIndex(1);
 	
+		//tag array
 		String tag[] = {"Lecture", "Tutorial", "Lab|Practical", "Evaluation"};
 		comboBoxSelectTag = new JComboBox(tag);
 		comboBoxSelectTag.setBounds(177, 126, 197, 20);
@@ -236,18 +280,20 @@ public class Manage_Session implements ActionListener{
 		lbl_mDay.setBounds(213, 131, 38, 14);
 		panel_GroupStudent.add(lbl_mDay);
 		
-		//group ids
+		// get all the group ids
 		ArrayList<String> groupIdList = sessionDAO.getGroupIdList();
 		String[] groupArr = new String[groupIdList.size()];
 		
+		//get the arraylist data to an array
 		for(int i=0; i<groupIdList.size(); i++) {
 			groupArr[i] = groupIdList.get(i);
 		}
 
-		//sub group ids
+		// get all the sub group ids
 		ArrayList<String> subGroupIdList = sessionDAO.getSubGroupIdList();
 		String[] subGroupArr = new String[subGroupIdList.size()];
 		
+		//get the array list data to an array
 		for(int i=0; i<subGroupIdList.size(); i++) {
 			subGroupArr[i] = subGroupIdList.get(i);
 		}
@@ -257,18 +303,20 @@ public class Manage_Session implements ActionListener{
 		panel_GroupStudent.add(comboBox_mSelectGroup);
 		
 		
-		//when tag is clicked changing group ids
+		// according to the value of the tag changing group id
 		comboBoxSelectTag.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				comboBox_mSelectGroup.removeAllItems();
+				
+				//if lab is selected then assign subgroup id list for the combo box
 				if(comboBoxSelectTag.getSelectedItem().toString().equals("Lab|Practical")) {
 					
 					for(String subGroups : subGroupArr) {
 						comboBox_mSelectGroup.addItem(subGroups);
 					}
-
+				//for lecture, tutorial and evaluation is selected then assign group id list for the combo box
 				}else {
 					for(String groups : groupArr) {
 						comboBox_mSelectGroup.addItem(groups);
@@ -278,8 +326,10 @@ public class Manage_Session implements ActionListener{
 			}
 		});
 		
+		//get all the subjects from the database
 		ArrayList<String> subjectInfo = sessionDAO.getSubjectInfoList();
 		
+		//set the list of subjects by converting to an array
 		comboBox_mSelectSub = new JComboBox(subjectInfo.toArray());
 		comboBox_mSelectSub.setBounds(165, 56, 197, 20);
 		panel_GroupStudent.add(comboBox_mSelectSub);
@@ -307,12 +357,14 @@ public class Manage_Session implements ActionListener{
 		lblSelectLecturer.setBounds(20, 221, 166, 14);
 		panel_ManageSession.add(lblSelectLecturer);
 		
+		//refresh button
 		btnRefresh = new JButton("REFRESH");
 		btnRefresh.setBackground(SystemColor.activeCaption);
 		btnRefresh.setBounds(549, 418, 89, 23);
 		btnRefresh.addActionListener(this);
 		panel_ManageSession.add(btnRefresh);
 		
+		//update button
 		btnUpdate = new JButton("UPDATE");
 		btnUpdate.setBackground(SystemColor.activeCaption);
 		btnUpdate.setBounds(672, 418, 89, 23);
@@ -323,10 +375,10 @@ public class Manage_Session implements ActionListener{
 		lblSelectGroupSub.setBounds(447, 221, 166, 14);
 		panel_ManageSession.add(lblSelectGroupSub);
 		
-		
 		frmManageSession.getContentPane().add(panel_ManageSession);
 	}
 	
+	//the function to clear the fields and set the default values to the combo boxes
 	public void resetField() {
 		comboBoxLec1.setSelectedIndex(0);
 		comboBoxLec2.setSelectedIndex(1);
@@ -338,7 +390,7 @@ public class Manage_Session implements ActionListener{
 		textField_mDuration.setText(null);
 	}
 	
-	
+	//the method that retrieve all the session records to the table
 	public void sessionGroupTable(){
 		SessionDAOImpl sessionDAOImpl = new SessionDAOImpl();
 		ArrayList<Session> session_list = sessionDAOImpl.getSessionList();
@@ -364,12 +416,95 @@ public class Manage_Session implements ActionListener{
 		
 	}
 
+	//filter session records in the table
+	public void filteredListTable(){
+		SessionDAOImpl sessionDAOImpl = new SessionDAOImpl();
+		
+		//get the selected values of the year and lecturer combo box and assign them to string
+		String yearValue = comboBoxSearchYear.getSelectedItem().toString();
+		String lecturer = comboBoxSearchLec.getSelectedItem().toString();
+		
+		//get the particular session records by  passing the academic year and the lecturer
+		ArrayList<Session> session_list = sessionDAOImpl.getAcademicYearAndLecturer(yearValue, lecturer);
+		
+		System.out.println(session_list.toArray());
+		DefaultTableModel modal = (DefaultTableModel) table_Session.getModel();
+		
+		//sorted table
+		 TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modal);
+		 table_Session.setRowSorter(sorter);
+		 
+		 List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+		 //sort rows according to ascending order of session id
+		 sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+		 //sort row according to ascending order of lecturer name
+		 sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
+		 sorter.setSortKeys(sortKeys);
+		
+        if(lecturer.length() == 0) {
+            sorter.setRowFilter(null);
+         } else {
+            try {
+            	//sort the rows to the searched lecturer name
+               sorter.setRowFilter(RowFilter.regexFilter(lecturer));
+            } catch(PatternSyntaxException pse) {
+                  System.out.println("Invalid pattern");
+            }
+          }
+        
+        //when a record in the sorted list is clicked the modal id and the view id are different
+        table_Session.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+				@Override
+				public void valueChanged(ListSelectionEvent e) {
+					int viewRow = table_Session.getSelectedRow();
+                    if (viewRow < 0) {
+                        //Selection got filtered away.
+                    	System.out.println("");
+                    } else {
+                        int modelRow = 
+                            table_Session.convertRowIndexToModel(viewRow);
+                        System.out.println(
+                            String.format("Selected Row in view: %d. " +
+                                "Selected Row in model: %d.", 
+                                viewRow, modelRow));
+                        
+                        SessionDAOImpl sessionDao = new SessionDAOImpl();
+                        //capture the modal id of the selected row of the sorted record list
+        				idValue = Integer.parseInt(modal.getValueAt(modelRow, 0).toString());
+        				
+        				//get the particular record data by passing the id
+        				Session session = sessionDao.getSessionById(idValue);
+        				System.out.println(idValue);
+        				
+        				//set the data for the particular fields and combo boxes
+        				comboBoxLec1.setSelectedItem(session.getFirstLecturer());
+        				comboBoxLec2.setSelectedItem(session.getSecLecturer());
+        				comboBoxSelectTag.setSelectedItem(session.getTag());
+        				comboBox_mSelectGroup.setSelectedItem(session.getGroupId());
+        				comboBox_mSelectSub.setSelectedItem(session.getSubject());
+        				textField_mNoOfStud.setText(Integer.toString(session.getNoOfStudents()));
+        				comboBox_mDay.setSelectedItem(session.getDay());
+        				textField_mDuration.setText(Integer.toString(session.getDuration()));
+                    }
+					
+				}
+            }
+        );
+		
+	}
+	
+
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		//get the object which is clicked
 		Object obj = e.getSource();
 		
+		//update button is clicked
 		if(obj==btnUpdate) {
+			//check whether a row is selected or not
 			if (idValue == 0) {
 				JOptionPane.showMessageDialog(null, "Please select a record to update");
 			}else if (textField_mNoOfStud.getText().isEmpty()) {
@@ -380,9 +515,9 @@ public class Manage_Session implements ActionListener{
 				JOptionPane.showMessageDialog(null, "Please select another lecturer", "Alert",JOptionPane.WARNING_MESSAGE);
 			}else {
 
-				
 				Session sessions = new Session();
 				System.out.println(idValue + " update");
+				//set the values of the selected record to a session object
 				sessions.setId(idValue);
 				sessions.setFirstLecturer(comboBoxLec1.getSelectedItem().toString());
 				sessions.setSecLecturer(comboBoxLec2.getSelectedItem().toString());
@@ -393,46 +528,64 @@ public class Manage_Session implements ActionListener{
 				sessions.setDay(comboBox_mDay.getSelectedItem().toString());
 				sessions.setDuration(Integer.parseInt(textField_mDuration.getText()));
 				
+				//display the confirm message to update
 				int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to update session " + sessions.getId() + " ?", "Confirm Update",
 						JOptionPane.YES_NO_OPTION);
 				
+				//if YES option is selected update the session
 				if(confirm == JOptionPane.YES_OPTION) {
 					SessionDAOImpl sessionDao = new SessionDAOImpl();
+					//pass the session object to update
 					sessionDao.updateSession(sessions);
 					
+					//display the table with latest data records
 					DefaultTableModel modal = (DefaultTableModel) table_Session.getModel();
 					modal.setRowCount(0);
 					sessionGroupTable();
 				}
-
+				//clear the fields once updated
 				resetField();
 			}
 		}
 		
+		//if delete button is clicked
 		if(obj==btnDelSession) {
+			//check whether a row is selected or not
 			if (idValue == 0) {
 				JOptionPane.showMessageDialog(null, "Please select a record to delete");
 			}else {
 				SessionDAOImpl sessionDao = new SessionDAOImpl();
-				int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to update session " + sessionDao.getSessionById(idValue) + " ?", "Confirm Update",
+				
+				//display the confirm message to delete the selected record
+				int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete session " + sessionDao.getSessionById(idValue).getId() + " ?", "Confirm Update",
 						JOptionPane.YES_NO_OPTION);
 				
+				//if YES option is selected delete the session
 				if(confirm == JOptionPane.YES_OPTION) {
+					
+					//pass the selected row id to delete the session
 					sessionDao.deleteSession(idValue);
+					
+					//display the table with latest records
 					DefaultTableModel modal = (DefaultTableModel) table_Session.getModel();
 					modal.setRowCount(0);
 					sessionGroupTable();
 				}
 			}
-
+			
+			//clear the fields
 			resetField();
 		}
 		
+		//view button is clicked
 		if(obj == btnViewSession) {
+			//check whether a row is selected or not
 			if (idValue == 0) {
 				JOptionPane.showMessageDialog(null, "Please select a record to view the session");
 			}else {
 				SessionDAOImpl sessionDao = new SessionDAOImpl();
+				
+				//show a message dialog box to display the data of the selected row
 				JOptionPane.showMessageDialog(null, sessionDao.getSessionById(idValue).getFirstLecturer() +" - "+ sessionDao.getSessionById(idValue).getSubject()+" - "+ 
 				sessionDao.getSessionById(idValue).getTag() + " - "+ sessionDao.getSessionById(idValue).getGroupId() + " - " + 
 						sessionDao.getSessionById(idValue).getNoOfStudents() + " - " + sessionDao.getSessionById(idValue).getDuration()
@@ -440,18 +593,20 @@ public class Manage_Session implements ActionListener{
 			}
 		}
 		
+		//when the search button is clicked invoke the filterListTable()
 		if(obj==btnSearch) {
-			
+			filteredListTable();
 		}
 		
+		//refresh button
 		if(obj == btnRefresh) {
 			resetField();
 		}
 		
+		//add new session button
 		if(obj == btnAddNewSession) {
-			frmManageSession.dispose();
-			frmManageSession.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-			new Add_Session();
+			Add_Session window = new Add_Session();
+			window.frmAddSession.setVisible(true);
 		}
 	}
 }

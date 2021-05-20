@@ -15,6 +15,7 @@ public class SessionDAOImpl {
 	
 	DBConnection db = new DBConnection();
 	
+	//insert session method
 	public String insertSession(Session s) {
 		
 		String result = "";
@@ -47,6 +48,7 @@ public class SessionDAOImpl {
 		
 	}
 	
+	//retrieve all sessions
 	public ArrayList<Session> getSessionList(){
 		
 		ArrayList<Session> session = new ArrayList<>();
@@ -82,7 +84,7 @@ public class SessionDAOImpl {
 		return session;		
 	}
 	
-	
+	//retrieve a particular session by  id
 	public Session getSessionById(int id) {
 		
 		Session sess = new Session();
@@ -113,7 +115,7 @@ public class SessionDAOImpl {
 		return sess;
 	}
 	
-	
+	//update a session
 	public void updateSession(Session s) {
 				
 		try {
@@ -134,6 +136,7 @@ public class SessionDAOImpl {
 
 	}
 	
+	//delete a session
 	public void deleteSession(int id) {
 		
 		Connection con = db.connect();
@@ -152,6 +155,7 @@ public class SessionDAOImpl {
 
 	}
 
+	//get the list of lecturers
 	public ArrayList<String> getLecturers() {
 		
 		ArrayList<String> getLecturers = new ArrayList<>();
@@ -167,8 +171,6 @@ public class SessionDAOImpl {
 			while(rs.next()) {
 				getLecturers.add(rs.getString(2));
 			}
-			
-			System.out.println(getLecturers);
 			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -177,6 +179,7 @@ public class SessionDAOImpl {
 		return getLecturers;
 	}
 	
+	//get all the group id as a String array list
 	public ArrayList<String> getGroupIdList(){
 		ArrayList<String> groupIdList = new ArrayList<>();
 		
@@ -190,7 +193,6 @@ public class SessionDAOImpl {
 			while(rs.next()) {
 				groupIdList.add(rs.getString(6));
 			}
-			System.out.println(groupIdList);
 			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -200,6 +202,7 @@ public class SessionDAOImpl {
 		
 	}
 	
+	//get all the sub group id as a String array list 
 	public ArrayList<String> getSubGroupIdList(){
 		ArrayList<String> subGroupIdList = new ArrayList<>();
 		
@@ -213,7 +216,6 @@ public class SessionDAOImpl {
 			while(rs.next()) {
 				subGroupIdList.add(rs.getString(7));
 			}
-			System.out.println(subGroupIdList);
 			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -223,6 +225,7 @@ public class SessionDAOImpl {
 		
 	}
 	
+	//get all the subject code and related subject name as a string array list
 	public ArrayList<String> getSubjectInfoList(){
 		ArrayList<String> subjectInfoList = new ArrayList<>();
 		
@@ -236,7 +239,6 @@ public class SessionDAOImpl {
 			while(rs.next()) {
 				subjectInfoList.add(rs.getString(4) + " - " + rs.getString(5));
 			}
-			System.out.println(subjectInfoList);
 			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -246,28 +248,121 @@ public class SessionDAOImpl {
 		
 	}
 	
-	public ArrayList<String> getAcademicYear(){
-		ArrayList<String> academicYearList = new ArrayList<>();
+	//get the sessions for a particular year and a lecturer
+	public ArrayList<Session> getAcademicYearAndLecturer(String year, String lecturer){
+		ArrayList<Session> filteredList = new ArrayList<>();
 		
+		Character c = year.charAt(2);
+		System.out.println(c);
+				
 		try {
 			Connection connection = db.connect();
-			String getAcademicYear = "select * from student_group";
+			String getFilteredResult = "select * from session where group_id LIKE CONCAT ('(Y','" + c +"','%') and first_lecturer = '"+ lecturer +"' or sec_lecturer = '"+ lecturer+"'";
 			
 			Statement st = connection.createStatement();
-			ResultSet rs = st.executeQuery(getAcademicYear);
+			ResultSet rs = st.executeQuery(getFilteredResult);
 			
 			while(rs.next()) {
-				academicYearList.add(rs.getString(2));
+				
+				Session sessionObj = new Session();
+				
+				sessionObj.setId(rs.getInt(1));
+				sessionObj.setFirstLecturer(rs.getString(2));
+				sessionObj.setSecLecturer(rs.getString(3));
+				sessionObj.setTag(rs.getString(4));
+				sessionObj.setGroupId(rs.getString(5));
+				sessionObj.setSubject(rs.getString(6));
+				sessionObj.setNoOfStudents(rs.getInt(7));
+				sessionObj.setDay(rs.getString(8));
+				sessionObj.setDuration(rs.getInt(9));
+				
+				filteredList.add(sessionObj);
 			}
-			System.out.println(academicYearList);
+			
 			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		return academicYearList;
+		System.out.println(filteredList);
+		return filteredList;
 		
 	}
 	
+	//get duplicate sessions
+	public ArrayList<Session> getDuplicates(Session session){
+		ArrayList<Session> filteredList = new ArrayList<>();
+			
+		try {
+			Connection connection = db.connect();
+			String getFilteredResult = "select * from session where first_lecturer = '"+session.getFirstLecturer()+"' AND sec_lecturer = '"+session.getSecLecturer()+"' AND"
+					+ " tag = '"+session.getTag()+"' AND group_id = '"+session.getGroupId()+"' AND subject = '"+session.getSubject()+"' AND "
+							+ "no_of_students = '"+session.getNoOfStudents()+"' AND day = '"+session.getDay()+"' AND"
+									+ " duration = '"+session.getDuration()+"'";
+			
+			Statement st = connection.createStatement();
+			ResultSet rs = st.executeQuery(getFilteredResult);
+			
+			while(rs.next()) {
+				
+				Session sessionObj = new Session();
+				
+				sessionObj.setId(rs.getInt(1));
+				sessionObj.setFirstLecturer(rs.getString(2));
+				sessionObj.setSecLecturer(rs.getString(3));
+				sessionObj.setTag(rs.getString(4));
+				sessionObj.setGroupId(rs.getString(5));
+				sessionObj.setSubject(rs.getString(6));
+				sessionObj.setNoOfStudents(rs.getInt(7));
+				sessionObj.setDay(rs.getString(8));
+				sessionObj.setDuration(rs.getInt(9));
+				
+				filteredList.add(sessionObj);
+			}
+			
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println(filteredList);
+		return filteredList;
+		
+	}
+	
+	//get duplicate sessions with same tag,same group and same subject
+	public ArrayList<Session> getDuplicateSessions(Session session){
+		ArrayList<Session> filteredList = new ArrayList<>();
+			
+		try {
+			Connection connection = db.connect();
+			String getFilteredResult = "select * from session where tag = '"+session.getTag()+"' AND group_id = '"+session.getGroupId()+"' AND subject = '"+session.getSubject()+"'";
+			
+			Statement st = connection.createStatement();
+			ResultSet rs = st.executeQuery(getFilteredResult);
+			
+			while(rs.next()) {
+				
+				Session sessionObj = new Session();
+				
+				sessionObj.setId(rs.getInt(1));
+				sessionObj.setFirstLecturer(rs.getString(2));
+				sessionObj.setSecLecturer(rs.getString(3));
+				sessionObj.setTag(rs.getString(4));
+				sessionObj.setGroupId(rs.getString(5));
+				sessionObj.setSubject(rs.getString(6));
+				sessionObj.setNoOfStudents(rs.getInt(7));
+				sessionObj.setDay(rs.getString(8));
+				sessionObj.setDuration(rs.getInt(9));
+				
+				filteredList.add(sessionObj);
+			}
+			
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println(filteredList);
+		return filteredList;
+		
+	}
 	
 }
