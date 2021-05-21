@@ -50,7 +50,8 @@ public class Manage_Session implements ActionListener{
 	public JPanel panel_ManageSession;
 	private JButton btnRefresh,btnUpdate,btnViewSession,btnAddNewSession,btnSearch,btnDelSession;
 	JComboBox comboBoxSearchYear,comboBoxSearchLec,comboBoxLec1,comboBoxLec2,comboBoxSelectTag,comboBox_mSelectGroup,comboBox_mSelectSub,comboBox_mDay;
-	private int idValue;
+	private int idValue,countRows;
+	private DefaultTableModel modal;
 
 
 	/**
@@ -105,7 +106,7 @@ public class Manage_Session implements ActionListener{
 				 "(Y3.S2) Year 3 Semester 2", "(Y4.S1) Year 4 Semester 1", "(Y4.S2) Year 4 Semester 2"}; 
 		comboBoxSearchYear = new JComboBox(year_semValues);
 		comboBoxSearchYear.setEditable(true);
-		comboBoxSearchYear.setBounds(10, 11, 163, 20);
+		comboBoxSearchYear.setBounds(10, 11, 179, 20);
 		
 		//auto complete function in the year combo box
 		AutoCompleteDecorator.decorate(comboBoxSearchYear);
@@ -116,7 +117,7 @@ public class Manage_Session implements ActionListener{
 		
 		//set the array list as a array in the combobox
 		comboBoxSearchLec = new JComboBox(lecturerList.toArray());
-		comboBoxSearchLec.setBounds(183, 11, 191, 20);
+		comboBoxSearchLec.setBounds(199, 11, 191, 20);
 		
 		//auto complete function in the lecturer combo box
 		AutoCompleteDecorator.decorate(comboBoxSearchLec);
@@ -146,7 +147,7 @@ public class Manage_Session implements ActionListener{
 		panel_ManageSession.add(btnAddNewSession);
 		
 		//JTable to retrieve all the session records		
-		DefaultTableModel modal = new DefaultTableModel(new String[] {"ID","Lecturer 1","Lecturer 2","Tag","Group ID","Subject","No.Students","Day","Duration"},0);
+		modal = new DefaultTableModel(new String[] {"ID","Lecturer 1","Lecturer 2","Tag","Group ID","Subject","No.Students","Day","Duration"},0);
 		table_Session = new JTable();
 		table_Session.setBounds(20, 195, 701, -102);
 		JTableHeader header = table_Session.getTableHeader();
@@ -451,7 +452,9 @@ public class Manage_Session implements ActionListener{
                   System.out.println("Invalid pattern");
             }
           }
-        
+        //get the filtered row count
+        countRows = table_Session.getRowCount();
+        System.out.println(countRows + "filter");
         //when a record in the sorted list is clicked the modal id and the view id are different
         table_Session.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
@@ -495,6 +498,46 @@ public class Manage_Session implements ActionListener{
 	}
 	
 
+	public void tableClickEvent() {
+	      table_Session.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+					@Override
+					public void valueChanged(ListSelectionEvent e) {
+						int viewRow = table_Session.getSelectedRow();
+	                    if (viewRow < 0) {
+	                        //Selection got filtered away.
+	                    	System.out.println("");
+	                    } else {
+	                        int modelRow = 
+	                            table_Session.convertRowIndexToModel(viewRow);
+	                        System.out.println(
+	                            String.format("Selected Row in view: %d. " +
+	                                "Selected Row in model: %d.", 
+	                                viewRow, modelRow));
+	                        
+	                        SessionDAOImpl sessionDao = new SessionDAOImpl();
+	                        //capture the modal id of the selected row of the sorted record list
+	        				idValue = Integer.parseInt(modal.getValueAt(modelRow, 0).toString());
+	        				
+	        				//get the particular record data by passing the id
+	        				Session session = sessionDao.getSessionById(idValue);
+	        				System.out.println(idValue);
+	        				
+	        				//set the data for the particular fields and combo boxes
+	        				comboBoxLec1.setSelectedItem(session.getFirstLecturer());
+	        				comboBoxLec2.setSelectedItem(session.getSecLecturer());
+	        				comboBoxSelectTag.setSelectedItem(session.getTag());
+	        				comboBox_mSelectGroup.setSelectedItem(session.getGroupId());
+	        				comboBox_mSelectSub.setSelectedItem(session.getSubject());
+	        				textField_mNoOfStud.setText(Integer.toString(session.getNoOfStudents()));
+	        				comboBox_mDay.setSelectedItem(session.getDay());
+	        				textField_mDuration.setText(Integer.toString(session.getDuration()));
+	                    }
+						
+					}
+	            }
+	        );
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -535,13 +578,23 @@ public class Manage_Session implements ActionListener{
 				//if YES option is selected update the session
 				if(confirm == JOptionPane.YES_OPTION) {
 					SessionDAOImpl sessionDao = new SessionDAOImpl();
-					//pass the session object to update
-					sessionDao.updateSession(sessions);
 					
-					//display the table with latest data records
-					DefaultTableModel modal = (DefaultTableModel) table_Session.getModel();
-					modal.setRowCount(0);
-					sessionGroupTable();
+					//check whether same values are there for two session id
+					if (sessionDao.getDuplicates(sessions).size() > 0) {
+						JOptionPane.showMessageDialog(null, "All ready uptodate!");
+					//check whether same group, same subject has two sessions for the same tag
+					} else {
+						//pass the session object to update
+						sessionDao.updateSession(sessions);
+						
+						//display the successfully saved message
+						JOptionPane.showMessageDialog(null, "Updated successfully");
+						
+						//display the table with latest data records
+						DefaultTableModel modal = (DefaultTableModel) table_Session.getModel();
+						modal.setRowCount(0);
+						sessionGroupTable();
+					}
 				}
 				//clear the fields once updated
 				resetField();
@@ -585,6 +638,8 @@ public class Manage_Session implements ActionListener{
 			}else {
 				SessionDAOImpl sessionDao = new SessionDAOImpl();
 				
+				sessionDao.getCount();
+				System.out.println("ahd");
 				//show a message dialog box to display the data of the selected row
 				JOptionPane.showMessageDialog(null, sessionDao.getSessionById(idValue).getFirstLecturer() +" - "+ sessionDao.getSessionById(idValue).getSubject()+" - "+ 
 				sessionDao.getSessionById(idValue).getTag() + " - "+ sessionDao.getSessionById(idValue).getGroupId() + " - " + 
@@ -600,13 +655,30 @@ public class Manage_Session implements ActionListener{
 		
 		//refresh button
 		if(obj == btnRefresh) {
-			resetField();
+			SessionDAOImpl sessionDao = new SessionDAOImpl();
+			
+//	        for (int row = 0; row < table_Session.getRowCount(); row++) {
+//	        	modal.removeRow(row);
+//	        }
+	        
+//			if(countRows != sessionDao.getCount()) {
+//				modal.getDataVector().removeAllElements();
+//				modal.fireTableDataChanged();
+//				sessionGroupTable();
+//				System.out.println("noo");
+//			}
+			//resetField();
 		}
 		
 		//add new session button
 		if(obj == btnAddNewSession) {
 			Add_Session window = new Add_Session();
 			window.frmAddSession.setVisible(true);
+			
+			//display the table with latest records
+			DefaultTableModel modal = (DefaultTableModel) table_Session.getModel();
+			modal.setRowCount(0);
+			sessionGroupTable();
 		}
 	}
 }
