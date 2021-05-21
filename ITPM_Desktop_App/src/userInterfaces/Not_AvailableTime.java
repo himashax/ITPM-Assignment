@@ -235,6 +235,7 @@ public class Not_AvailableTime implements ActionListener{
 		fLec.setText(null);
 		secLec.setText(null);
 		time.setSelectedIndex(0);
+		endT.setSelectedIndex(0);
 		group.setText(null);
 		duration.setText(null);
 		day.setText(null);
