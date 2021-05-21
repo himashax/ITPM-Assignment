@@ -643,9 +643,9 @@ public class Manage_Session implements ActionListener{
 				sessionDao.getCount();
 				System.out.println("ahd");
 				//show a message dialog box to display the data of the selected row
-				JOptionPane.showMessageDialog(null, sessionDao.getSessionById(idValue).getFirstLecturer() +" - "+ sessionDao.getSessionById(idValue).getSubject()+" - "+ 
-				sessionDao.getSessionById(idValue).getTag() + " - "+ sessionDao.getSessionById(idValue).getGroupId() + " - " + 
-						sessionDao.getSessionById(idValue).getNoOfStudents() + " - " + sessionDao.getSessionById(idValue).getDuration()
+				JOptionPane.showMessageDialog(null, sessionDao.getSessionById(idValue).getFirstLecturer() +"\n"+ sessionDao.getSessionById(idValue).getSubject()+"\n"+ 
+				sessionDao.getSessionById(idValue).getTag() + "\n"+ sessionDao.getSessionById(idValue).getGroupId() + "\nNo.of students: " + 
+						sessionDao.getSessionById(idValue).getNoOfStudents() + "\nDuration: " + sessionDao.getSessionById(idValue).getDuration(),"Session" ,JOptionPane.PLAIN_MESSAGE
 						);
 			}
 		}
@@ -669,7 +669,7 @@ public class Manage_Session implements ActionListener{
 //				sessionGroupTable();
 //				System.out.println("noo");
 //			}
-			//resetField();
+			resetField();
 		}
 		
 		//add new session button
