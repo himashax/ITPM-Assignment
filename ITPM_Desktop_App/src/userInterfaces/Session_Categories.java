@@ -42,6 +42,8 @@ public class Session_Categories {
 	private JScrollPane scrollpane, parScrollPane, nonOverlapScrollPane;
 	
 	private String selectedConSessions, selectedParSessions, nonOverlapSessions;
+	private int conSessionID, parSessionID, nonOverSessionID; 
+	
 
 	/**
 	 * Launch the application.
@@ -109,6 +111,7 @@ public class Session_Categories {
 		table.addMouseListener((MouseListener) new MouseAdapter() {
 	    	public void mouseClicked(MouseEvent e) {
 				int selectedRecord = table.getSelectedRow();	
+				conSessionID = (int) tableModel.getValueAt(selectedRecord, 0);
 				selectedConSessions = tableModel.getValueAt(selectedRecord, 1).toString();
 			}
 	    });
@@ -136,6 +139,7 @@ public class Session_Categories {
 		parTable.addMouseListener((MouseListener) new MouseAdapter() {
 	    	public void mouseClicked(MouseEvent e) {
 				int selectedRecord = parTable.getSelectedRow();	
+				parSessionID = (int) parTableModel.getValueAt(selectedRecord, 0);
 				selectedParSessions = parTableModel.getValueAt(selectedRecord, 1).toString();
 			}
 	    });
@@ -164,6 +168,7 @@ public class Session_Categories {
 		nonOverlapTable.addMouseListener((MouseListener) new MouseAdapter() {
 	    	public void mouseClicked(MouseEvent e) {
 				int selectedRecord = nonOverlapTable.getSelectedRow();	
+				nonOverSessionID = (int) nonOverlapTable.getValueAt(selectedRecord, 0);
 				nonOverlapSessions = nonOverlapTable.getValueAt(selectedRecord, 1).toString();
 			}
 	    });
@@ -176,12 +181,38 @@ public class Session_Categories {
 		tabbedPane.addTab("Not Available Times", null, panel_4, null);
 
 		
-		JButton btnNewButton_1 = new JButton("Add Sessions");
-		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnNewButton_1.setForeground(Color.WHITE);
-		btnNewButton_1.setBackground(new Color(102, 153, 255));
-		btnNewButton_1.setBounds(520, 397, 148, 30);
-		panel_5.add(btnNewButton_1);
+		JButton viewBtn = new JButton("View Session");
+		viewBtn.setFont(new Font("Tahoma", Font.BOLD, 12));
+		viewBtn.setForeground(Color.WHITE);
+		viewBtn.setBackground(new Color(102, 153, 255));
+		viewBtn.setBounds(520, 397, 148, 30);
+		viewBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				SessionDAOImpl sessionDao =  new SessionDAOImpl();
+				Session object;
+				
+				if(conSessionID == 0 && parSessionID == 0 && nonOverSessionID == 0) {
+					JOptionPane.showMessageDialog(Categoriespanel,"Please select the record you want to view","Alert",JOptionPane.WARNING_MESSAGE);
+					
+				}else if(conSessionID != 0) {
+					object = sessionDao.getSessionById(conSessionID);
+					JOptionPane.showMessageDialog(Categoriespanel,displayDetails(object),"Session Details",JOptionPane.PLAIN_MESSAGE);
+					
+				}else if(parSessionID != 0) {
+					object = sessionDao.getSessionById(parSessionID);
+					JOptionPane.showMessageDialog(Categoriespanel,displayDetails(object),"Session Details",JOptionPane.PLAIN_MESSAGE);
+					
+				}else if(nonOverSessionID != 0) {
+					object = sessionDao.getSessionById(nonOverSessionID);
+					JOptionPane.showMessageDialog(Categoriespanel,displayDetails(object),"Session Details",JOptionPane.PLAIN_MESSAGE);
+					
+				}
+				
+			}
+		});
+		panel_5.add(viewBtn);
 		
 		Categoriespanel.add(tabbedPane);
 		
@@ -286,10 +317,9 @@ public class Session_Categories {
 		
 		for(int i=0;i<parallelList.size();i++) {
 			
-			row[0] = parallelList.get(i).getId();
-			row[1] = parallelList.get(i).getSessionCode();
-			
 			Session parallelSeObj = sessionDao.getSessionById(parallelList.get(i).getParallelSessionID());
+			row[0] = parallelSeObj.getId();
+			row[1] = parallelList.get(i).getSessionCode();
 			row[2] = parallelSeObj.getFirstLecturer();
 			row[3] = parallelSeObj.getSecLecturer();
 			row[4] = parallelSeObj.getSubject();
@@ -313,10 +343,9 @@ public class Session_Categories {
 		
 		for(int i=0;i<nonOverlapList.size();i++) {
 			
-			row[0] = nonOverlapList.get(i).getId();
-			row[1] = nonOverlapList.get(i).getSessionCode();
-			
 			Session nonOverlapObj = sessionDao.getSessionById(nonOverlapList.get(i).getNonOverlapSessionID());
+			row[0] = nonOverlapObj.getId();
+			row[1] = nonOverlapList.get(i).getSessionCode();
 			row[2] = nonOverlapObj.getFirstLecturer();
 			row[3] = nonOverlapObj.getSecLecturer();
 			row[4] = nonOverlapObj.getSubject();
@@ -328,6 +357,18 @@ public class Session_Categories {
 			
 			tableModel.addRow(row);
 		}
+	}
+	
+	public String displayDetails(Session object) {
+		return "ID: " + object.getId() +
+		"\nFirst Lecturer: " + object.getFirstLecturer()+
+		"\nSecond Lecturer: " + object.getSecLecturer()+
+		"\nSubject: "+ object.getSubject()+
+		"\nGroup: " + object.getGroupId()+
+		"\nTag: " + object.getTag()+
+		"\nNo of Students: "+ object.getNoOfStudents()+
+		"\nDay : "+ object.getDay()+
+		"\nDuration: "+object.getDuration();
 	}
 	
 }
