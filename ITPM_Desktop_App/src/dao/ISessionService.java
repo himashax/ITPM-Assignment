@@ -14,4 +14,5 @@ public interface ISessionService {
 	
 	public void deleteSession(String sessionCode);
 	
+	public boolean checkExistence(int sessionID);
 }
