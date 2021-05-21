@@ -77,13 +77,13 @@ public class Not_AvailableTime implements ActionListener{
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(192, 192, 192));
-		panel_1.setBounds(111, 23, 663, 395);
+		panel_1.setBounds(57, 10, 704, 309);
 		ad.add(panel_1);
 		panel_1.setLayout(null);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(new Color(240, 248, 255));
-		panel_2.setBounds(54, 22, 388, 351);
+		panel_2.setBounds(62, 20, 388, 279);
 		panel_1.add(panel_2);
 		panel_2.setLayout(null);
 		
@@ -114,7 +114,7 @@ public class Not_AvailableTime implements ActionListener{
 				secLec.setText(ses.getSecLecturer());
 			}
 		});
-		session.setBounds(199, 26, 143, 22);
+		session.setBounds(199, 11, 143, 22);
 		panel_2.add(session);
 		
 		
@@ -134,79 +134,79 @@ public class Not_AvailableTime implements ActionListener{
 		
 		JLabel lblNewLabel = new JLabel("Select Session ID");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel.setBounds(9, 25, 112, 23);
+		lblNewLabel.setBounds(9, 10, 112, 23);
 		panel_2.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Select first Lecturer");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_1.setBounds(10, 68, 136, 23);
+		lblNewLabel_1.setBounds(9, 43, 136, 23);
 		panel_2.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("Selected Group / Sub Group");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_2.setBounds(9, 151, 182, 40);
+		lblNewLabel_2.setBounds(9, 113, 182, 40);
 		panel_2.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("Selected Day");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_3.setBounds(9, 201, 121, 28);
+		lblNewLabel_3.setBounds(9, 163, 121, 28);
 		panel_2.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("TIME");
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_4.setBounds(10, 303, 42, 23);
+		lblNewLabel_4.setBounds(9, 242, 42, 23);
 		panel_2.add(lblNewLabel_4);
 		
 		day = new JTextField();
 		day.setEditable(false);
-		day.setBounds(199, 206, 143, 22);
+		day.setBounds(199, 168, 143, 22);
 		panel_2.add(day);
 		day.setColumns(10);
 		
 		JLabel lblNewLabel_5 = new JLabel("Allocated Duration");
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_5.setBounds(9, 251, 136, 19);
+		lblNewLabel_5.setBounds(9, 211, 136, 19);
 		panel_2.add(lblNewLabel_5);
 		
 		duration = new JTextField();
 		duration.setEditable(false);
 		duration.setColumns(10);
-		duration.setBounds(199, 251, 143, 22);
+		duration.setBounds(199, 211, 143, 22);
 		panel_2.add(duration);
 		
 		//retrieve time values as timeslots
 		NotAvailableDAOImpl notAvailable = new NotAvailableDAOImpl();
 		ArrayList<String> ob2 = notAvailable.retrieveTime1();
 		time = new JComboBox(ob2.toArray());
-		time.setBounds(75, 304, 143, 23);
+		time.setBounds(61, 243, 143, 22);
 		panel_2.add(time);
 		
 		group = new JTextField();
 		group.setEditable(false);
 		group.setColumns(10);
-		group.setBounds(199, 162, 143, 22);
+		group.setBounds(199, 124, 143, 22);
 		panel_2.add(group);
 		
 		fLec = new JTextField();
 		fLec.setEditable(false);
 		fLec.setColumns(10);
-		fLec.setBounds(199, 70, 143, 22);
+		fLec.setBounds(199, 45, 143, 22);
 		panel_2.add(fLec);
 		
 		JLabel lblNewLabel_6 = new JLabel("Select second Lecturer");
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_6.setBounds(9, 114, 160, 27);
+		lblNewLabel_6.setBounds(9, 76, 160, 27);
 		panel_2.add(lblNewLabel_6);
 		
 		secLec = new JTextField();
 		secLec.setEditable(false);
 		secLec.setColumns(10);
-		secLec.setBounds(199, 118, 143, 22);
+		secLec.setBounds(199, 80, 143, 22);
 		panel_2.add(secLec);
 		
 		ArrayList<String> ob3 = notAvailable.retrieveTime2();
 		endT = new JComboBox(ob3.toArray());
-		endT.setBounds(235, 304, 143, 23);
+		endT.setBounds(224, 243, 143, 23);
 		panel_2.add(endT);
 		
 		btnSubmit = new JButton("SUBMIT");
@@ -216,13 +216,13 @@ public class Not_AvailableTime implements ActionListener{
 //				
 //			}		
 //		});
-		btnSubmit.setBounds(480, 119, 130, 38);
+		btnSubmit.setBounds(498, 83, 130, 38);
 		btnSubmit.addActionListener(this);
 		panel_1.add(btnSubmit);
 		
 		btnClear = new JButton("CLEAR");
 		btnClear.setBackground(new Color(255, 255, 255));
-		btnClear.setBounds(480, 206, 130, 38);
+		btnClear.setBounds(498, 198, 130, 38);
 		btnClear.addActionListener(this);
 		panel_1.add(btnClear);
 		
