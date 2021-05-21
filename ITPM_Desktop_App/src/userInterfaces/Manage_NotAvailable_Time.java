@@ -40,6 +40,7 @@ public class Manage_NotAvailable_Time implements ActionListener{
 	private JScrollPane scPane1;
 	private JButton btnDelete1;
 	private JButton btnView;
+	private JButton btnRefresh;
 	private int id;
 	private int duration;
 	private JComboBox sesId;
@@ -114,16 +115,18 @@ public class Manage_NotAvailable_Time implements ActionListener{
 		//delete button
 		btnDelete1 = new JButton("DELETE");
 		btnDelete1.setBackground(new Color(153, 204, 255));
-		btnDelete1.setBounds(235, 334, 123, 45);
+		btnDelete1.setBounds(535, 334, 123, 45);
 		btnDelete1.addActionListener(this);
 		Manage_NotAvailableTime_Panel.add(btnDelete1);
 		
 		//view button
 		btnView = new JButton("VIEW");
 		btnView.setBackground(new Color(255, 255, 255));
-		btnView.setBounds(588, 334, 123, 45);
+		btnView.setBounds(237, 334, 123, 45);
 		btnView.addActionListener(this);
 		Manage_NotAvailableTime_Panel.add(btnView);
+		
+		
 		
 		
 	
@@ -154,6 +157,10 @@ public class Manage_NotAvailable_Time implements ActionListener{
 		
 	}
 	
+	
+
+	
+	
 	//take the values to not available time for sessions in the table 
 	public void NotAvailableTimeList() {
 		NotAvailableDAOImpl nt = new NotAvailableDAOImpl();
@@ -175,6 +182,7 @@ public class Manage_NotAvailable_Time implements ActionListener{
 		}
 		
 	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
