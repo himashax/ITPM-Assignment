@@ -322,6 +322,8 @@ public class Add_Session implements ActionListener {
 						JOptionPane.WARNING_MESSAGE);
 			} else if (textFieldDuration.getText().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Please give the duration", "Alert", JOptionPane.WARNING_MESSAGE);
+			}else if(Integer.parseInt(textFieldDuration.getText().toString()) < 0 || Integer.parseInt(textFieldNoOfStudents.getText().toString()) < 0) {
+				JOptionPane.showMessageDialog(null, "Add a positive integer value", "Alert", JOptionPane.WARNING_MESSAGE);
 			} else {
 				
 				//set the values

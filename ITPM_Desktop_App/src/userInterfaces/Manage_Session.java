@@ -556,6 +556,8 @@ public class Manage_Session implements ActionListener{
 				JOptionPane.showMessageDialog(null, "Please provide the duration", "Alert",JOptionPane.WARNING_MESSAGE);
 			}else if(comboBoxLec1.getSelectedItem().equals(comboBoxLec2.getSelectedItem().toString()) || comboBoxLec2.getSelectedItem().equals(comboBoxLec1.getSelectedItem().toString())){
 				JOptionPane.showMessageDialog(null, "Please select another lecturer", "Alert",JOptionPane.WARNING_MESSAGE);
+			}else if(Integer.parseInt(textField_mDuration.getText().toString()) < 0 || Integer.parseInt(textField_mNoOfStud.getText().toString()) < 0) {
+				JOptionPane.showMessageDialog(null, "Add a positive integer value", "Alert", JOptionPane.WARNING_MESSAGE);
 			}else {
 
 				Session sessions = new Session();

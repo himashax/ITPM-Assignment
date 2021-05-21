@@ -430,8 +430,6 @@ public class Home_Page {
 		});
 		mnSessions.add(mntmManageSession);
 
-
-	
 	
 	JMenu sessionRoom = new JMenu("Session Rooms");
 	sessionRoom.setForeground(Color.WHITE);
