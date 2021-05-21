@@ -258,7 +258,6 @@ public class Home_Page {
 		});
 		mnNewMenu_2.add(Add_WorkingDays_Item);
 		
-		
 		//manage working days and hours
 		JMenuItem Manage_WorkingDays_Item = new JMenuItem("Manage Days & Hours");
 		Manage_WorkingDays_Item.addActionListener(new ActionListener() {
