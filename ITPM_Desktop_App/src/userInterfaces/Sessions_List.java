@@ -8,6 +8,9 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -43,6 +46,7 @@ public class Sessions_List implements ActionListener{
 	private JLabel resultLabel;
 	private ConsecSessionsDAOImpl consecDaoObj;
 	private SessionDAOImpl daoObj;
+	private int selectedRecord;
 
 	/**
 	 * Launch the application.
@@ -326,10 +330,11 @@ public class Sessions_List implements ActionListener{
 					
 				}
 			}
-		}		
+			
+		}else {
+			System.out.println(selectedRecord);
+		}
 
 		
 	}
-
-	
 }

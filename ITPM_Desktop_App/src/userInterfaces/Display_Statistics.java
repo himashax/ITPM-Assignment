@@ -2,6 +2,7 @@ package userInterfaces;
 
 import java.awt.EventQueue;
 
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -207,7 +208,7 @@ public class Display_Statistics {
 		countlec.setBounds(42, 50, 56, 16);
 		panel_4_3_3.add(countlec);
 		
-		 statPanel = new JPanel();
+		statPanel = new JPanel();
 		statPanel.setBounds(0, 0, 787, 517);
 		statPanel.setLayout(null);
 		statPanel.add(panel);

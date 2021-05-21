@@ -39,7 +39,6 @@ public class Manage_NotAvailable_Time implements ActionListener{
 	private JTable manageTimeSet;
 	private JScrollPane scPane1;
 	private JButton btnDelete1;
-	private JButton btnBack1;
 	private JButton btnView;
 	private int id;
 	private int duration;
@@ -115,20 +114,14 @@ public class Manage_NotAvailable_Time implements ActionListener{
 		//delete button
 		btnDelete1 = new JButton("DELETE");
 		btnDelete1.setBackground(new Color(153, 204, 255));
-		btnDelete1.setBounds(387, 334, 123, 45);
+		btnDelete1.setBounds(235, 334, 123, 45);
 		btnDelete1.addActionListener(this);
 		Manage_NotAvailableTime_Panel.add(btnDelete1);
-		
-		btnBack1 = new JButton("BACK");
-		btnBack1.setBackground(new Color(255, 255, 255));
-		btnBack1.setBounds(140, 334, 123, 45);
-		btnBack1.addActionListener(this);
-		Manage_NotAvailableTime_Panel.add(btnBack1);
 		
 		//view button
 		btnView = new JButton("VIEW");
 		btnView.setBackground(new Color(255, 255, 255));
-		btnView.setBounds(624, 334, 123, 45);
+		btnView.setBounds(588, 334, 123, 45);
 		btnView.addActionListener(this);
 		Manage_NotAvailableTime_Panel.add(btnView);
 		
