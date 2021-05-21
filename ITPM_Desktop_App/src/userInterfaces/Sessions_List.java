@@ -86,7 +86,7 @@ public class Sessions_List implements ActionListener{
 		panel.setBounds(10, 11, 864, 432);
 		
 		resultLabel = new JLabel("");
-		resultLabel.setBounds(301, 387, 309, 14);
+		resultLabel.setBounds(274, 386, 435, 14);
 		
 		tableModel = new DefaultTableModel() {
 			public Class<?> getColumnClass(int column) {
@@ -215,6 +215,8 @@ public class Sessions_List implements ActionListener{
 		ArrayList<String> duration = new ArrayList<String>();
 		ArrayList<String> groupAndSubject = new ArrayList<String>();
 		
+		ArrayList<String> startTime = new ArrayList<String>();
+		
 		for(int i=0;i<array.size();i++) {
 			Session object = daoObj.getSessionById(Integer.parseInt(array.get(i)));
 			selectedSessions.add(object);
@@ -273,15 +275,21 @@ public class Sessions_List implements ActionListener{
 				ParallelSessionDAOImpl parDaoObj = new ParallelSessionDAOImpl();
 				String sessionCode = parDaoObj.generateSessionCode(parDaoObj.getSessionID());
 				
+				NonOverlapSessionDAOImpl nonOverObj = new NonOverlapSessionDAOImpl();
+				
 				int confirm = JOptionPane.showConfirmDialog(sessions_panel,"Are you sure you want to add selected sessions?","Submit Data",JOptionPane.YES_NO_OPTION);
 				
 				if(confirm == JOptionPane.YES_OPTION) {
 					for(int i=0;i<selectedSessions.size();i++) {
 						int sessionID = selectedSessions.get(i).getId();
-						parDaoObj.createParallelSession(sessionCode, sessionID);
+						
+						if(nonOverObj.checkExistence(sessionID)) {
+							resultLabel.setText("Cannot Add Sessions that already Exist as Non Overlapping Session");
+						}else {
+							parDaoObj.createParallelSession(sessionCode, sessionID);
+							resultLabel.setText("Parallel Sessions Added Successfully");
+						}
 					}
-					
-					resultLabel.setText("Parallel Sessions Added Successfully");
 				}
 			}
 			
@@ -299,15 +307,23 @@ public class Sessions_List implements ActionListener{
 				NonOverlapSessionDAOImpl nonOverDaoObj = new NonOverlapSessionDAOImpl();
 				String sessionCode = nonOverDaoObj.generateSessionCode(nonOverDaoObj.getSessionID());
 				
+				ParallelSessionDAOImpl parObj = new ParallelSessionDAOImpl();
+				
 				int confirm = JOptionPane.showConfirmDialog(sessions_panel,"Are you sure you want to add selected sessions?","Submit Data",JOptionPane.YES_NO_OPTION);
 				
 				if(confirm == JOptionPane.YES_OPTION) {
 					for(int i=0;i<selectedSessions.size();i++) {
 						int sessionID = selectedSessions.get(i).getId();
-						nonOverDaoObj.createNonOverlapSession(sessionCode, sessionID);
+						
+						if(parObj.checkExistence(sessionID)) {
+							resultLabel.setText("Cannot Add Sessions that Already exist as Parallel Session");
+						}else {
+							nonOverDaoObj.createNonOverlapSession(sessionCode, sessionID);
+							resultLabel.setText("Non Overlapping Sessions Added Successfully");
+						}
 					}
 					
-					resultLabel.setText("Non Overlapping Sessions Added Successfully");
+					
 				}
 			}
 		}		

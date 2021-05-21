@@ -128,6 +128,7 @@ public class ConsecSessionsDAOImpl implements ISessionService{
 		
 	}
 
+	@Override
 	public boolean checkExistence(int sessionID) {
 		boolean exist = false;
 		try {

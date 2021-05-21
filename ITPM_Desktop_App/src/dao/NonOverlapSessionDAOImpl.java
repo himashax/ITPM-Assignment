@@ -11,7 +11,7 @@ import models.SessionType;
 
 public class NonOverlapSessionDAOImpl implements ISessionService{
 	
-	private DBConnection dbconnect = new DBConnection();
+	private static DBConnection dbconnect = new DBConnection();
 	
 
 	@Override
@@ -100,7 +100,7 @@ public class NonOverlapSessionDAOImpl implements ISessionService{
 
 	@Override
 	public void deleteSession(String sessionCode) {
-Connection connection = dbconnect.connect();
+		Connection connection = dbconnect.connect();
 		
 		String deleteQuery = "delete from nonOverlap_sessions where sessionCode = '"+sessionCode+"' ";
 		
@@ -114,6 +114,28 @@ Connection connection = dbconnect.connect();
 			e.printStackTrace();
 		}	
 		
+	}
+	
+	
+	public boolean checkExistence(int sessionID) {
+		boolean exist = false;
+		try {
+			Connection connection = dbconnect.connect();
+			
+			String checkSessions = "select id from nonOverlap_sessions where nonoverlapSessionID = '"+sessionID+"' ";
+			PreparedStatement ps = connection.prepareStatement(checkSessions);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				exist = true;
+			}else {
+				exist = false;
+			}
+			connection.close();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return exist;
 	}
 
 }
