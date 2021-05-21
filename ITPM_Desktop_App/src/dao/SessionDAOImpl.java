@@ -365,4 +365,24 @@ public class SessionDAOImpl {
 		
 	}
 	
+	//get the row count of session table
+	public int getCount() {
+		
+		int s = 0;
+		try {
+			Connection connection = db.connect();
+			String getRowCount = "select count(id) from session";
+			Statement st = connection.createStatement();
+			ResultSet rs = st.executeQuery(getRowCount);
+			
+			while(rs.next()) {
+				s =rs.getInt(1);
+			}
+			System.out.println(s);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return s;
+		
+	}
 }
