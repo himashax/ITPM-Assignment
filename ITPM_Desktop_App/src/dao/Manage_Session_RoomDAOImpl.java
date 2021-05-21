@@ -1,12 +1,8 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 
+import java.sql.*;
+import java.util.ArrayList;
 import dbConnection.DBConnection;
 import models.Manage_Session_Room;
 
@@ -17,9 +13,7 @@ public class Manage_Session_RoomDAOImpl {
 	public String insertSessionRoom(Manage_Session_Room msr) {
 		
 		String result = "";
-		
-
-		
+				
 		try {
 			Connection con = dbconnection.connect();
 			
@@ -33,7 +27,6 @@ public class Manage_Session_RoomDAOImpl {
 			ps.execute();
 			con.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -93,9 +86,9 @@ public class Manage_Session_RoomDAOImpl {
 			return listRooms;
 	} 
 	
-//	public ArrayList<String> getSessionRoomListById(String roomType){
+//	public ArrayList<String> getSessionRoomListByRoom(String roomType){
 //		
-//		ArrayList<String> listRoomByIds = new ArrayList<String>();
+//		ArrayList<String> listRoomByRoom = new ArrayList<String>();
 //		
 //		try {
 //				Connection connection = dbconnection.connect();
@@ -105,41 +98,39 @@ public class Manage_Session_RoomDAOImpl {
 //				ResultSet rs = st.executeQuery(getSessionRoomListById);
 //	
 //				while(rs.next()) {
-//					listRoomByIds.add(rs.getString(3)+"kk");
+//					listRoomByRoom.add(rs.getString(3)+"kk");
 //				}
-//				System.out.println(listRoomByIds);
+//				System.out.println(listRoomByRoom);
 //				
 //		} catch (SQLException e) {
 //			e.printStackTrace();
 //			}
 //
-//			return listRoomByIds;
+//			return listRoomByRoom;
 //	} 
 	
 	public Manage_Session_Room getSessionRoomListById(int id){
-
+		
 		Manage_Session_Room listRoomByIds = new Manage_Session_Room();
-
+		
 		try {
-		Connection connection = dbconnection.connect();
-		String getSessionRoomListById = "select * from managesessionroom where session_id = '"+ id +"'";
-
-		Statement st = connection.createStatement();
-		ResultSet rs = st.executeQuery(getSessionRoomListById);
-
-		while(rs.next()) {
-		listRoomByIds.setId(rs.getInt(1));
-		listRoomByIds.setSessionID(rs.getInt(2));
-		listRoomByIds.setRoomName(rs.getString(3));
-		}
-		System.out.println(listRoomByIds);
-
+				Connection connection = dbconnection.connect();
+				String getSessionRoomListById = "select * from managesessionroom where session_id = '"+ id +"'";
+	
+				Statement st = connection.createStatement();
+				ResultSet rs = st.executeQuery(getSessionRoomListById);
+	
+				while(rs.next()) {
+					listRoomByIds.setId(rs.getInt(1));
+					listRoomByIds.setSessionID(rs.getInt(2));
+					listRoomByIds.setRoomName(rs.getString(3));
+				}
+				System.out.println(listRoomByIds);
+				
 		} catch (SQLException e) {
-		e.printStackTrace();
-		}
+			e.printStackTrace();
+			}
 
-
-
-		return listRoomByIds;
-		}
+			return listRoomByIds;
+	}
 }

@@ -28,6 +28,7 @@ public class Not_AvailableTime implements ActionListener{
 	private JFrame frame;
 	private JComboBox session;
 	private JComboBox time;
+	private JComboBox endT;
 	private JButton btnClear;
 	private JButton btnSubmit;
 	private JTextField day;
@@ -35,6 +36,7 @@ public class Not_AvailableTime implements ActionListener{
 	private JTextField group;
 	private JTextField fLec;
 	private JTextField secLec;
+	public JPanel ad;
 	
 
 	/**
@@ -69,19 +71,19 @@ public class Not_AvailableTime implements ActionListener{
 		frame.setBounds(200, 200, 650, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel panel = new JPanel();
-		frame.getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(null);
+		ad = new JPanel();
+		frame.getContentPane().add(ad, BorderLayout.CENTER);
+		ad.setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(192, 192, 192));
-		panel_1.setBounds(21, 10, 589, 332);
-		panel.add(panel_1);
+		panel_1.setBounds(111, 23, 663, 395);
+		ad.add(panel_1);
 		panel_1.setLayout(null);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(new Color(240, 248, 255));
-		panel_2.setBounds(23, 10, 352, 312);
+		panel_2.setBounds(54, 22, 388, 351);
 		panel_1.add(panel_2);
 		panel_2.setLayout(null);
 		
@@ -100,6 +102,7 @@ public class Not_AvailableTime implements ActionListener{
 		System.out.println(test);
 	
 		
+		//retrieve values according to the session id
 		session = new JComboBox(test.toArray());
 		session.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -151,7 +154,7 @@ public class Not_AvailableTime implements ActionListener{
 		
 		JLabel lblNewLabel_4 = new JLabel("TIME");
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_4.setBounds(77, 280, 42, 23);
+		lblNewLabel_4.setBounds(10, 303, 42, 23);
 		panel_2.add(lblNewLabel_4);
 		
 		day = new JTextField();
@@ -173,10 +176,9 @@ public class Not_AvailableTime implements ActionListener{
 		
 		//retrieve time values as timeslots
 		NotAvailableDAOImpl notAvailable = new NotAvailableDAOImpl();
-		ArrayList<String> ob2 = notAvailable.retrieveTime();
+		ArrayList<String> ob2 = notAvailable.retrieveTime1();
 		time = new JComboBox(ob2.toArray());
-		
-		time.setBounds(131, 280, 143, 23);
+		time.setBounds(75, 304, 143, 23);
 		panel_2.add(time);
 		
 		group = new JTextField();
@@ -202,6 +204,11 @@ public class Not_AvailableTime implements ActionListener{
 		secLec.setBounds(199, 118, 143, 22);
 		panel_2.add(secLec);
 		
+		ArrayList<String> ob3 = notAvailable.retrieveTime2();
+		endT = new JComboBox(ob3.toArray());
+		endT.setBounds(235, 304, 143, 23);
+		panel_2.add(endT);
+		
 		btnSubmit = new JButton("SUBMIT");
 		btnSubmit.setBackground(new Color(153, 204, 255));
 //		btnSubmit.addActionListener(new ActionListener() {
@@ -209,19 +216,20 @@ public class Not_AvailableTime implements ActionListener{
 //				
 //			}		
 //		});
-		btnSubmit.setBounds(410, 84, 130, 38);
+		btnSubmit.setBounds(480, 119, 130, 38);
 		btnSubmit.addActionListener(this);
 		panel_1.add(btnSubmit);
 		
 		btnClear = new JButton("CLEAR");
 		btnClear.setBackground(new Color(255, 255, 255));
-		btnClear.setBounds(410, 196, 130, 38);
+		btnClear.setBounds(480, 206, 130, 38);
 		btnClear.addActionListener(this);
 		panel_1.add(btnClear);
 		
 		
 	}
 	
+	//method to clear the values
 	public void clear() {
 		session.setSelectedIndex(0);
 		fLec.setText(null);
@@ -235,14 +243,12 @@ public class Not_AvailableTime implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e1) {
-		// TODO Auto-generated method stub
+		// get the clickable
 		Object ob1 = e1.getSource();
 		//submit the values
 		if(ob1 == btnSubmit) {
 			
-			int results = JOptionPane.showConfirmDialog(frame,"Are you sure you want to submit your data?","Submit Data",JOptionPane.YES_NO_OPTION);
-			if(results == JOptionPane.YES_OPTION) {
-			
+			//set values
 			String sessions =session.getSelectedItem().toString();
 			String lecturers1 =fLec.getText().toString();
 			String lecturers2 =secLec.getText().toString();
@@ -250,15 +256,43 @@ public class Not_AvailableTime implements ActionListener{
 			String groups =group.getText().toString();
 			String days =day.getText().toString();
 			String dur = duration.getText().toString();
+			String eTime = endT.getSelectedItem().toString();
 			
-			NotAvailableDAOImpl na = new NotAvailableDAOImpl();
-			na.insertNotAvailableTime(Integer.parseInt(dur),Integer.parseInt(sessions),lecturers1,lecturers2,groups,days,tTime);
+			//System.out.println(tTime.substring(0, 2));
+			
+			//grab the first two characters from the string
+			int time = Integer.valueOf(tTime.substring(0, 2));
+			int time2 = Integer.valueOf(eTime.substring(0, 2));
+			//System.out.println(tTime+" "+eTime);
+			
+			//see the time difference
+			int timeDif = time2 - time;
+			
+			if(Integer.parseInt(dur) != timeDif) {
+				
+				//validate the duration and timeslots
+				JOptionPane.showMessageDialog(null,"Time given is incompatible with duration","Alert",JOptionPane.WARNING_MESSAGE);
+			}else {
+				
+				//show confirmation message to submit the data
+				int results = JOptionPane.showConfirmDialog(frame,"Are you sure you want to submit your data?","Submit Data",JOptionPane.YES_NO_OPTION);
+				if(results == JOptionPane.YES_OPTION) {
+					NotAvailableDAOImpl na = new NotAvailableDAOImpl();
+					na.insertNotAvailableTime(Integer.parseInt(dur),Integer.parseInt(sessions),lecturers1,lecturers2,groups,days,tTime,eTime);
+				}
+				
+				
+			}
+			
+			
+			
 		}
-		}
+		
 	
 		//clear the values
 		if(ob1 == btnClear ) {
 			
+			//call the clear method
 			clear();
 		}
 	}
