@@ -19,8 +19,6 @@ public class ParallelSessionDAOImpl implements ISessionService{
 
 	private DBConnection dbconnect = new DBConnection();
 
-	
-
 	@Override
 	public ArrayList<String> getSessionID() {
 		ArrayList<String> arrayList = new ArrayList<>();
@@ -126,6 +124,30 @@ public class ParallelSessionDAOImpl implements ISessionService{
 			e.printStackTrace();
 		}	
 	}
+
+
+	@Override
+	public boolean checkExistence(int sessionID) {
+		boolean exist = false;
+		try {
+			Connection connection = dbconnect.connect();
+			
+			String checkSessions = "select id from parallel_sessions where parallelSessionID = '"+sessionID+"' ";
+			PreparedStatement ps = connection.prepareStatement(checkSessions);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				exist = true;
+			}else {
+				exist = false;
+			}
+			connection.close();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return exist;
+	}
+	
 	
 	
 }
