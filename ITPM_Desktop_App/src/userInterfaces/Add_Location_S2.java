@@ -76,7 +76,7 @@ public class Add_Location_S2 {
 		panel_S2.setLayout(null);		
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(29, 56, 800, 243);
+		tabbedPane.setBounds(29, 56, 800, 320);
 		panel_S2.add(tabbedPane);
 		
 		JPanel Session_panel = new JPanel();
@@ -87,8 +87,8 @@ public class Add_Location_S2 {
 		tabbedPane.addTab("New tab", null, Con_panel, null);
 		Con_panel.setLayout(null);
 		
-		JPanel not_panel = new JPanel();
-		tabbedPane.addTab("New tab", null, not_panel, null);
+		JPanel not_panel = new Not_Available_Location().Add_NotAvailable_Location_Panel;
+		tabbedPane.addTab("Not Available Times", null, not_panel, null);
 		not_panel.setLayout(null);
 		
 		DefaultTableModel modal = new DefaultTableModel(new String[] {"ID","Lecturer 1","Lecturer 2","Subject","Group ID","No.Students","Tag","Day","Room"},0);
@@ -99,7 +99,7 @@ public class Add_Location_S2 {
 		table_Room_Session.setModel(modal);
 
 		JScrollPane pane = new JScrollPane(table_Room_Session);
-		pane.setBounds(10, 11, 773, 129);
+		pane.setBounds(10, 11, 773, 272);
 		
 		Session_panel.add(pane); 
 		
@@ -131,7 +131,7 @@ public class Add_Location_S2 {
 						 dao.getSessionById(id).getGroupId()+ " "+ dao.getSessionById(id).getTag() + " " + manage.getSessionRoomListById(id).getRoomName());
 			}
 		});
-		btnViewRoom.setBounds(300, 387, 162, 25);
+		btnViewRoom.setBounds(278, 416, 162, 25);
 		panel_S2.add(btnViewRoom);
 		
 		
@@ -166,7 +166,7 @@ public class Add_Location_S2 {
 		conSessionDataTable();
 		
 		btnRefresh = new JButton("Refresh");
-		btnRefresh.setBounds(486, 387, 97, 25);
+		btnRefresh.setBounds(488, 416, 97, 25);
 		panel_S2.add(btnRefresh);
 		
 		
