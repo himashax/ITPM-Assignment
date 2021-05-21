@@ -80,11 +80,11 @@ public class Add_Location_S2 {
 		panel_S2.add(tabbedPane);
 		
 		JPanel Session_panel = new JPanel();
-		tabbedPane.addTab("New tab", null, Session_panel, null);
+		tabbedPane.addTab("Session", null, Session_panel, null);
 		Session_panel.setLayout(null);
 		
 		JPanel Con_panel = new JPanel();
-		tabbedPane.addTab("New tab", null, Con_panel, null);
+		tabbedPane.addTab("Consecutive Session Rooms", null, Con_panel, null);
 		Con_panel.setLayout(null);
 		
 		JPanel not_panel = new Not_Available_Location().Add_NotAvailable_Location_Panel;
