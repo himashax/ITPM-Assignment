@@ -173,7 +173,7 @@ public class Session_Categories {
 		tabbedPane.addTab("Non Overlapping Sessions", null, NonOverlapping, null);
 
 		JPanel panel_4 = new Not_AvailableTime().ad;
-		tabbedPane.addTab("Shalage eka", null, panel_4, null);
+		tabbedPane.addTab("Not Available Times", null, panel_4, null);
 
 		
 		JButton btnNewButton_1 = new JButton("Add Sessions");

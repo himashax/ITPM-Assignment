@@ -77,13 +77,13 @@ public class Not_AvailableTime implements ActionListener{
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(192, 192, 192));
-		panel_1.setBounds(85, 23, 704, 340);
+		panel_1.setBounds(57, 10, 704, 309);
 		ad.add(panel_1);
 		panel_1.setLayout(null);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(new Color(240, 248, 255));
-		panel_2.setBounds(62, 24, 388, 292);
+		panel_2.setBounds(62, 20, 388, 279);
 		panel_1.add(panel_2);
 		panel_2.setLayout(null);
 		
@@ -154,7 +154,7 @@ public class Not_AvailableTime implements ActionListener{
 		
 		JLabel lblNewLabel_4 = new JLabel("TIME");
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_4.setBounds(10, 260, 42, 23);
+		lblNewLabel_4.setBounds(9, 242, 42, 23);
 		panel_2.add(lblNewLabel_4);
 		
 		day = new JTextField();
@@ -178,7 +178,7 @@ public class Not_AvailableTime implements ActionListener{
 		NotAvailableDAOImpl notAvailable = new NotAvailableDAOImpl();
 		ArrayList<String> ob2 = notAvailable.retrieveTime1();
 		time = new JComboBox(ob2.toArray());
-		time.setBounds(76, 261, 143, 23);
+		time.setBounds(61, 243, 143, 22);
 		panel_2.add(time);
 		
 		group = new JTextField();
@@ -206,7 +206,7 @@ public class Not_AvailableTime implements ActionListener{
 		
 		ArrayList<String> ob3 = notAvailable.retrieveTime2();
 		endT = new JComboBox(ob3.toArray());
-		endT.setBounds(235, 261, 143, 23);
+		endT.setBounds(224, 243, 143, 23);
 		panel_2.add(endT);
 		
 		btnSubmit = new JButton("SUBMIT");
@@ -216,13 +216,13 @@ public class Not_AvailableTime implements ActionListener{
 //				
 //			}		
 //		});
-		btnSubmit.setBounds(498, 119, 130, 38);
+		btnSubmit.setBounds(498, 83, 130, 38);
 		btnSubmit.addActionListener(this);
 		panel_1.add(btnSubmit);
 		
 		btnClear = new JButton("CLEAR");
 		btnClear.setBackground(new Color(255, 255, 255));
-		btnClear.setBounds(498, 206, 130, 38);
+		btnClear.setBounds(498, 198, 130, 38);
 		btnClear.addActionListener(this);
 		panel_1.add(btnClear);
 		
